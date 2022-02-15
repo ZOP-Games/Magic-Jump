@@ -14,6 +14,7 @@ public class GitUpdater : ScriptableObject
         ProcessStartInfo psi = new ProcessStartInfo("robocopy.exe",
             "\"D:\\User\\Documents\\prects\\unity\\Magic Jump\\Assets\" \"D:\\User\\Documents\\prects\\unity\\mj_clone\\Assets\" /E");
         Process.Start(psi).WaitForExit();
+        
         ProcessStartInfo psi2 = new ProcessStartInfo("robocopy.exe",
             "\"D:\\User\\Documents\\prects\\unity\\Magic Jump\\Packages\" \"D:\\User\\Documents\\prects\\unity\\mj_clone\\Packages\" /E");
         Process.Start(psi2).WaitForExit();
@@ -22,24 +23,37 @@ public class GitUpdater : ScriptableObject
         Process.Start(psi3).WaitForExit();
         ProcessStartInfo psi4 = new ProcessStartInfo("robocopy.exe",
             "\"D:\\User\\Documents\\prects\\unity\\Magic Jump\\UserSettings\" \"D:\\User\\Documents\\prects\\unity\\mj_clone\\UserSettings\" /E");
-        Process.Start(psi3).WaitForExit();
+        Process.Start(psi4).WaitForExit();
 
     }
 
-    [MenuItem("Save To Git/Commit to Git")]
+    [MenuItem("Save To Git/Commit changes")]
     public static void StartCommit()
     {
-
+        CommitWindow commitWindow = CreateInstance<CommitWindow>();
+        commitWindow.ShowUtility();
     }
 
-    private void Commit(string desc)
+    [MenuItem("Save To Git/Push To Repo")]
+    public static void Push()
     {
-        ProcessStartInfo git = new ProcessStartInfo("git.exe", "commit -m \"" + desc+ "\"")
+        ProcessStartInfo git = new ProcessStartInfo("git.exe", "push ")
         {
-            WorkingDirectory = "D:\\User\\Documents\\unity\\mj_clone"
+            WorkingDirectory = "D:\\User\\Documents\\prects\\unity\\mj_clone"
         };
         Process.Start(git).WaitForExit();
     }
+
+    public static void Commit(string desc)
+    {
+        ProcessStartInfo git = new ProcessStartInfo("git.exe", "commit -a -m \"" + desc+ "\"")
+        {
+            WorkingDirectory = "D:\\User\\Documents\\prects\\unity\\mj_clone"
+        };
+        Process.Start(git).WaitForExit();
+    }
+
+
 
 
 }
