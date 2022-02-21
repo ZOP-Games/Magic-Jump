@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "com.unity.addressables": "1.19.17",
-    "com.unity.animation.rigging": "1.1.1",
+    "com.unity.addressables": "1.19.18",
     "com.unity.burst": "1.6.4",
     "com.unity.cinemachine": "2.8.4",
     "com.unity.collab-proxy": "1.15.7",
@@ -9,7 +8,7 @@
     "com.unity.inputsystem": "1.2.0",
     "com.unity.performance.profile-analyzer": "1.1.1",
     "com.unity.postprocessing": "3.2.0",
-    "com.unity.test-framework": "1.1.30",
+    "com.unity.test-framework": "1.1.31",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.4",
     "com.unity.ugui": "1.0.0",

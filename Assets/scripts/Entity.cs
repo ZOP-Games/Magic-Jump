@@ -25,8 +25,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void Attack()
     {
-        //play attack animation (replace new Animator w/ character's animator -> GetComponent<Animator>())
-        new Animator().Play(AttackStateHash);
+       GetComponent<Animator>().SetBool(AttackStateHash,true);
     }
 
     public void OnCollisionEnter(Collision collision)

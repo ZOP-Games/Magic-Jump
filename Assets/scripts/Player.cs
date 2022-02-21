@@ -13,10 +13,13 @@ public class Player : Entity
     private bool mozog = false;
     private Vector2 mPos;
     private Rigidbody rb;
-    private bool grounded = true;
+    private bool grounded = false;
     private bool running = false;
     private bool paused = false;
     private Vector3 speed;
+    private Animator anim;
+    private int moveStateId;
+    private int moveSpeedId;
     public void Move(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -26,12 +29,13 @@ public class Player : Entity
             Vector3 angles = transform.eulerAngles;
             angles = new Vector3(angles.x, mPos.x * 9, angles.z);
             transform.eulerAngles = angles;
+            anim.SetBool(moveStateId,true);
         }
 
         if (context.canceled)
         {
             mozog = false;
-            
+            anim.SetBool(moveStateId,false);
         }
     }
 
@@ -40,7 +44,8 @@ public class Player : Entity
         if (context.performed && grounded)
         {
             rb.AddForce(0,400,0);
-
+            Debug.Log("Jumping, velocity: " + rb.velocity.y);
+            
         }
     }
 
@@ -65,7 +70,7 @@ public class Player : Entity
     {
         if (context.performed)
         {
-            rb.AddForce(transform.position.x+23,0,0);
+            rb.AddForce(rb.velocity.x+23,0,0);
         }
     }
 
@@ -74,6 +79,7 @@ public class Player : Entity
         if (context.performed)
         {
             running = true;
+            anim.SetFloat(moveSpeedId,2);
         }
 
         if (context.canceled && GameHelper.CompareVectors(rb.velocity,5,GameHelper.Operation.Equal))
@@ -82,6 +88,7 @@ public class Player : Entity
             speed = rb.velocity;
             speed.z = 5;
             rb.velocity = speed;
+            anim.SetFloat(moveSpeedId,1);
         }
     }
 
@@ -156,33 +163,38 @@ public class Player : Entity
 
     private new void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<TerrainCollider>(out _) && !grounded)
+        if (collision.collider is TerrainCollider && !grounded)
         {
+            
             grounded = true;
         }
+        
     }
+
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<TerrainCollider>(out _) && grounded)
+        if (collision.collider is TerrainCollider && grounded)
         {
             grounded = false;
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (mozog && (Mathf.Abs(rb.velocity.z) < 5 || (Mathf.Abs(rb.velocity.z) < 15 && running)))
         {
-            
             rb.AddForce(mPos.x,0,mPos.y);
-            
+
         }
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponentInParent<Animator>();
+        moveStateId = Animator.StringToHash("moving");
+        moveSpeedId = Animator.StringToHash("moveSpeed");
     }
 
     
