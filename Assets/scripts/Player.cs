@@ -185,7 +185,7 @@ public class Player : Entity
         if (mozog && (Mathf.Abs(rb.velocity.z) < 5 || (Mathf.Abs(rb.velocity.z) < 15 && running)))
         {
             rb.AddForce(mPos.x,0,mPos.y);
-
+            
         }
     }
 
@@ -195,6 +195,7 @@ public class Player : Entity
         anim = GetComponentInParent<Animator>();
         moveStateId = Animator.StringToHash("moving");
         moveSpeedId = Animator.StringToHash("moveSpeed");
+        
     }
 
     
