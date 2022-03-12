@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,19 +27,15 @@ public class GameHelper : ScriptableObject
     }
     public static bool CompareVectors(Vector3 vector, float value, Operation operation)
     {
-        if (Mathf.Abs(vector.x - value) < 0 || Mathf.Abs(vector.y - value) < 0 || Mathf.Abs(vector.z - value) < 0 && operation == Operation.Equal)
+        var vector3 = vector;//new Vector3(Mathf.Abs(vector.x), Mathf.Abs(vector.y), Mathf.Abs(vector.z));
+        return operation switch
         {
-            return true;
-        }
-        if ((vector.x - value) <= 0 || (vector.y - value) <= 0 || (vector.z - value) <= 0 && operation == Operation.GreaterOrEqual)
-        {
-            return true;
-        }
-        if ((vector.x - value) >= 0 || (vector.y - value) >= 0 || (vector.z - value) >= 0 && operation == Operation.LessOrEqual)
-        {
-            return true;
-        }
-        return false;
-
+            Operation.Equal => Mathf.Approximately(vector3.x, value) || Mathf.Approximately(vector3.y, value) ||
+                               Mathf.Approximately(vector3.z, value),
+            Operation.GreaterOrEqual => (vector3.x - value) <= 0 || (vector3.y - value) <= 0 ||
+                                        (vector3.z - value) <= 0,
+            Operation.LessOrEqual => (vector3.x - value) >= 0 || (vector3.y - value) >= 0 || (vector3.z - value) >= 0,
+            _ => false
+        };
     }
 }

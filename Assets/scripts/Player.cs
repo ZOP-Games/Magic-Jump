@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
+    public RectTransform mapPos;
     protected override int AttackStateHash => Animator.StringToHash("Attack");
     
     private bool mozog = false;
@@ -20,6 +17,7 @@ public class Player : Entity
     private Animator anim;
     private int moveStateId;
     private int moveSpeedId;
+    
     public void Move(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -27,7 +25,7 @@ public class Player : Entity
             mozog = true;
             mPos = context.ReadValue<Vector2>();
             Vector3 angles = transform.eulerAngles;
-            angles = new Vector3(angles.x, mPos.x * 9, angles.z);
+            angles = new Vector3(angles.x, Mathf.Atan2(mPos.x,mPos.y)*Mathf.Rad2Deg, angles.z);
             transform.eulerAngles = angles;
             anim.SetBool(moveStateId,true);
         }
@@ -43,7 +41,7 @@ public class Player : Entity
     {
         if (context.performed && grounded)
         {
-            rb.AddForce(0,400,0);
+            rb.AddForce(0,300,0);
             Debug.Log("Jumping, velocity: " + rb.velocity.y);
             
         }
@@ -117,21 +115,21 @@ public class Player : Entity
 
     public void Pause(InputAction.CallbackContext context)
     {
-        if (context.performed && !paused)
+        switch (context.performed)
         {
-            //show pause menu
-            paused = true;
-            //change to UI ActionMap
-            Debug.Log("Paused");
+            case true when !paused:
+                //show pause menu
+                paused = true;
+                //change to UI ActionMap
+                Debug.Log("Paused");
+                break;
+            case true:
+                //close pause menu
+                //change back to Player ActionMap
+                paused = false;
+                Debug.Log("Unpaused");
+                break;
         }
-        else if(context.performed)
-        {
-            //close pause menu
-            //change back to Player ActionMap
-            paused = false;
-            Debug.Log("Unpaused");
-        }
-
     }
 
     public void ShowObjective(InputAction.CallbackContext context)
@@ -179,13 +177,15 @@ public class Player : Entity
             grounded = false;
         }
     }
-
+    
     void FixedUpdate()
     {
-        if (mozog && (Mathf.Abs(rb.velocity.z) < 5 || (Mathf.Abs(rb.velocity.z) < 15 && running)))
+        if (mozog && Mathf.Abs(rb.velocity.x) < 5 && Mathf.Abs(rb.velocity.z) < 5 || (running && rb.velocity.x <15 && rb.velocity.z < 15))
         {
-            rb.AddForce(mPos.x,0,mPos.y);
+            Vector3 pos = transform.position;
+            rb.AddForce(mPos.x*25, 0, mPos.y*25);
             
+            mapPos.anchoredPosition = new Vector2(pos.x,pos.z);
         }
     }
 
@@ -196,6 +196,7 @@ public class Player : Entity
         moveStateId = Animator.StringToHash("moving");
         moveSpeedId = Animator.StringToHash("moveSpeed");
         
+
     }
 
     
