@@ -1,3 +1,5 @@
+using System;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,16 +19,14 @@ public class Player : Entity
     private Animator anim;
     private int moveStateId;
     private int moveSpeedId;
-    
+    private Transform mainCam;
     public void Move(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             mozog = true;
             mPos = context.ReadValue<Vector2>();
-            Vector3 angles = transform.eulerAngles;
-            angles = new Vector3(angles.x, Mathf.Atan2(mPos.x,mPos.y)*Mathf.Rad2Deg, angles.z);
-            transform.eulerAngles = angles;
+            transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y)*0.12f, 0);
             anim.SetBool(moveStateId,true);
         }
 
@@ -183,10 +183,15 @@ public class Player : Entity
         if (mozog && Mathf.Abs(rb.velocity.x) < 5 && Mathf.Abs(rb.velocity.z) < 5 || (running && rb.velocity.x <15 && rb.velocity.z < 15))
         {
             Vector3 pos = transform.position;
-            rb.AddForce(mPos.x*25, 0, mPos.y*25);
-            
-            mapPos.anchoredPosition = new Vector2(pos.x,pos.z);
+            rb.AddRelativeForce(mPos.x * 25, 0, mPos.y * 25);
+            mapPos.anchoredPosition = new Vector2(-pos.x,-pos.z)*0.5f;
         }
+    }
+
+    private void LateUpdate()
+    {
+        mainCam.localPosition = transform.position + new Vector3(0, 3, -5);
+        mainCam.eulerAngles = transform.eulerAngles + new Vector3(0,-30,0)*Mathf.Sign(transform.eulerAngles.y);
     }
 
     void Start()
@@ -195,7 +200,7 @@ public class Player : Entity
         anim = GetComponentInParent<Animator>();
         moveStateId = Animator.StringToHash("moving");
         moveSpeedId = Animator.StringToHash("moveSpeed");
-        
+        mainCam = Camera.main.transform;
 
     }
 
