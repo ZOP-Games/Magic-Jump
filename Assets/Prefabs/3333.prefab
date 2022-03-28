@@ -606,7 +606,19 @@ MonoBehaviour:
     m_ActionId: 2fbb674a-35ad-4645-80a7-d34458b8816a
     m_ActionName: UI/Select[/XInputControllerWindows/buttonSouth,/Keyboard/enter,/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3793148281787113927}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: UnPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 3629d31b-c417-4fc1-a03a-862ef7a15cde
     m_ActionName: UI/Exit[/XInputControllerWindows/buttonEast,/Keyboard/escape]
   - m_PersistentCalls:
@@ -777,6 +789,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 46c05599-cede-40bf-97cc-e31a30b12b8b
     m_ActionName: Player/Spell[/Keyboard/q,/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3793148281787113927}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: UnPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ac756e60-073a-4f8d-b418-7c997cfde1e2
+    m_ActionName: UI/Unpause[/Keyboard/escape,/XInputControllerWindows/start]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -795,6 +823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapPos: {fileID: 0}
+  pause: {fileID: 0}
 --- !u!54 &8787914701913197027
 Rigidbody:
   m_ObjectHideFlags: 0

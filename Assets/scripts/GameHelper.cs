@@ -6,7 +6,7 @@ public class GameHelper : ScriptableObject
 {
     // Start is called before the first frame update
     public delegate void PassMethod();
-    public static void Wait(int seconds,PassMethod method, MonoBehaviour starter)
+    public static void Wait(float seconds,PassMethod method, MonoBehaviour starter)
     {
         IEnumerator Waiting()
         {

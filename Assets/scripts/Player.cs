@@ -1,12 +1,11 @@
-using System;
-using Unity.Burst;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : Entity
+public class Player : Entity//, ICancelHandler
 {
     // this is for things unique to the player (controls, spells, etc.)
     public RectTransform mapPos;
+    public PauseScreen pause;
     protected override int AttackStateHash => Animator.StringToHash("Attack");
     
     private bool mozog = false;
@@ -115,21 +114,31 @@ public class Player : Entity
 
     public void Pause(InputAction.CallbackContext context)
     {
-        switch (context.performed)
+        Debug.Log("pause is " + context.phase);
+        switch (context.phase)
         {
-            case true when !paused:
-                //show pause menu
-                paused = true;
-                //change to UI ActionMap
-                Debug.Log("Paused");
+            case InputActionPhase.Performed:
+                pause.Pause();
                 break;
-            case true:
-                //close pause menu
-                //change back to Player ActionMap
-                paused = false;
-                Debug.Log("Unpaused");
+            case InputActionPhase.Canceled:
+                Debug.Log("Paused");
+                GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
+                paused = true;
                 break;
         }
+        
+    }
+
+    public void UnPause(InputAction.CallbackContext context)
+    {
+        Debug.Log("unpause is " + context.phase);
+        if (context.performed && paused)
+        {
+            pause.UnPause();
+            Debug.Log("Resumed");
+            GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+            paused = false;
+        } 
     }
 
     public void ShowObjective(InputAction.CallbackContext context)
@@ -142,7 +151,6 @@ public class Player : Entity
             
         }
     }
-
     private void DoneLooking()
     {
         Debug.Log("Camera looks back at player");
@@ -178,11 +186,11 @@ public class Player : Entity
         }
     }
     
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (mozog && Mathf.Abs(rb.velocity.x) < 5 && Mathf.Abs(rb.velocity.z) < 5 || (running && rb.velocity.x <15 && rb.velocity.z < 15))
         {
-            Vector3 pos = transform.position;
+            var pos = transform.position;
             rb.AddRelativeForce(mPos.x * 25, 0, mPos.y * 25);
             mapPos.anchoredPosition = new Vector2(-pos.x,-pos.z)*0.5f;
         }
@@ -190,8 +198,9 @@ public class Player : Entity
 
     private void LateUpdate()
     {
-        mainCam.localPosition = transform.position + new Vector3(0, 3, -5);
-        mainCam.eulerAngles = transform.eulerAngles + new Vector3(0,-30,0)*Mathf.Sign(transform.eulerAngles.y);
+        var tf = transform;
+        mainCam.localPosition = tf.position + new Vector3(0, 3, -5);
+        mainCam.eulerAngles = tf.eulerAngles + new Vector3(0,-30,0)*Mathf.Sign(tf.eulerAngles.y);
     }
 
     void Start()
@@ -201,7 +210,6 @@ public class Player : Entity
         moveStateId = Animator.StringToHash("moving");
         moveSpeedId = Animator.StringToHash("moveSpeed");
         mainCam = Camera.main.transform;
-
     }
 
     
