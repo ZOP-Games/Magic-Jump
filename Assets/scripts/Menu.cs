@@ -16,6 +16,7 @@ public class Menu : MonoBehaviour
 
       PlayerPrefs.SetInt("game_progress", 1);
       //FadeBlack();
+      System.GC.Collect();
       scene.LoadSceneAsync().Completed += LoadScene;
       void LoadScene(AsyncOperationHandle<SceneInstance> doneHandle)
       {

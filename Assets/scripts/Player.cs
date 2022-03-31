@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Player : Entity//, ICancelHandler
 {
     // this is for things unique to the player (controls, spells, etc.)
-    public RectTransform mapPos;
+    public RectTransform mapImgPos;
     public PauseScreen pause;
     protected override int AttackStateHash => Animator.StringToHash("Attack");
     
@@ -151,7 +152,7 @@ public class Player : Entity//, ICancelHandler
             
         }
     }
-    private void DoneLooking()
+    private static void DoneLooking()
     {
         Debug.Log("Camera looks back at player");
     }
@@ -192,7 +193,7 @@ public class Player : Entity//, ICancelHandler
         {
             var pos = transform.position;
             rb.AddRelativeForce(mPos.x * 25, 0, mPos.y * 25);
-            mapPos.anchoredPosition = new Vector2(-pos.x,-pos.z)*0.5f;
+            mapImgPos.anchoredPosition = new Vector2(-pos.x,-pos.z)*0.5f;
         }
     }
 

@@ -8,9 +8,10 @@ public class GameHelper : ScriptableObject
     public delegate void PassMethod();
     public static void Wait(float seconds,PassMethod method, MonoBehaviour starter)
     {
+        WaitForSeconds wfs = new WaitForSeconds(seconds);
         IEnumerator Waiting()
         {
-            yield return new WaitForSeconds(seconds);
+            yield return wfs;
             method();
 
         }
