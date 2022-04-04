@@ -7,7 +7,8 @@ public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
     protected Vector3 target;
-    protected int atkRange = 50;
+    protected const int AtkRange = 0;
+    [SerializeField] protected Transform playerTf;
 
     protected override void Die()
     {
@@ -16,6 +17,7 @@ public abstract class EnemyBase : Entity
 
     protected float FindTargetAngle()
     {
+        //Debug.Log(transform.position + " " + target + " " + Mathf.Acos(Vector3.Dot(transform.position,target)));
         return Vector3.Angle(transform.position, target);
     }
 
@@ -31,25 +33,24 @@ public abstract class EnemyBase : Entity
             transform.Rotate(0, angle, 0);
 
         }
-        while (dist > atkRange && Mathf.Abs(rb.velocity.x) < 10 && Mathf.Abs(rb.velocity.z) < 10)
+        while (dist > AtkRange && Mathf.Abs(rb.velocity.x) < 10 && Mathf.Abs(rb.velocity.z) < 10)
         {
             rb.AddRelativeForce(new Vector3(0, 0, 25));
         }
 
+        var transform1 = transform;
+        Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
-
-    protected IEnumerator CheckPlayerPos(WaitForSeconds wfs)
-    {
-        Aim(FindTargetAngle(), FindTargetDistance());
-        yield return wfs;
-        CheckPlayerPos(wfs);
+        
+    protected void Check(){
+    
+        target = playerTf.position;
+        Aim(FindTargetAngle(),FindTargetDistance());
     }
-
-
-    private void Start()
+    protected virtual void Start()
     {
         tag = "Enemy";
-        WaitForSeconds wfs = new(0.25f);
-        StartCoroutine(CheckPlayerPos(wfs));
     }
+
+
 }

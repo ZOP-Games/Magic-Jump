@@ -352,7 +352,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168871980}
-  m_LocalRotation: {x: 0.24397177, y: -0.00000001865601, z: 0.000000004693362, w: 0.96978235}
+  m_LocalRotation: {x: 0.24397177, y: 0.00000001865601, z: -0.000000004693362, w: 0.96978235}
   m_LocalPosition: {x: 1.987, y: 4, z: -4.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1671,6 +1671,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1359054778}
   m_CullTransparentMesh: 1
+--- !u!1001 &1586663532
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 295843538075365563, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: playerTf
+      value: 
+      objectReference: {fileID: 3645627204995517533}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 18.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 35.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704943047441217032, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473785252677702451, guid: a0560813331d9204fb963264a5387398, type: 3}
+      propertyPath: m_Name
+      value: enemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a0560813331d9204fb963264a5387398, type: 3}
 --- !u!1 &1623840318
 GameObject:
   m_ObjectHideFlags: 0
@@ -2286,7 +2347,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6218506267492965067, guid: 75271ecf77694a6429a3a00a309851ba, type: 3}
       propertyPath: m_Name
-      value: mage csaj best rig v1.5.blend1
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6703399328347914353, guid: 75271ecf77694a6429a3a00a309851ba, type: 3}
       propertyPath: m_RootOrder

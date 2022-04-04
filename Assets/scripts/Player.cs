@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class Player : Entity//, ICancelHandler
+public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
     public RectTransform mapImgPos;
     public PauseScreen pause;
     public TextMeshProUGUI fpsText;
-    protected override int AttackStateHash => Animator.StringToHash("Attack");
-    protected override int MoveStateHash => Animator.StringToHash("Move");
+    protected override int AttackingPmHash => Animator.StringToHash("attacking");
+    protected override int MovingPmHash => Animator.StringToHash("moving");
 
     private bool mozog = false;
     private Vector2 mPos;
@@ -17,7 +17,6 @@ public class Player : Entity//, ICancelHandler
     private bool running = false;
     private bool paused = false;
     private Vector3 speed;
-    private int moveStateId;
     private int moveSpeedId;
     private Transform mainCam;
     public void Move(InputAction.CallbackContext context)
@@ -27,13 +26,13 @@ public class Player : Entity//, ICancelHandler
             mozog = true;
             mPos = context.ReadValue<Vector2>();
             transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
-            anim.SetBool(moveStateId, true);
+            anim.SetBool(MovingPmHash, true);
         }
 
         if (context.canceled)
         {
             mozog = false;
-            anim.SetBool(moveStateId, false);
+            anim.SetBool(MovingPmHash,false);
         }
     }
 
@@ -158,12 +157,6 @@ public class Player : Entity//, ICancelHandler
     }
 
 
-    public override void Attack()
-    {
-        //play animation
-        base.Attack();
-    }
-
     protected override void Die()
     {
         Debug.Log("player died :(");
@@ -171,16 +164,16 @@ public class Player : Entity//, ICancelHandler
 
     private new void OnCollisionEnter(Collision collision)
     {
-        Collider collider = collision.collider;
-        if (collider is TerrainCollider && !grounded)
+        var cCollider = collision.collider;
+        if (cCollider is TerrainCollider && !grounded)
         {
 
             grounded = true;
         }
-        else if (collider.CompareTag("Enemy"))
+        else if (cCollider.CompareTag("Enemy"))
         {
-            EnemyBase enemy = (EnemyBase)collider.GetComponent(typeof(EnemyBase));
-            if (anim.GetBool(AttackStateHash))
+            var enemy =cCollider.GetComponent<EnemyBase>();
+            if (anim.GetBool(AttackingPmHash))
             {
                 enemy.TakeDamage(AtkPower);
             }
@@ -218,11 +211,13 @@ public class Player : Entity//, ICancelHandler
         fpsText.text = "FPS: " + Time.captureFramerate;
     }
 
-    void Start()
+    private void Start()
     {
-        moveStateId = Animator.StringToHash("moving");
         moveSpeedId = Animator.StringToHash("moveSpeed");
         mainCam = Camera.main.transform;
+
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
 

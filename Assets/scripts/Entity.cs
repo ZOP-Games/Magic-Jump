@@ -10,9 +10,9 @@ public abstract class Entity : MonoBehaviour
     public int AtkPower { get; set; } = 10;
     public int Defense { get; set; } = 10;
 
-    protected abstract int AttackStateHash { get; }
-    protected abstract int MoveStateHash { get; }
-    protected Rigidbody rb;
+    protected abstract int AttackingPmHash { get; }
+    protected abstract int MovingPmHash { get; }
+    protected Rigidbody rb; 
     protected Animator anim;
 
     public void TakeDamage(int amount)
@@ -28,10 +28,10 @@ public abstract class Entity : MonoBehaviour
 
     protected virtual void Attack()
     {
-        anim.SetBool(AttackStateHash, true);
+        anim.SetBool(AttackingPmHash, true);
     }
 
-    public void OnCollisionEnter(Collision collision)
+    /*public void OnCollisionEnter(Collision collision)
     {
         //replace new Animator w/ character's animator -> GetComponent<Animator>()
         if (anim.GetBool(AttackStateHash) && TryGetComponent(out Entity controller))
@@ -40,15 +40,7 @@ public abstract class Entity : MonoBehaviour
 
         }
 
-    }
+    }*/
 
     protected abstract void Die();
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
-
-    }
-
 }

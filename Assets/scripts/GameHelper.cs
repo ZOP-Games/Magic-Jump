@@ -12,12 +12,10 @@ public class GameHelper : ScriptableObject
         IEnumerator Waiting()
         {
             yield return wfs;
-            method();
-
         }
 
         starter.StartCoroutine(Waiting());
-
+        method();
     }
 
     public enum Operation
@@ -28,15 +26,20 @@ public class GameHelper : ScriptableObject
     }
     public static bool CompareVectors(Vector3 vector, float value, Operation operation)
     {
-        var vector3 = vector;//new Vector3(Mathf.Abs(vector.x), Mathf.Abs(vector.y), Mathf.Abs(vector.z));
         return operation switch
         {
-            Operation.Equal => Mathf.Approximately(vector3.x, value) || Mathf.Approximately(vector3.y, value) ||
-                               Mathf.Approximately(vector3.z, value),
-            Operation.GreaterOrEqual => (vector3.x - value) <= 0 || (vector3.y - value) <= 0 ||
-                                        (vector3.z - value) <= 0,
-            Operation.LessOrEqual => (vector3.x - value) >= 0 || (vector3.y - value) >= 0 || (vector3.z - value) >= 0,
+            Operation.Equal => Mathf.Approximately(vector.x, value) || Mathf.Approximately(vector.y, value) ||
+                               Mathf.Approximately(vector.z, value),
+            Operation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0 ||
+                                        (vector.z - value) <= 0,
+            Operation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0 || (vector.z - value) >= 0,
             _ => false
         };
+    }
+
+    public static void Quit()
+    {
+        Debug.Log("exit pressed");
+        Application.Quit();
     }
 }

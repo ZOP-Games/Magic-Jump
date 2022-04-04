@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,16 +6,15 @@ using UnityEngine;
 public class Enemy1 : EnemyBase
 {
     //we'll put navigation, animations + other things that are unique to this kind of enemy
-    protected override int AttackStateHash => Animator.StringToHash("Attack");
-    protected override int MoveStateHash => Animator.StringToHash("Move");
+    protected override int AttackingPmHash => Animator.StringToHash("attacking");
+    protected override int MovingPmHash => Animator.StringToHash("moving");
 
-    protected override void Aim(float angle, float dist)
-    {
-        base.Aim(angle, dist);
-    }
 
-    protected override void Attack()
+    protected new void Start()
     {
-        base.Attack();
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        InvokeRepeating(nameof(Check),5,1);
+            
     }
 }

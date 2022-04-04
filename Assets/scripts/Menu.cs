@@ -59,11 +59,7 @@ public class Menu : MonoBehaviour
         {
             settingsPanel.SetActive(true);
         }
-public void Exit()
-    {
-        Debug.Log("Exit pressed");
-       Application.Quit();
-    }
+
 
     public void ok(GameObject panel)
     {
