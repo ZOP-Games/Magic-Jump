@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,6 @@ using UnityEngine;
 public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
-    protected Vector3 target;
     protected const int AtkRange = 0;
     [SerializeField] protected Transform playerTf;
 
@@ -15,27 +13,18 @@ public abstract class EnemyBase : Entity
         Destroy(this);
     }
 
-    protected float FindTargetAngle()
-    {
-        //Debug.Log(transform.position + " " + target + " " + Mathf.Acos(Vector3.Dot(transform.position,target)));
-        return Vector3.Angle(transform.position, target);
-    }
-
     protected float FindTargetDistance()
     {
-        return Vector3.Distance(transform.position, target);
+        return Vector3.Distance(transform.position, playerTf.position);
     }
 
-    protected virtual void Aim(float angle, float dist)
+    protected virtual void Aim(float dist)
     {
-        if (angle != 0)
+        transform.LookAt(playerTf);
+        if (dist > AtkRange)
         {
-            transform.Rotate(0, angle, 0);
-
-        }
-        while (dist > AtkRange && Mathf.Abs(rb.velocity.x) < 10 && Mathf.Abs(rb.velocity.z) < 10)
-        {
-            rb.AddRelativeForce(new Vector3(0, 0, 25));
+            Move(Vector3.forward);
+            
         }
 
         var transform1 = transform;
@@ -43,12 +32,11 @@ public abstract class EnemyBase : Entity
     }
         
     protected void Check(){
-    
-        target = playerTf.position;
-        Aim(FindTargetAngle(),FindTargetDistance());
+        Aim(FindTargetDistance());
     }
     protected virtual void Start()
     {
+        playerTf = GameObject.FindGameObjectWithTag("Player").transform;
         tag = "Enemy";
     }
 

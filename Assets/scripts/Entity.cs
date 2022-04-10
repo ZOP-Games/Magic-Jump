@@ -43,4 +43,12 @@ public abstract class Entity : MonoBehaviour
     }*/
 
     protected abstract void Die();
+
+    protected void Move(Vector3 direction)
+    {
+        if ((!(Mathf.Abs(rb.velocity.x) < 5) || !(Mathf.Abs(rb.velocity.z) < 5)) &&
+            (!(rb.velocity.x < 15) || !(rb.velocity.z < 15))) return;
+
+        rb.AddRelativeForce(direction.x * 25, 0, direction.y * 25);
+    }
 }

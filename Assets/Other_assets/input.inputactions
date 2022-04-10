@@ -101,7 +101,7 @@
                 {
                     "name": "",
                     "id": "c856bde9-91e6-4371-9d91-02e2ae17f083",
-                    "path": "<Mouse>/delta",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -145,7 +145,7 @@
                 {
                     "name": "up",
                     "id": "67ad829d-630a-4520-9841-14210b66e458",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -156,7 +156,7 @@
                 {
                     "name": "down",
                     "id": "eef3ea88-6419-4cd9-9d5a-f50da5690418",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -167,7 +167,7 @@
                 {
                     "name": "left",
                     "id": "2a9ffcb8-e4f3-448f-ae1e-bfacaf5f76ed",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -178,7 +178,7 @@
                 {
                     "name": "right",
                     "id": "5448a4c3-554f-4d56-87f9-7b14b6b5ae8f",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",

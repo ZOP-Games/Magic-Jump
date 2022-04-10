@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using GameExtensions;
 
 
 public class Menu : MonoBehaviour
 {
     public AssetReference scene;
-    public  GameObject continueButton;
+    public AssetReference defaultMaterial;
+    public AssetReference terrainMaterial;
     public GameObject loading;
 
     // this has all the things for the menu like button events, menu mechanics and more...
@@ -17,6 +19,19 @@ public class Menu : MonoBehaviour
       PlayerPrefs.SetInt("game_progress", 1);
       //FadeBlack();
       System.GC.Collect();
+      defaultMaterial.LoadAssetAsync<Material>().Completed += handle =>
+      {
+          if (handle.IsDone)
+          {
+              Debug.Log("Default material has been loaded");
+          }
+      };
+      terrainMaterial.LoadAssetAsync<Material>().Completed += handle => {
+          if (handle.IsDone)
+          {
+              Debug.Log("Terrain material has been loaded");
+          }
+      }; ;
       scene.LoadSceneAsync().Completed += LoadScene;
       void LoadScene(AsyncOperationHandle<SceneInstance> doneHandle)
       {
@@ -64,6 +79,11 @@ public class Menu : MonoBehaviour
     public void ok(GameObject panel)
     {
         panel.SetActive(false);
+    }
+
+    public void Exit()
+    {
+        GameHelper.Quit();
     }
 
     private void Start()

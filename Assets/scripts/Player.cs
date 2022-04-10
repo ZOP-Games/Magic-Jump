@@ -1,3 +1,4 @@
+using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -29,21 +30,16 @@ public class Player : Entity
             anim.SetBool(MovingPmHash, true);
         }
 
-        if (context.canceled)
-        {
-            mozog = false;
-            anim.SetBool(MovingPmHash,false);
-        }
+        if (!context.canceled) return;
+        mozog = false;
+        anim.SetBool(MovingPmHash,false);
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && grounded)
-        {
-            rb.AddForce(0, 300, 0);
-            Debug.Log("Jumping, velocity: " + rb.velocity.y);
-
-        }
+        if (!context.performed || !grounded) return;
+        rb.AddForce(0, 300, 0);
+        Debug.Log("Jumping, velocity: " + rb.velocity.y);
     }
 
     public void LightAttack(InputAction.CallbackContext context)
@@ -79,14 +75,12 @@ public class Player : Entity
             anim.SetFloat(moveSpeedId, 2);
         }
 
-        if (context.canceled && GameHelper.CompareVectors(rb.velocity, 5, GameHelper.Operation.Equal))
-        {
-            running = false;
-            speed = rb.velocity;
-            speed.z = 5;
-            rb.velocity = speed;
-            anim.SetFloat(moveSpeedId, 1);
-        }
+        if (!context.canceled || !rb.velocity.CompareVectors(5, GameHelper.Operation.Equal)) return;
+        running = false;
+        speed = rb.velocity;
+        speed.z = 5;
+        rb.velocity = speed;
+        anim.SetFloat(moveSpeedId, 1);
     }
 
     public void UseSpell(InputAction.CallbackContext context)
@@ -132,24 +126,19 @@ public class Player : Entity
     public void UnPause(InputAction.CallbackContext context)
     {
         Debug.Log("unpause is " + context.phase);
-        if (context.performed && paused)
-        {
-            pause.UnPause();
-            Debug.Log("Resumed");
-            GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
-            paused = false;
-        }
+        if (!context.performed || !paused) return;
+        pause.UnPause();
+        Debug.Log("Resumed");
+        GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+        paused = false;
     }
 
     public void ShowObjective(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            //Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = Objective.transform;
-            Debug.Log("Show Objective");
-            GameHelper.Wait(3, DoneLooking, this);
-
-        }
+        if (!context.performed) return;
+        //Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = Objective.transform;
+        Debug.Log("Show Objective");
+        Invoke(nameof(DoneLooking),3);
     }
     private static void DoneLooking()
     {
@@ -195,10 +184,10 @@ public class Player : Entity
 
     private void FixedUpdate()
     {
-        if (mozog && Mathf.Abs(rb.velocity.x) < 5 && Mathf.Abs(rb.velocity.z) < 5 || (running && rb.velocity.x < 15 && rb.velocity.z < 15))
+        if (mozog || running)
         {
+            Move(mPos);
             var pos = transform.position;
-            rb.AddRelativeForce(mPos.x * 25, 0, mPos.y * 25);
             mapImgPos.anchoredPosition = new Vector2(-pos.x, -pos.z) * 0.5f;
         }
     }
@@ -206,15 +195,18 @@ public class Player : Entity
     private void LateUpdate()
     {
         var tf = transform;
+        var tfAngles  = tf.eulerAngles;
         mainCam.localPosition = tf.position + new Vector3(0, 3, -5);
-        mainCam.eulerAngles = tf.eulerAngles + new Vector3(0, -30, 0) * Mathf.Sign(tf.eulerAngles.y);
+        mainCam.eulerAngles = tfAngles + new Vector3(0, -30, 0) * Mathf.Sign(tfAngles.y);
         fpsText.text = "FPS: " + Time.captureFramerate;
     }
 
     private void Start()
     {
         moveSpeedId = Animator.StringToHash("moveSpeed");
+        Debug.Assert(Camera.main != null, "Camera.main != null");
         mainCam = Camera.main.transform;
+        
 
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
