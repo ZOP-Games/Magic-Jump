@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-    // this tell any entity we might have (the player, enemies, etc.) what they all can do
+    // this tells any entity we might have (the player, enemies, etc.) what they all can do
     public int Hp { get; set; } = 100;
     public int AtkPower { get; set; } = 10;
     public int Defense { get; set; } = 10;
@@ -31,24 +31,29 @@ public abstract class Entity : MonoBehaviour
         anim.SetBool(AttackingPmHash, true);
     }
 
-    /*public void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
-        //replace new Animator w/ character's animator -> GetComponent<Animator>()
-        if (anim.GetBool(AttackStateHash) && TryGetComponent(out Entity controller))
+        
+        if (anim.GetBool(AttackingPmHash) && collision.gameObject.TryGetComponent(out Entity controller))
         {
             controller.TakeDamage(AtkPower);
 
         }
 
-    }*/
+    }
 
     protected abstract void Die();
 
-    protected void Move(Vector3 direction)
+    protected void Move(Vector3 direction, int maxSpeed)
     {
-        if ((!(Mathf.Abs(rb.velocity.x) < 5) || !(Mathf.Abs(rb.velocity.z) < 5)) &&
-            (!(rb.velocity.x < 15) || !(rb.velocity.z < 15))) return;
-
-        rb.AddRelativeForce(direction.x * 25, 0, direction.y * 25);
+        if (Mathf.Abs(rb.velocity.x) <= maxSpeed && Mathf.Abs(rb.velocity.z) <= maxSpeed)
+        {
+            rb.AddRelativeForce(direction.x * 25, 0, direction.y * 25);
+        }
+        else
+        {
+            rb.velocity = new Vector3(maxSpeed, 0, maxSpeed);
+        }
     }
-}
+        
+    }

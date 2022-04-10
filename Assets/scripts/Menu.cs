@@ -1,54 +1,28 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
 using GameExtensions;
+using UnityEngine.SceneManagement;
 
 
 public class Menu : MonoBehaviour
 {
-    public AssetReference scene;
-    public AssetReference defaultMaterial;
-    public AssetReference terrainMaterial;
     public GameObject loading;
 
     // this has all the things for the menu like button events, menu mechanics and more...
     public void NewGame()
     {
 
-      PlayerPrefs.SetInt("game_progress", 1);
+        PlayerPrefs.SetInt("game_progress", 1);
       //FadeBlack();
-      System.GC.Collect();
-      defaultMaterial.LoadAssetAsync<Material>().Completed += handle =>
-      {
-          if (handle.IsDone)
-          {
-              Debug.Log("Default material has been loaded");
-          }
-      };
-      terrainMaterial.LoadAssetAsync<Material>().Completed += handle => {
-          if (handle.IsDone)
-          {
-              Debug.Log("Terrain material has been loaded");
-          }
-      }; ;
-      scene.LoadSceneAsync().Completed += LoadScene;
-      void LoadScene(AsyncOperationHandle<SceneInstance> doneHandle)
-      {
-          if (doneHandle.IsDone)
-          {
-              Debug.Log("Scene loading is done");
-          }
-      }
+        System.GC.Collect();
 
-      loading.SetActive(true);
+        SceneManager.LoadScene(1);
+        loading.SetActive(true);
 
     }
 
     public void Continue(GameObject noSaveError)
     {
         
-        Debug.Log("Continue script is running FeelsWeirdMan");
         if (!PlayerPrefs.HasKey("game_progress"))
         {
             noSaveError.SetActive(true);
@@ -56,15 +30,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            scene.LoadSceneAsync().Completed += LoadScene;
-
-            void LoadScene(AsyncOperationHandle<SceneInstance> doneHandle)
-            {
-                if (doneHandle.IsDone)
-                {
-                    Debug.Log("Scene loading is done");
-                }
-            }
+            SceneManager.LoadScene(1);
         }
     }
 

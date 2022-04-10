@@ -159,18 +159,7 @@ public class Player : Entity
 
             grounded = true;
         }
-        else if (cCollider.CompareTag("Enemy"))
-        {
-            var enemy =cCollider.GetComponent<EnemyBase>();
-            if (anim.GetBool(AttackingPmHash))
-            {
-                enemy.TakeDamage(AtkPower);
-            }
-            else
-            {
-                TakeDamage(enemy.AtkPower);
-            }
-        }
+        
     }
 
 
@@ -184,12 +173,17 @@ public class Player : Entity
 
     private void FixedUpdate()
     {
-        if (mozog || running)
+        if (running)
         {
-            Move(mPos);
-            var pos = transform.position;
-            mapImgPos.anchoredPosition = new Vector2(-pos.x, -pos.z) * 0.5f;
+            Move(mPos,15);
         }
+        else if(mozog)
+        {
+            Move(mPos,5);
+        }
+
+        var pos = transform.position;
+        mapImgPos.anchoredPosition = new Vector2(-pos.x, -pos.z) * 0.5f;
     }
 
     private void LateUpdate()

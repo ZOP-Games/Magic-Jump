@@ -21,9 +21,49 @@ MonoBehaviour:
     m_Address: Assets/Scenes/Hub/Hub.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
+    <IsFolder>k__BackingField: 0
+    <BundleFileId>k__BackingField: 
+    <IsInResources>k__BackingField: 0
+    <IsInSceneList>k__BackingField: 0
+    <IsSubAsset>k__BackingField: 0
+    m_CheckedIsScene: 0
+    m_IsScene: 0
+    m_cachedAssetPath: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f84857348e667f24996569c73f0786fe
+    m_Address: Assets/Materials/terrain.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    <IsFolder>k__BackingField: 0
+    <BundleFileId>k__BackingField: 
+    <IsInResources>k__BackingField: 0
+    <IsInSceneList>k__BackingField: 0
+    <IsSubAsset>k__BackingField: 0
+    m_CheckedIsScene: 0
+    m_IsScene: 0
+    m_cachedAssetPath: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7fba959b6c49cde45b7f077939b49032
+    m_Address: Assets/Materials/New Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    <IsFolder>k__BackingField: 0
+    <BundleFileId>k__BackingField: 
+    <IsInResources>k__BackingField: 0
+    <IsInSceneList>k__BackingField: 0
+    <IsSubAsset>k__BackingField: 0
+    m_CheckedIsScene: 0
+    m_IsScene: 0
+    m_cachedAssetPath: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a92ac8e4daebf324f991246978ba3088, type: 2}
   m_SchemaSet:
     m_Schemas:
     - {fileID: 11400000, guid: f1d14c27ca5f995469279ddfc32dca4d, type: 2}
     - {fileID: 11400000, guid: 14e4a7b0cb35fdf42a4d24780f9455c6, type: 2}
+  m_FolderEntryCache: []
+  m_AssetCollectionEntryCache: []
