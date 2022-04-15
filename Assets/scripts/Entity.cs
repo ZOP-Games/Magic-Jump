@@ -50,10 +50,7 @@ public abstract class Entity : MonoBehaviour
         {
             rb.AddRelativeForce(direction.x * 25, 0, direction.y * 25);
         }
-        else
-        {
-            rb.velocity = new Vector3(maxSpeed, 0, maxSpeed);
-        }
+        
     }
         
     }
