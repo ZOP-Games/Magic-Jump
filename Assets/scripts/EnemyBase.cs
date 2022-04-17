@@ -1,28 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 
 public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
-    protected const int AtkRange = 10;
+    protected abstract int AtkRange { get; }
     protected readonly WaitForSeconds wfs = new (0.2f);
-    [SerializeField] protected Transform playerTf;
 
     protected override void Die()
     {
         Destroy(this);
     }
 
-    protected float FindTargetDistance()
-    {
-        return Vector3.Distance(transform.position, playerTf.position);
-    }
+    
 
-    protected virtual void Aim(float dist)
+    protected virtual void Aim(Transform playerTf)
     {
-        transform.LookAt(playerTf);
-        if (Mathf.Abs(dist) > AtkRange)
+        if (rb.isKinematic)
+        {
+            rb.isKinematic = false;
+        }
+
+        var transform1 = transform;
+        transform1.LookAt(playerTf);
+        //transform1.eulerAngles += new Vector3(0, offset, 0);
+        if (Mathf.Abs(Vector3.Distance(transform.position, playerTf.position)) > AtkRange)
         {
             Move(Vector3.up,5); //up because me dumb
             
@@ -32,17 +36,21 @@ public abstract class EnemyBase : Entity
             Attack();
         }
 
-        var transform1 = transform;
+        
         Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
+
+    protected void StopAiming()
+    {
+        rb.isKinematic = true;
+    }
         
-    protected IEnumerator Check(){
-        Aim(FindTargetDistance());
+    protected IEnumerator Check(Transform playerTf){
+        Aim(playerTf);
         yield return wfs;
     }
-    protected virtual void Start()
+    protected void Start()
     {
-        playerTf = GameObject.FindGameObjectWithTag("Player").transform;
         tag = "Enemy";
     }
 

@@ -10208,7 +10208,19 @@ MonoBehaviour:
     m_ActionId: 2fbb674a-35ad-4645-80a7-d34458b8816a
     m_ActionName: UI/Select[/XInputControllerWindows/buttonSouth,/Keyboard/enter,/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6872529921638248941}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: UnPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 3629d31b-c417-4fc1-a03a-862ef7a15cde
     m_ActionName: UI/Exit[/XInputControllerWindows/buttonEast,/Keyboard/escape]
   - m_PersistentCalls:
@@ -10393,7 +10405,7 @@ Rigidbody:
   m_GameObject: {fileID: 6218506267492965067}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.1
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0

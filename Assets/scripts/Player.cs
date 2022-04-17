@@ -1,3 +1,4 @@
+using System.Collections;
 using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,12 +13,11 @@ public class Player : Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
 
-    private bool mozog = false;
+    private bool mozog;
     private Vector2 mPos;
-    private bool grounded = false;
-    private bool running = false;
-    private bool paused = false;
-    private Vector3 speed;
+    private bool grounded;
+    private bool running;
+    private bool paused;
     private int moveSpeedId;
     private Transform mainCam;
     public void Move(InputAction.CallbackContext context)
@@ -28,6 +28,7 @@ public class Player : Entity
             mPos = context.ReadValue<Vector2>();
             transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
             anim.SetBool(MovingPmHash, true);
+            anim.SetFloat(moveSpeedId,1*Mathf.Sign(mPos.y));
         }
 
         if (!context.canceled) return;
@@ -72,15 +73,12 @@ public class Player : Entity
         if (context.performed)
         {
             running = true;
-            anim.SetFloat(moveSpeedId, 2);
+            anim.SetFloat(moveSpeedId, 2 * Mathf.Sign(mPos.y));
         }
 
-        if (!context.canceled || !rb.velocity.CompareVectors(5, GameHelper.Operation.Equal)) return;
+        if (!context.canceled) return;
         running = false;
-        speed = rb.velocity;
-        speed.z = 5;
-        rb.velocity = speed;
-        anim.SetFloat(moveSpeedId, 1);
+        anim.SetFloat(moveSpeedId,1 * Mathf.Sign(mPos.y));
     }
 
     public void UseSpell(InputAction.CallbackContext context)
@@ -151,7 +149,11 @@ public class Player : Entity
         Debug.Log("player died :(");
     }
 
-    private new void OnCollisionEnter(Collision collision)
+    private void ShowFPS()
+    {
+        fpsText.SetText("FPS: " + 1 / Time.deltaTime);
+    }
+    private void OnCollisionEnter(Collision collision)
     {
         var cCollider = collision.collider;
         if (cCollider is TerrainCollider && !grounded)
@@ -192,15 +194,15 @@ public class Player : Entity
         var tfAngles  = tf.eulerAngles;
         mainCam.localPosition = tf.position + new Vector3(0, 3, -5);
         mainCam.eulerAngles = tfAngles + new Vector3(0, -30, 0) * Mathf.Sign(tfAngles.y);
-        fpsText.text = "FPS: " + Time.captureFramerate;
+        
     }
-
+    
     private void Start()
     {
         moveSpeedId = Animator.StringToHash("moveSpeed");
-        Debug.Assert(Camera.main != null, "Camera.main != null");
+        Debug.Assert(Camera.main != null, "Main Camera doesn't exist");
         mainCam = Camera.main.transform;
-        
+        InvokeRepeating(nameof(ShowFPS),0,0.5f);
 
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();

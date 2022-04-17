@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,14 +30,10 @@ public abstract class Entity : MonoBehaviour
         anim.SetBool(AttackingPmHash, true);
     }
 
-    public void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        
-        if (anim.GetBool(AttackingPmHash) && collision.gameObject.TryGetComponent(out Entity controller))
-        {
-            controller.TakeDamage(AtkPower);
-
-        }
+        if (!anim.GetBool(AttackingPmHash) || !collision.gameObject.TryGetComponent(out Entity controller)) return;
+        controller.TakeDamage(AtkPower);
 
     }
 
@@ -46,9 +41,25 @@ public abstract class Entity : MonoBehaviour
 
     protected void Move(Vector3 direction, int maxSpeed)
     {
-        if (Mathf.Abs(rb.velocity.x) <= maxSpeed && Mathf.Abs(rb.velocity.z) <= maxSpeed)
+        //Debug.Log(maxSpeed);
+        if (Mathf.Abs(rb.velocity.x) < maxSpeed && Mathf.Abs(rb.velocity.z) < maxSpeed)
         {
             rb.AddRelativeForce(direction.x * 25, 0, direction.y * 25);
+        }
+        else 
+        {
+            var velocity = rb.velocity;
+            if (Mathf.Abs(velocity.x) > maxSpeed)
+            {
+                velocity.x = maxSpeed * Mathf.Sign(velocity.x);
+            }
+
+            if (Mathf.Abs(velocity.z) > maxSpeed)
+            {
+                velocity.z = maxSpeed * Mathf.Sign(velocity.z);
+            }
+
+            rb.velocity = velocity;
         }
         
     }
