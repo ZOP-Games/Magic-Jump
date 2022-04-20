@@ -26,7 +26,7 @@ public class Player : Entity
         {
             mozog = true;
             mPos = context.ReadValue<Vector2>();
-            transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
+           
             anim.SetBool(MovingPmHash, true);
             anim.SetFloat(moveSpeedId,1*Mathf.Sign(mPos.y));
         }
@@ -177,10 +177,12 @@ public class Player : Entity
     {
         if (running)
         {
+		 transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
             Move(mPos,15);
         }
         else if(mozog)
         {
+		 transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
             Move(mPos,5);
         }
 
