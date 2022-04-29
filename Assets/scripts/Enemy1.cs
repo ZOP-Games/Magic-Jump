@@ -9,7 +9,7 @@ public class Enemy1 : EnemyBase
     protected override int AtkRange { get; } = 10;
 
     protected override int MovingPmHash => Animator.StringToHash("moving");
-
+    
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -28,6 +28,7 @@ public class Enemy1 : EnemyBase
 
     protected new void Start()
     {
+        AtkPower = 1;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
 

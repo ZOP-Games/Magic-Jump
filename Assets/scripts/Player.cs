@@ -20,13 +20,17 @@ public class Player : Entity
     private bool paused;
     private int moveSpeedId;
     private Transform mainCam;
+    private PlayerInput pInput;
     public void Move(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             mozog = true;
             mPos = context.ReadValue<Vector2>();
-           
+            /*while (Mathf.Approximately(transform.eulerAngles.y,Mathf.Rad2Deg * Mathf.Atan2(mPos.y,mPos.x)))
+            {
+                transform.Rotate(0,1,0);
+            }*/
             anim.SetBool(MovingPmHash, true);
             anim.SetFloat(moveSpeedId,1*Mathf.Sign(mPos.y));
         }
@@ -39,7 +43,7 @@ public class Player : Entity
     public void Jump(InputAction.CallbackContext context)
     {
         if (!context.performed || !grounded) return;
-        rb.AddForce(0, 300, 0);
+        rb.AddForce(0, 400, 0);
         Debug.Log("Jumping, velocity: " + rb.velocity.y);
     }
 
@@ -114,7 +118,7 @@ public class Player : Entity
                 break;
             case InputActionPhase.Canceled:
                 Debug.Log("Paused");
-                GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
+                pInput.SwitchCurrentActionMap("UI");
                 paused = true;
                 break;
         }
@@ -147,6 +151,7 @@ public class Player : Entity
     protected override void Die()
     {
         Debug.Log("player died :(");
+        gameObject.SetActive(false);
     }
 
     private void ShowFPS()
@@ -176,13 +181,13 @@ public class Player : Entity
     private void FixedUpdate()
     {
         if (running)
-        {
-		 transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
+        { 
+            transform.Rotate(0,mPos.x, 0);
             Move(mPos,15);
         }
         else if(mozog)
         {
-		 transform.Rotate(0, Mathf.Rad2Deg * Mathf.Atan2(mPos.x, mPos.y) * 0.12f, 0);
+		    transform.Rotate(0,mPos.x, 0);
             Move(mPos,5);
         }
 
@@ -202,10 +207,24 @@ public class Player : Entity
     private void Start()
     {
         moveSpeedId = Animator.StringToHash("moveSpeed");
-        Debug.Assert(Camera.main != null, "Main Camera doesn't exist");
         mainCam = Camera.main.transform;
+        pInput = GetComponent<PlayerInput>();
+        pInput.actions["Move"].performed += Move;
+        pInput.actions["Move"].canceled += Move;
+        pInput.actions["Jump"].performed += Jump;
+        pInput.actions["Attack"].performed += LightAttack;
+        pInput.actions["Heavy Attack"].performed += HeavyAttack;
+        pInput.actions["Dodge"].performed += Dodge;
+        pInput.actions["Run"].performed += Run;
+        pInput.actions["Run"].canceled += Run;
+        pInput.actions["Spell"].performed += UseSpell;
+        pInput.actions["Change"].performed += ChangeSpell;
+        pInput.actions["Pause"].performed += Pause;
+        pInput.actions["Pause"].canceled += Pause;
+        pInput.actions["Exit"].canceled += UnPause;
+        pInput.actions["Show Objective"].performed += ShowObjective;
         InvokeRepeating(nameof(ShowFPS),0,0.5f);
-
+        tag = "Player";
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
