@@ -8,6 +8,7 @@ public abstract class Entity : MonoBehaviour
 
     //public stats, so anyone can read them and set them
     public int Hp { get; set; } = 100;      
+    // ReSharper disable once MemberCanBeProtected.Global
     public int AtkPower { get; set; } = 10;
     public int Defense { get; set; } = 10;
     //hashes of animator state names, use these for state checks
@@ -43,7 +44,7 @@ public abstract class Entity : MonoBehaviour
         controller.TakeDamage(AtkPower);
         timeOut = Mathf.RoundToInt(Time.time);
     }
-
+    
     protected abstract void Die();
 
     //common move method for all Entities

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+
     public GameObject loading;
 
     // this has all the things for the menu like button events, menu mechanics and more...

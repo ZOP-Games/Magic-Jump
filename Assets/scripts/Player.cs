@@ -207,7 +207,7 @@ public class Player : Entity
     private void Start()
     {
         moveSpeedId = Animator.StringToHash("moveSpeed");
-        mainCam = Camera.main.transform;
+        mainCam = Camera.main!.transform;
         pInput = GetComponent<PlayerInput>();
         pInput.actions["Move"].performed += Move;
         pInput.actions["Move"].canceled += Move;

@@ -5,7 +5,10 @@ using UnityEngine;
 public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
+    
+    //The enemy will only attack when the player is within this range (should be in meters, but because of scaling it's quite inconsistent, try to experiment with values)
     protected abstract int AtkRange { get; }
+    //WaitForSeceons object for enemies, this defines how often they Aim
     protected readonly WaitForSeconds wfs = new (0.5f);
 
     //death logic, just destroys itself
@@ -41,7 +44,7 @@ public abstract class EnemyBase : Entity
         }
         Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
-    //stop aiming fix
+    //stop aiming fix, sets the rigidbody to kinematic so it will stop moving towards the player
     protected void StopAiming()
     {
         rb.isKinematic = true;
