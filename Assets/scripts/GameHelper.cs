@@ -29,8 +29,18 @@ namespace GameExtensions
                 _ => false
             };
         }
+        //proper vector conversion because Yup 
+        public static Vector2 ToVector2(this Vector3 vector3)
+        {
+            return new Vector2(vector3.x,vector3.z);
+        }
 
-        //exit action, useful as we use exiting a lot
+        public static Vector3 ToVector3(this Vector2 vector2)
+        {
+            return new Vector3(vector2.x, 0, vector2.y);
+        }
+
+        //exit action, useful as we exit a lot
         public static void Quit()
         {
             Debug.Log("exit pressed");

@@ -54,7 +54,7 @@ public abstract class Entity : MonoBehaviour
         //speed cap
         if (Mathf.Abs(rb.velocity.x) < maxSpeed && Mathf.Abs(rb.velocity.z) < maxSpeed)
         {
-            rb.AddRelativeForce(direction.x * 25, 0, direction.y * 25);
+            rb.AddRelativeForce(direction.x * 25, 0, direction.z * 25);
         }
         else 
         {

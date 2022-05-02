@@ -34,7 +34,7 @@ public abstract class EnemyBase : Entity
         //setting position, moving until the player is within range
         if (Mathf.Abs(Vector3.Distance(transform1.position, playerTf.position)) > AtkRange)
         {
-            Move(Vector3.up,5); //up because me dumb
+            Move(Vector3.forward,5); //I'm not dumb anymore yay!
             
         }
         else
