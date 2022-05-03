@@ -10,27 +10,28 @@ public class Player : Entity
     // this is for things unique to the player (controls, spells, etc.)
 
     //references to some objects in the scene
-    public RectTransform mapImgPos;
-    public PauseScreen pause;
-    public TextMeshProUGUI fpsText;
+    public RectTransform mapImgPos; //the mini map's Transform
+    public PauseScreen pause;   //the pause screen
+    public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
     //setting attack and move state hashes
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
 
-    private bool mozog;
-    private Vector2 mPos;
-    private bool grounded;
-    private bool running;
-    private bool paused;
-    private int moveSpeedId;
-    private Transform mainCam;
-    private PlayerInput pInput;
-    private Transform tf;
+    private bool mozog; //bool for checking if the player is moving or not
+    private Vector2 mPos; //Vector2 containing joystck input data
+    private bool grounded; //bool for checking if the player is on ground or not
+    private bool running; //bool for checking if the player is running or not
+    private bool paused; //bool for checking if the game is paused or not
+    private int moveSpeedId; //id of the moveSpeed parameter, for controlling animation speed from script
+    private PlayerInput pInput; //playerInput component
+    private Transform tf; //the player's Transform
 
 
 
     private const int JumpForce = 400;
+    private const int WalkSpeed = 5;
+    private const int RunSpeed = 15;
 
     //input event handlers
     public void Move(InputAction.CallbackContext context)
@@ -193,43 +194,39 @@ public class Player : Entity
         }
     }
 
+    //FixedUpdate() runsfixed times per second (50-ish), useful for physics or control code
     private void FixedUpdate()
     {
-        var pos = 0f;
+        var pos = tf.position.z;
         if (running)
-        { 
-            pos = tf.position.z;
+        {
             tf.Rotate(0,mPos.x, 0);
-            mapImgPos.anchoredPosition = new Vector2(250,-pos+250);    //make the map track the player's movement
-            mapImgPos.eulerAngles = new Vector3(0,0,tf.eulerAngles.y);  //rotating map
-            Move(mPos.ToVector3(),15);
+            Move(mPos.ToVector3(),RunSpeed);
+            mapImgPos.position = new Vector2(250,250-0.5f*pos);    //make the map track the player's movement
+            mapImgPos.parent.localEulerAngles = new Vector3(0,0,tf.eulerAngles.y);  //rotating map
+            
             
         }
         else if(mozog)
         {
-            pos = tf.position.z;
             tf.Rotate(0,mPos.x, 0);
-            mapImgPos.anchoredPosition = new Vector2(250,-pos+250);     //make the map track the player's movement
-            mapImgPos.Rotate(0, 0, -mPos.x);    //rotating map
-            Move(mPos.ToVector3(),5);
+            Move(mPos.ToVector3(),WalkSpeed);
+            mapImgPos.position = new Vector3(250,250-0.5f*pos); //make the map track the player's movement,
+            mapImgPos.parent.localEulerAngles = new Vector3(0, 0, tf.eulerAngles.y); //rotating map
+            
             
         }
 
     }
 
-    private void LateUpdate()
-    {
-        var tfAngles  = tf.eulerAngles;
-        mainCam.localPosition = tf.position + new Vector3(0, 3, -5);
-        mainCam.eulerAngles = tfAngles + new Vector3(0, -30, 0) * Mathf.Sign(tfAngles.y);
-        
-    }
-    
+    //Start() runs once when the object is enabled, lots of early game setup goes here
     private void Start()
     {
-        moveSpeedId = Animator.StringToHash("moveSpeed");
-        mainCam = Camera.main!.transform;
-        pInput = GetComponent<PlayerInput>();
+        moveSpeedId = Animator.StringToHash("moveSpeed");   //setting moveSpeedId
+        pInput = GetComponent<PlayerInput>();   //setting PlayerInput
+        //PlayerInput setup inside
+        #region PiSetup
+//setting up PlayerInput so I don't have to do it all the time
         pInput.actions["Move"].performed += Move;
         pInput.actions["Move"].canceled += Move;
         pInput.actions["Jump"].performed += Jump;
@@ -244,9 +241,12 @@ public class Player : Entity
         pInput.actions["Pause"].canceled += Pause;
         pInput.actions["Exit"].canceled += UnPause;
         pInput.actions["Show Objective"].performed += ShowObjective;
-        InvokeRepeating(nameof(ShowFPS),0,0.5f);
-        tag = "Player";
-        rb = GetComponent<Rigidbody>();
+        
+
+        #endregion
+        InvokeRepeating(nameof(ShowFPS),0,0.5f);    //starting to display FPS
+        tag = "Player"; //setting a player, helps w/ identification
+        rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
         anim = GetComponent<Animator>();
         tf = transform;
     }

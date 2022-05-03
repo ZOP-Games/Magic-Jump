@@ -1,21 +1,21 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class PauseScreen : MonoBehaviour
 {
    //base class for pause screens
    public GameObject gObj;
 
+   //displays the other menu screens
    protected void Show(GameObject prevScreen)
    {
        prevScreen.SetActive(false);
        gObj.SetActive(true);
    }
 
+   //pause logic: freeze the game and fixes InputSystem so it will still work
    public void Pause()
    {
        Debug.Log("pauseScreen is up");
@@ -25,6 +25,7 @@ public class PauseScreen : MonoBehaviour
     }
 
 
+   //unpause logic: basically Pause() but backwards
    public void UnPause()
    {
        Time.timeScale = 1;
