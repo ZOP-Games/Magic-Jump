@@ -17,14 +17,14 @@ public class Enemy1 : EnemyBase
     {
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(Check(other.transform));
+            StartCoroutine(Check(other.transform,-90));
         }
     }
     //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        StopCoroutine(Check(other.transform));
+        StopCoroutine(Check(other.transform,-90));
         StopAiming();
     }
 

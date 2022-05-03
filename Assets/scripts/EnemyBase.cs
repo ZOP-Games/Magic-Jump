@@ -6,7 +6,8 @@ public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
     
-    //The enemy will only attack when the player is within this range (should be in meters, but because of scaling it's quite inconsistent, try to experiment with values)
+    /*The enemy will only attack when the player is within this range (should be in meters,
+    but because of scaling it's quite inconsistent, try to experiment with values)*/
     protected abstract int AtkRange { get; }
     //WaitForSeceons object for enemies, this defines how often they Aim
     protected readonly WaitForSeconds wfs = new (0.5f);
@@ -19,7 +20,7 @@ public abstract class EnemyBase : Entity
 
     
     //aiming logic: finding the player, moving towards it and start attacking
-    protected virtual void Aim(Transform playerTf)
+    protected virtual void Aim(Transform playerTf, int offset)
     {
         //aim stop fix
         if (rb.isKinematic)
@@ -30,7 +31,7 @@ public abstract class EnemyBase : Entity
         var transform1 = transform;
         //setting angle, looking at the player's transform
         transform1.LookAt(playerTf);
-        transform1.Rotate(0,-90,0);
+        transform1.Rotate(0,offset,0);  //rotation offset because zoli
         //setting position, moving until the player is within range
         if (Mathf.Abs(Vector3.Distance(transform1.position, playerTf.position)) > AtkRange)
         {
@@ -50,8 +51,8 @@ public abstract class EnemyBase : Entity
         rb.isKinematic = true;
     }
     //checking coroutine, wrapper for Aim()    
-    protected IEnumerator Check(Transform playerTf){
-        Aim(playerTf);
+    protected IEnumerator Check(Transform playerTf, int offset){
+        Aim(playerTf,offset);
         yield return wfs;
     }
     protected void Start()
