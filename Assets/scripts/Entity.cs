@@ -5,12 +5,9 @@ using TMPro;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-public interface IMoveable
-{
-    public void Move(Vector3 direction, int maxSpeed);
-}
 
-public abstract class Entity : MonoBehaviour,IMoveable
+
+public abstract class Entity : MonoBehaviour
 {
     // this tells any entity we might have (the player, enemies, etc.) what they all can do
 
@@ -48,18 +45,17 @@ public abstract class Entity : MonoBehaviour,IMoveable
     protected virtual void Attack()
     {
         //this just starts the attack state, other attack logic is in OnCollisionEnter below
-        anim.SetTrigger(AttackingPmHash);
+        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack")) anim.SetTrigger(AttackingPmHash);
+        
     }
 
     protected void OnCollisionEnter(Collision collision)
     {
         //main attack logic, only runs if the attack state is active
         //if the attacked object is an Entity, it damages it
-        Debug.Log("I am " + this);
         var colliderHit = collision.collider;
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || !colliderHit.TryGetComponent(out Entity controller)) return;
         {
-            
             controller.TakeDamage(AtkPower);
         }
     }
@@ -67,7 +63,7 @@ public abstract class Entity : MonoBehaviour,IMoveable
     protected abstract void Die();
 
     //common move method for all Entities
-   public void Move(Vector3 direction, int maxSpeed)
+    protected void Move(Vector3 direction, int maxSpeed)
     {
         //Debug.Log(maxSpeed);
         //speed cap

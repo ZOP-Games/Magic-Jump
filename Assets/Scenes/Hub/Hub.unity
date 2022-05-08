@@ -448,7 +448,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168871980}
-  m_LocalRotation: {x: 0.167042, y: 0.000000016964623, z: -0.0000000028741873, w: 0.9859498}
+  m_LocalRotation: {x: 0.16704202, y: -0.000000016964634, z: 0.0000000028741889, w: 0.9859498}
   m_LocalPosition: {x: 1, y: 5, z: -10.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2273,19 +2273,5 @@ PrefabInstance:
       propertyPath: mapImgPos
       value: 
       objectReference: {fileID: 165755524}
-    - target: {fileID: 6415227510723409186, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
-      propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'DEF-spine'\n\tTransform 'DEF-upper_arm.L'\n\tTransform
-        'DEF-upper_arm.R'\n\tTransform 'root'\n\tTransform 'DEF-upper_arm.L'\n\tTransform
-        'DEF-thigh.L'\n\tTransform 'DEF-spine.004'\n\tTransform 'DEF-forearm.R'\n\tTransform
-        'DEF-head'\n\tTransform 'DEF-foot.L'\n\tand more ...\n\tFrom animation clip
-        'rig|rigAction.001'"
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9206150233405954743, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
-    - {fileID: 8143974480698592148, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
-    - {fileID: 842354547745155311, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
-    - {fileID: 323320824054423134, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
