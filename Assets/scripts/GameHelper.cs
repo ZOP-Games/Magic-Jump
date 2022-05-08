@@ -29,6 +29,8 @@ namespace GameExtensions
                 _ => false
             };
         }
+
+        
         //proper vector conversion because Yup 
         public static Vector2 ToVector2(this Vector3 vector3)
         {

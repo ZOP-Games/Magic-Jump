@@ -2281,7 +2281,11 @@ PrefabInstance:
         'DEF-upper_arm.R'\n\tTransform 'root'\n\tTransform 'DEF-upper_arm.L'\n\tTransform
         'DEF-thigh.L'\n\tTransform 'DEF-spine.004'\n\tTransform 'DEF-forearm.R'\n\tTransform
         'DEF-head'\n\tTransform 'DEF-foot.L'\n\tand more ...\n\tFrom animation clip
-        'rig|rigAction.001'\n\tFrom animation clip 'rig|rigAction.001'"
+        'rig|rigAction.001'"
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9206150233405954743, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
+    - {fileID: 8143974480698592148, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
+    - {fileID: 842354547745155311, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
+    - {fileID: 323320824054423134, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 20054f7e86d322c41a0103ca882362fd, type: 3}

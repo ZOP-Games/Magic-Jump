@@ -20,6 +20,7 @@ public abstract class EnemyBase : Entity
 
     
     //aiming logic: finding the player, moving towards it and start attacking
+    // ReSharper disable once VirtualMemberNeverOverridden.Global
     protected virtual void Aim(Transform playerTf, int offset)
     {
         //aim stop fix
@@ -27,21 +28,22 @@ public abstract class EnemyBase : Entity
         {
             rb.isKinematic = false;
         }
-        anim.SetBool(MovingPmHash,true);
-        var transform1 = transform;
+        var transform1 = transform; 
         //setting angle, looking at the player's transform
         transform1.LookAt(playerTf);
         transform1.Rotate(0,offset,0);  //rotation offset because zoli
         //setting position, moving until the player is within range
         if (Mathf.Abs(Vector3.Distance(transform1.position, playerTf.position)) > AtkRange)
         {
-            Move(Vector3.forward,5); //I'm not dumb anymore yay!
-            
+            anim.SetBool(MovingPmHash,true);
+            Move(Vector3.right,5); //I'm not dumb anymore yay! (but zoli is)
         }
-        else
+        else if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             //if it's in range, it attacks
+            anim.SetBool(MovingPmHash, false);
             Attack();
+            
         }
         Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
@@ -55,6 +57,9 @@ public abstract class EnemyBase : Entity
         Aim(playerTf,offset);
         yield return wfs;
     }
+
+
+
     protected void Start()
     {
         //putting tag on enemy, helps w/ identification

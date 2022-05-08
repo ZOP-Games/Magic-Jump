@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemy1 : EnemyBase
@@ -32,9 +33,10 @@ public class Enemy1 : EnemyBase
     protected new void Start()
     {
         //setting the attack stat for the enemy and getting some components from the gameobject
-        AtkPower = 1;
+        AtkPower = 10;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-
+        hpText = GetComponentInChildren<TextMeshPro>();
+        hpText.SetText("HP: 100");
     }
 }

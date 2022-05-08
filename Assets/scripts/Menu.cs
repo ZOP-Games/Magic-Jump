@@ -45,6 +45,7 @@ public class Menu : MonoBehaviour
 
 
     //presses ok the whatever it is assigned to
+    // ReSharper disable once InconsistentNaming
     public void ok(GameObject panel)
     {
         panel.SetActive(false);

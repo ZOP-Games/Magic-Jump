@@ -28,7 +28,7 @@ public class Player : Entity
     private Transform tf; //the player's Transform
 
 
-
+    //some constants to make code readable + adjustable
     private const int JumpForce = 400;
     private const int WalkSpeed = 5;
     private const int RunSpeed = 15;
@@ -174,18 +174,15 @@ public class Player : Entity
     }
 
     //jumping thing: checks for being on the ground before jumping
-    private void OnCollisionEnter(Collision collision)
+    protected void OnCollisionStay(Collision collision)
     {
-        var cCollider = collision.collider;
-        if (cCollider is TerrainCollider && !grounded)
+        if (collision.collider is TerrainCollider && !grounded)
         {
 
             grounded = true;    //if the player is touching the ground, they can jump
         }
         
     }
-
-
     private void OnCollisionExit(Collision collision)
     {
         if (collision.collider is TerrainCollider && grounded)
@@ -249,6 +246,8 @@ public class Player : Entity
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
         anim = GetComponent<Animator>();
         tf = transform;
+        hpText = GetComponentInChildren<TextMeshPro>();
+        hpText.SetText("HP: 100");
     }
 
 
