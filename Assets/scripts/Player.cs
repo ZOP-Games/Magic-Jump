@@ -11,7 +11,7 @@ public class Player : Entity
 
     //references to some objects in the scene
    
-    public RectTransform mapImgPos; //the mini map's Transform
+    
     public PauseScreen pause;   //the pause screen
     public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
@@ -191,12 +191,33 @@ public class Player : Entity
             grounded = false; //as soon as the player leaves the ground, they can't jump
         }
     }
+    private void FixedUpdate()
+    {
+        var pos = 0f;
+        if (running)
+        {
+            transform.Rotate(0, mPos.x, 0);
+            Move(mPos, 15);
+            pos = tf.position.z;
+            tf.Rotate(0, mPos.x, 0);
+            Move(mPos.ToVector3(), 15);
 
-  
-    
+        }
+        else if (mozog)
+        {
+            transform.Rotate(0, mPos.x, 0);
+            Move(mPos, 5);
+            pos = tf.position.z;
+            tf.Rotate(0, mPos.x, 0);
+            Move(mPos.ToVector3(), 5);
 
-    //Start() runs once when the object is enabled, lots of early game setup goes here
-    private void Start()
+        }
+
+
+
+
+        //Start() runs once when the object is enabled, lots of early game setup goes here
+        private void Start()
     {
         moveSpeedId = Animator.StringToHash("moveSpeed");   //setting moveSpeedId
         pInput = GetComponent<PlayerInput>();   //setting PlayerInput
