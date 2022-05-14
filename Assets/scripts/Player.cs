@@ -10,6 +10,7 @@ public class Player : Entity
     // this is for things unique to the player (controls, spells, etc.)
 
     //references to some objects in the scene
+   
     public RectTransform mapImgPos; //the mini map's Transform
     public PauseScreen pause;   //the pause screen
     public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
@@ -191,30 +192,8 @@ public class Player : Entity
         }
     }
 
-    //FixedUpdate() runsfixed times per second (50-ish), useful for physics or control code
-    private void FixedUpdate()
-    {
-        var pos = tf.position.z;
-        if (running)
-        {
-            tf.Rotate(0,mPos.x, 0);
-            Move(mPos.ToVector3(),RunSpeed);
-            mapImgPos.position = new Vector2(250,250-0.5f*pos);    //make the map track the player's movement
-            mapImgPos.parent.localEulerAngles = new Vector3(0,0,tf.eulerAngles.y);  //rotating map
-            
-            
-        }
-        else if(mozog)
-        {
-            tf.Rotate(0,mPos.x, 0);
-            Move(mPos.ToVector3(),WalkSpeed);
-            mapImgPos.position = new Vector3(250,250-0.5f*pos); //make the map track the player's movement,
-            mapImgPos.parent.localEulerAngles = new Vector3(0, 0, tf.eulerAngles.y); //rotating map
-            
-            
-        }
-
-    }
+  
+    
 
     //Start() runs once when the object is enabled, lots of early game setup goes here
     private void Start()
