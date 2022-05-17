@@ -8,9 +8,8 @@ public abstract class EnemyBase : Entity
     
     /*The enemy will only attack when the player is within this range (should be in meters,
     but because of scaling it's quite inconsistent, try to experiment with values)*/
-    protected abstract int AtkRange { get; }
-    //WaitForSeceons object for enemies, this defines how often they Aim
-    protected readonly WaitForSeconds wfs = new (0.5f);
+    protected int AtkRange { get; set; }
+    //WaitForSeconds object for enemies, this defines how often they Aim
 
     //death logic, just destroys itself
     protected override void Die()
@@ -23,39 +22,40 @@ public abstract class EnemyBase : Entity
     // ReSharper disable once VirtualMemberNeverOverridden.Global
     protected virtual void Aim(Transform playerTf, int offset)
     {
-        //aim stop fix
-        if (rb.isKinematic)
-        {
-            rb.isKinematic = false;
-        }
-        var transform1 = transform; 
+        var transform1 = transform;
+        var position = playerTf.position;
         //setting angle, looking at the player's transform
-        transform1.LookAt(playerTf);
+        var fixedPos = new Vector3(position.x, 1.5f, position.z);
+        transform1.LookAt(fixedPos);
         transform1.Rotate(0,offset,0);  //rotation offset because zoli
         //setting position, moving until the player is within range
         if (Mathf.Abs(Vector3.Distance(transform1.position, playerTf.position)) > AtkRange)
         {
-            anim.SetBool(MovingPmHash,true);
-            Move(Vector3.right,5); //I'm not dumb anymore yay! (but zoli is)
+            InvokeRepeating(nameof(TrackPlayer),0,0.1f);
         }
-        else if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        else
         {
             //if it's in range, it attacks
+            CancelInvoke(nameof(TrackPlayer));
             anim.SetBool(MovingPmHash, false);
-            Attack();
+            //Debug.Log("enemy is attacking");
+            Attack(AtkSpherePos,AtkSphereRadius);
             
         }
-        Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
     //stop aiming fix, sets the rigidbody to kinematic so it will stop moving towards the player
     protected void StopAiming()
     {
+        CancelInvoke(nameof(TrackPlayer));
+        anim.SetBool(MovingPmHash,false);
         rb.isKinematic = true;
     }
     //checking coroutine, wrapper for Aim()    
-    protected IEnumerator Check(Transform playerTf, int offset){
-        Aim(playerTf,offset);
-        yield return wfs;
+    private void TrackPlayer()
+    {
+        anim.SetBool(MovingPmHash,true);
+        Move(Vector3.right,5); //I'm not dumb anymore yay! (but zoli is)
+        //Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
 
 

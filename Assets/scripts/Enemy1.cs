@@ -10,22 +10,37 @@ public class Enemy1 : EnemyBase
     //setting the attack and moving state hash and attack range
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
-    protected override int AtkRange { get; } = 10;
+    protected override Vector3 AtkSpherePos => Vector3.zero;
+    protected override int AtkSphereRadius => 6;
 
-    
+    private readonly WaitForSeconds wfs = new (0.5f);
+
+    private bool canCheck = false;
     //if the player enters the aim trigger, it starts the Check coroutine
-    private void OnTriggerStay(Collider other)
+    private IEnumerator Check(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            StartCoroutine(Check(other.transform,-90));
-        }
+        Aim(other.transform,-90);
+        yield return wfs;
+        if(canCheck) StartCoroutine(Check(other));
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (rb.isKinematic)
+        {
+            rb.isKinematic = false;
+        }
+        if (!other.CompareTag("Player")) return;
+        StartCoroutine(Check(other));
+        canCheck = true;
+    }
+
     //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        StopCoroutine(Check(other.transform,-90));
+        StopCoroutine(Check(other));
+        canCheck = false;
         StopAiming();
     }
 
@@ -33,7 +48,8 @@ public class Enemy1 : EnemyBase
     protected new void Start()
     {
         //setting the attack stat for the enemy and getting some components from the gameobject
-        AtkPower = 10;
+        AtkRange = 10;
+        AtkPower = 1;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         hpText = GetComponentInChildren<TextMeshPro>();

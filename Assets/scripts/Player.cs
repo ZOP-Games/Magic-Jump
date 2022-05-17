@@ -10,14 +10,16 @@ public class Player : Entity
     // this is for things unique to the player (controls, spells, etc.)
 
     //references to some objects in the scene
-   
-    
-    public PauseScreen pause;   //the pause screen
+
+
+    public PauseScreen pause; //the pause screen
     public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
     //setting attack and move state hashes
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
+    protected override Vector3 AtkSpherePos => new(0, 1, 1);
+    protected override int AtkSphereRadius => 2;
 
     private bool mozog; //bool for checking if the player is moving or not
     private Vector2 mPos; //Vector2 containing joystck input data
@@ -46,12 +48,13 @@ public class Player : Entity
                 transform.Rotate(0,1,0);
             }*/
             anim.SetBool(MovingPmHash, true); //playing the move animation
-            anim.SetFloat(moveSpeedId,1*Mathf.Sign(mPos.y)); //setting aniation playback speed to 1
+            anim.SetFloat(moveSpeedId, 1 * Mathf.Sign(mPos.y)); //setting aniation playback speed to 1
         }
+
         //if the player lets go of the stick, stop moving
         if (!context.canceled) return;
         mozog = false;
-        anim.SetBool(MovingPmHash,false);
+        anim.SetBool(MovingPmHash, false);
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -65,7 +68,7 @@ public class Player : Entity
     {
         if (context.performed)
         {
-            Attack(); //see Entity.Attack()
+            Attack(AtkSpherePos,AtkSphereRadius); //see Entity.Attack()
         }
     }
 
@@ -97,7 +100,7 @@ public class Player : Entity
 
         if (!context.canceled) return;
         running = false;
-        anim.SetFloat(moveSpeedId,1 * Mathf.Sign(mPos.y));
+        anim.SetFloat(moveSpeedId, 1 * Mathf.Sign(mPos.y));
     }
 
     public void UseSpell(InputAction.CallbackContext context)
@@ -142,7 +145,7 @@ public class Player : Entity
     {
         Debug.Log("unpause is " + context.phase);
         if (!context.performed || !paused) return;
-        pause.UnPause(); 
+        pause.UnPause();
         Debug.Log("Resumed");
         pInput.SwitchCurrentActionMap("Player"); //changes input action map back to player
         paused = false;
@@ -154,12 +157,13 @@ public class Player : Entity
         if (!context.performed) return;
         //Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = Objective.transform; it's commented out because there is no objective yet
         Debug.Log("Show Objective");
-        Invoke(nameof(DoneLooking),3); //after 3 seconds, return to normal camera view
+        Invoke(nameof(DoneLooking), 3); //after 3 seconds, return to normal camera view
     }
+
     private void DoneLooking()
     {
         Debug.Log("Camera looks back at player");
-        Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = tf;
+        //Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = tf;
     }
 
 
@@ -168,6 +172,7 @@ public class Player : Entity
         Debug.Log("player died :(");
         gameObject.SetActive(false);
     }
+
     //show FPS so we can see it in builds
     private void ShowFPS()
     {
@@ -180,10 +185,11 @@ public class Player : Entity
         if (collision.collider is TerrainCollider && !grounded)
         {
 
-            grounded = true;    //if the player is touching the ground, they can jump
+            grounded = true; //if the player is touching the ground, they can jump
         }
-        
+
     }
+
     private void OnCollisionExit(Collision collision)
     {
         if (collision.collider is TerrainCollider && grounded)
@@ -191,64 +197,63 @@ public class Player : Entity
             grounded = false; //as soon as the player leaves the ground, they can't jump
         }
     }
+
+    //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
     private void FixedUpdate()
     {
-        var pos = 0f;
         if (running)
         {
-            transform.Rotate(0, mPos.x, 0);
-            Move(mPos, 15);
-            pos = tf.position.z;
-            tf.Rotate(0, mPos.x, 0);
-            Move(mPos.ToVector3(), 15);
+            tf.Rotate(0, mPos.x, 0); //turning
+            Move(mPos.ToVector3(), 15); //moving the player
 
         }
         else if (mozog)
         {
-            transform.Rotate(0, mPos.x, 0);
-            Move(mPos, 5);
-            pos = tf.position.z;
-            tf.Rotate(0, mPos.x, 0);
-            Move(mPos.ToVector3(), 5);
+            tf.Rotate(0, mPos.x, 0);    //turning
+            Move(mPos.ToVector3(), 5);  //moving the player
 
         }
 
-
-
-
-        //Start() runs once when the object is enabled, lots of early game setup goes here
-        private void Start()
-    {
-        moveSpeedId = Animator.StringToHash("moveSpeed");   //setting moveSpeedId
-        pInput = GetComponent<PlayerInput>();   //setting PlayerInput
-        //PlayerInput setup inside
-        #region PiSetup
-//setting up PlayerInput so I don't have to do it all the time
-        pInput.actions["Move"].performed += Move;
-        pInput.actions["Move"].canceled += Move;
-        pInput.actions["Jump"].performed += Jump;
-        pInput.actions["Attack"].performed += LightAttack;
-        pInput.actions["Heavy Attack"].performed += HeavyAttack;
-        pInput.actions["Dodge"].performed += Dodge;
-        pInput.actions["Run"].performed += Run;
-        pInput.actions["Run"].canceled += Run;
-        pInput.actions["Spell"].performed += UseSpell;
-        pInput.actions["Change"].performed += ChangeSpell;
-        pInput.actions["Pause"].performed += Pause;
-        pInput.actions["Pause"].canceled += Pause;
-        pInput.actions["Exit"].canceled += UnPause;
-        pInput.actions["Show Objective"].performed += ShowObjective;
-        
-
-        #endregion
-        InvokeRepeating(nameof(ShowFPS),0,0.5f);    //starting to display FPS
-        tag = "Player"; //setting a player, helps w/ identification
-        rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
-        anim = GetComponent<Animator>();
-        tf = transform;
-        hpText = GetComponentInChildren<TextMeshPro>();
-        hpText.SetText("HP: 100");
     }
 
 
-}
+    //Start() runs once when the object is enabled, lots of early game setup goes here
+        private void Start()
+        {
+            moveSpeedId = Animator.StringToHash("moveSpeed"); //setting moveSpeedId
+            pInput = GetComponent<PlayerInput>(); //setting PlayerInput
+            //PlayerInput setup inside
+
+            #region PiSetup
+
+//setting up PlayerInput so I don't have to do it all the time
+            pInput.actions["Move"].performed += Move;
+            pInput.actions["Move"].canceled += Move;
+            pInput.actions["Jump"].performed += Jump;
+            pInput.actions["Attack"].performed += LightAttack;
+            pInput.actions["Heavy Attack"].performed += HeavyAttack;
+            pInput.actions["Dodge"].performed += Dodge;
+            pInput.actions["Run"].performed += Run;
+            pInput.actions["Run"].canceled += Run;
+            pInput.actions["Spell"].performed += UseSpell;
+            pInput.actions["Change"].performed += ChangeSpell;
+            pInput.actions["Pause"].performed += Pause;
+            pInput.actions["Pause"].canceled += Pause;
+            pInput.actions["Exit"].canceled += UnPause;
+            pInput.actions["Show Objective"].performed += ShowObjective;
+
+
+            #endregion
+
+            InvokeRepeating(nameof(ShowFPS), 0, 0.5f); //starting to display FPS
+            tag = "Player"; //setting a player, helps w/ identification
+            rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
+            anim = GetComponent<Animator>();
+            tf = transform;
+            hpText = GetComponentInChildren<TextMeshPro>();
+            hpText.SetText("HP: 100");
+        }
+
+
+    }
+    

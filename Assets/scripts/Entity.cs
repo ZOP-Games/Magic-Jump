@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -23,6 +24,8 @@ public abstract class Entity : MonoBehaviour
     protected abstract int AttackingPmHash { get; }
 
     protected abstract int MovingPmHash { get; }
+    protected abstract Vector3 AtkSpherePos { get;}
+    protected abstract int AtkSphereRadius { get; }
 
     //some components
     protected Rigidbody rb;
@@ -42,22 +45,25 @@ public abstract class Entity : MonoBehaviour
     }
 
     // ReSharper disable once VirtualMemberNeverOverridden.Global
-    protected virtual void Attack()
+    protected virtual void Attack(Vector3 spherePosOffset,int radius)
     {
-        //this just starts the attack state, other attack logic is in OnCollisionEnter below
-        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack")) anim.SetTrigger(AttackingPmHash);
-        
+        //docs here
+        anim.SetTrigger(AttackingPmHash);
+        var colliders = new Collider[16];
+        var atkPos = transform.localPosition + spherePosOffset;
+        Physics.OverlapSphereNonAlloc(atkPos, radius, colliders);
+        var collidersList = colliders.ToList();
+        collidersList.RemoveAll(c => c is null || !c.TryGetComponent(out Entity controller) || controller == this);
+        collidersList.ForEach(c =>
+        {
+            //Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));
+            c.GetComponent<Entity>().TakeDamage(AtkPower);
+        });
     }
 
-    protected void OnCollisionEnter(Collision collision)
+    private void OnDrawGizmosSelected()
     {
-        //main attack logic, only runs if the attack state is active
-        //if the attacked object is an Entity, it damages it
-        var colliderHit = collision.collider;
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || !colliderHit.TryGetComponent(out Entity controller)) return;
-        {
-            controller.TakeDamage(AtkPower);
-        }
+        Gizmos.DrawWireSphere(transform.localPosition + AtkSpherePos,AtkSphereRadius);
     }
 
     protected abstract void Die();
