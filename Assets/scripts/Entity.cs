@@ -33,6 +33,9 @@ public abstract class Entity : MonoBehaviour
 
     protected TextMeshPro hpText;
 
+    protected const int WalkSpeed = 5;
+    protected const int RunSpeed = 15;
+    protected const int MoveForceMultiplier = 25;
     public void TakeDamage(int amount)
     {
         var ownName = name;
@@ -75,7 +78,7 @@ public abstract class Entity : MonoBehaviour
         //speed cap
         if (Mathf.Abs(rb.velocity.x) < maxSpeed && Mathf.Abs(rb.velocity.z) < maxSpeed)
         {
-            rb.AddRelativeForce(direction.x * 25, 0, direction.z * 25);
+            rb.AddRelativeForce(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier);
         }
         else 
         {

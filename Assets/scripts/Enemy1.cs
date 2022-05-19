@@ -13,13 +13,15 @@ public class Enemy1 : EnemyBase
     protected override Vector3 AtkSpherePos => Vector3.zero;
     protected override int AtkSphereRadius => 6;
 
+    private const int TurnOffset = -90;
+
     private readonly WaitForSeconds wfs = new (0.5f);
 
-    private bool canCheck = false;
+    private bool canCheck;
     //if the player enters the aim trigger, it starts the Check coroutine
     private IEnumerator Check(Collider other)
     {
-        Aim(other.transform,-90);
+        Aim(other.transform,TurnOffset);
         yield return wfs;
         if(canCheck) StartCoroutine(Check(other));
     }

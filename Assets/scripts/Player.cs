@@ -33,8 +33,8 @@ public class Player : Entity
 
     //some constants to make code readable + adjustable
     private const int JumpForce = 400;
-    private const int WalkSpeed = 5;
-    private const int RunSpeed = 15;
+    private const int DodgePower = 23;
+    private const int LookTimeout = 3;
 
     //input event handlers
     public void Move(InputAction.CallbackContext context)
@@ -85,7 +85,7 @@ public class Player : Entity
     {
         if (context.performed)
         {
-            rb.AddForce(rb.velocity.x + 23, 0, 0); //pushing player to the side (idk if we still need this tbh)
+            rb.AddForce(rb.velocity.x + DodgePower, 0, 0); //pushing player to the side (idk if we still need this tbh)
         }
     }
 
@@ -157,7 +157,7 @@ public class Player : Entity
         if (!context.performed) return;
         //Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = Objective.transform; it's commented out because there is no objective yet
         Debug.Log("Show Objective");
-        Invoke(nameof(DoneLooking), 3); //after 3 seconds, return to normal camera view
+        Invoke(nameof(DoneLooking), LookTimeout); //after 3 seconds, return to normal camera view
     }
 
     private void DoneLooking()
@@ -204,13 +204,13 @@ public class Player : Entity
         if (running)
         {
             tf.Rotate(0, mPos.x, 0); //turning
-            Move(mPos.ToVector3(), 15); //moving the player
+            Move(mPos.ToVector3(), RunSpeed); //moving the player
 
         }
         else if (mozog)
         {
             tf.Rotate(0, mPos.x, 0);    //turning
-            Move(mPos.ToVector3(), 5);  //moving the player
+            Move(mPos.ToVector3(), WalkSpeed);  //moving the player
 
         }
 
