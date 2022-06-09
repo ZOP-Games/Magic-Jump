@@ -4,6 +4,7 @@ using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+// ReSharper disable MemberCanBeMadeStatic.Global
 
 public class Player : Entity
 {
@@ -41,14 +42,12 @@ public class Player : Entity
     {
         if (context.performed)
         {
-            mozog = true; //telling the code in FixedUpdate() that the player is moving
             mPos = context.ReadValue<Vector2>(); //storing input data
-            /*while (Mathf.Approximately(transform.eulerAngles.y,Mathf.Rad2Deg * Mathf.Atan2(mPos.y,mPos.x)))   //rotating somehow (we don't know how yet)
-            {
-                transform.Rotate(0,1,0);
-            }*/
+            var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
+            tf.localEulerAngles = new Vector3(0, angle, 0);
             anim.SetBool(MovingPmHash, true); //playing the move animation
-            anim.SetFloat(moveSpeedId, 1 * Mathf.Sign(mPos.y)); //setting aniation playback speed to 1
+            anim.SetFloat(moveSpeedId, 1); //setting aniation playback speed to 1
+            mozog = true; //telling the code in FixedUpdate() that the player is moving
         }
 
         //if the player lets go of the stick, stop moving
@@ -95,12 +94,12 @@ public class Player : Entity
         {
             //tell the code in FixedUpdate() we're running
             running = true;
-            anim.SetFloat(moveSpeedId, 2 * Mathf.Sign(mPos.y)); //set "running" animation (speeding up walk animation)
+            anim.SetFloat(moveSpeedId, 2); //set "running" animation (speeding up walk animation)
         }
 
         if (!context.canceled) return;
         running = false;
-        anim.SetFloat(moveSpeedId, 1 * Mathf.Sign(mPos.y));
+        anim.SetFloat(moveSpeedId, 1);
     }
 
     public void UseSpell(InputAction.CallbackContext context)
@@ -201,18 +200,9 @@ public class Player : Entity
     //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
     private void FixedUpdate()
     {
-        if (running)
-        {
-            tf.Rotate(0, mPos.x, 0); //turning
-            Move(mPos.ToVector3(), RunSpeed); //moving the player
-
-        }
-        else if (mozog)
-        {
-            tf.Rotate(0, mPos.x, 0);    //turning
-            Move(mPos.ToVector3(), WalkSpeed);  //moving the player
-
-        }
+        mPos.y = Mathf.Abs(mPos.y);
+        if (running) Move(mPos.ToVector3(), RunSpeed); //moving the player
+        else if (mozog) Move(mPos.ToVector3());  //moving the player
 
     }
 

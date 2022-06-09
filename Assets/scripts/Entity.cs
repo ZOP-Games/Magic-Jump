@@ -72,7 +72,7 @@ public abstract class Entity : MonoBehaviour
     protected abstract void Die();
 
     //common move method for all Entities
-    protected void Move(Vector3 direction, int maxSpeed)
+    protected void Move(Vector3 direction, int maxSpeed = 5)
     {
         //Debug.Log(maxSpeed);
         //speed cap

@@ -55,7 +55,7 @@ public abstract class EnemyBase : Entity
     private void TrackPlayer()
     {
         anim.SetBool(MovingPmHash,true);
-        Move(Vector3.right,WalkSpeed); //I'm not dumb anymore yay! (but zoli is)
+        Move(Vector3.right); //I'm not dumb anymore yay! (but zoli is)
         //Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
 
