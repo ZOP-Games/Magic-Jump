@@ -30,30 +30,32 @@ public class Player : Entity
     private int moveSpeedId; //id of the moveSpeed parameter, for controlling animation speed from script
     private PlayerInput pInput; //playerInput component
     private Transform tf; //the player's Transform
-
+    private CinemachineVirtualCamera vCam; //the main camera in the scene
 
     //some constants to make code readable + adjustable
     private const int JumpForce = 400;
     private const int DodgePower = 23;
     private const int LookTimeout = 3;
+    private const int WalkDamping = 5;
+    private const int RunDamping = 1;
 
     //input event handlers
     public void Move(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            mPos = context.ReadValue<Vector2>(); //storing input data
-            var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
-            tf.localEulerAngles = new Vector3(0, angle, 0);
+            mPos = context.ReadValue<Vector2>().normalized; //storing input data
             anim.SetBool(MovingPmHash, true); //playing the move animation
             anim.SetFloat(moveSpeedId, 1); //setting aniation playback speed to 1
             mozog = true; //telling the code in FixedUpdate() that the player is moving
         }
 
-        //if the player lets go of the stick, stop moving
-        if (!context.canceled) return;
+        //if the player lets go of the stick, stop moving + checks in case of stick drift
+        if (!context.canceled && !mPos.CompareWithValue(0, GameHelper.Operation.Equal)) return;
         mozog = false;
         anim.SetBool(MovingPmHash, false);
+        mPos = Vector2.zero;
+
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -95,11 +97,13 @@ public class Player : Entity
             //tell the code in FixedUpdate() we're running
             running = true;
             anim.SetFloat(moveSpeedId, 2); //set "running" animation (speeding up walk animation)
+            vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = RunDamping;
         }
 
         if (!context.canceled) return;
         running = false;
         anim.SetFloat(moveSpeedId, 1);
+        vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
     }
 
     public void UseSpell(InputAction.CallbackContext context)
@@ -154,7 +158,7 @@ public class Player : Entity
     {
         //again, not sure if we need this but it's here anyway
         if (!context.performed) return;
-        //Camera.current.GetComponent<CinemachineVirtualCamera>().LookAt = Objective.transform; it's commented out because there is no objective yet
+        //vCam.LookAt = Objective.transform; it's commented out because there is no objective yet
         Debug.Log("Show Objective");
         Invoke(nameof(DoneLooking), LookTimeout); //after 3 seconds, return to normal camera view
     }
@@ -200,21 +204,26 @@ public class Player : Entity
     //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
     private void FixedUpdate()
     {
+        var angle = (Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg);
+        if (mPos.y < 0 && Mathf.Approximately(mPos.x,0))
+        {
+            tf.Rotate(tf.up,180,Space.Self);
+        }
+        tf.localEulerAngles += new Vector3(0,angle/50,0);
         mPos.y = Mathf.Abs(mPos.y);
         if (running) Move(mPos.ToVector3(), RunSpeed); //moving the player
         else if (mozog) Move(mPos.ToVector3());  //moving the player
-
     }
 
 
     //Start() runs once when the object is enabled, lots of early game setup goes here
-        private void Start()
-        {
-            moveSpeedId = Animator.StringToHash("moveSpeed"); //setting moveSpeedId
-            pInput = GetComponent<PlayerInput>(); //setting PlayerInput
-            //PlayerInput setup inside
+    private void Start()
+    { 
+        moveSpeedId = Animator.StringToHash("moveSpeed"); //setting moveSpeedId
+        pInput = GetComponent<PlayerInput>(); //setting PlayerInput
+        //PlayerInput setup inside
 
-            #region PiSetup
+        #region PiSetup
 
 //setting up PlayerInput so I don't have to do it all the time
             pInput.actions["Move"].performed += Move;
@@ -235,14 +244,16 @@ public class Player : Entity
 
             #endregion
 
-            InvokeRepeating(nameof(ShowFPS), 0, 0.5f); //starting to display FPS
-            tag = "Player"; //setting a player, helps w/ identification
-            rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
-            anim = GetComponent<Animator>();
-            tf = transform;
-            hpText = GetComponentInChildren<TextMeshPro>();
-            hpText.SetText("HP: 100");
-        }
+        InvokeRepeating(nameof(ShowFPS), 0, 0.5f); //starting to display FPS
+        tag = "Player"; //setting a player, helps w/ identification
+        rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
+        anim = GetComponent<Animator>();
+        tf = transform;
+        vCam = Camera.main!.GetComponent<CinemachineVirtualCamera>();
+        vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
+        hpText = GetComponentInChildren<TextMeshPro>();
+        hpText.SetText("HP: 100");
+    }
 
 
     }

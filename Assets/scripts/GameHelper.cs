@@ -16,8 +16,8 @@ namespace GameExtensions
         }
 
         //vector comparer, decides whether all axes of the vector are <Operation> to the specified value
-        //this an extension method, you can call it by <A vector3 object>.CompareVectors(...)
-        public static bool CompareVectors(this Vector3 vector, float value, Operation operation)
+        //this an extension method, you can call it by <A vector3 object>.CompareWithValue(...)
+        public static bool CompareWithValue(this Vector3 vector, float value, Operation operation)
         {
             return operation switch
             {
@@ -26,6 +26,17 @@ namespace GameExtensions
                 Operation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0 ||
                                             (vector.z - value) <= 0,
                 Operation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0 || (vector.z - value) >= 0,
+                _ => false
+            };
+        }
+
+        public static bool CompareWithValue(this Vector2 vector, float value, Operation operation)
+        {
+            return operation switch
+            {
+                Operation.Equal => Mathf.Approximately(vector.x, value) || Mathf.Approximately(vector.y, value),
+                Operation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0,
+                Operation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0,
                 _ => false
             };
         }
