@@ -7,11 +7,12 @@ public class Enemy1 : EnemyBase
 {
     //we'll put navigation, animations + other things that are unique to this kind of enemy (the bird)
 
-    //setting the attack and moving state hash and attack range
+    //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
     protected override Vector3 AtkSpherePos => Vector3.zero;
     protected override int AtkSphereRadius => 6;
+    protected override string OwnName { get; set; }
 
     private const int TurnOffset = -90;
 
@@ -52,6 +53,7 @@ public class Enemy1 : EnemyBase
         //setting the attack stat for the enemy and getting some components from the gameobject
         AtkRange = 10;
         AtkPower = 1;
+        OwnName = name;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         hpText = GetComponentInChildren<TextMeshPro>();

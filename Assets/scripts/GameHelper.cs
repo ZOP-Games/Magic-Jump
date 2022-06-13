@@ -29,7 +29,7 @@ namespace GameExtensions
                 _ => false
             };
         }
-
+        //Vector2 overload of CompareWithValue above, works the same but w/ Vector2-s
         public static bool CompareWithValue(this Vector2 vector, float value, Operation operation)
         {
             return operation switch

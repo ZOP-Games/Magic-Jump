@@ -24,46 +24,49 @@ public abstract class Entity : MonoBehaviour
     protected abstract int AttackingPmHash { get; }
 
     protected abstract int MovingPmHash { get; }
-    protected abstract Vector3 AtkSpherePos { get;}
-    protected abstract int AtkSphereRadius { get; }
+    protected abstract Vector3 AtkSpherePos { get;} //position of the Enitity's hitbox
+    protected abstract int AtkSphereRadius { get; } //the radius of the hitbox sphere
+    protected abstract string OwnName { get; set; } //name of the Entity
 
     //some components
     protected Rigidbody rb;
     protected Animator anim;
-
     protected TextMeshPro hpText;
 
+    private readonly Collider[] colliders = new Collider[16];
+
+    private Vector3 atkPos;//an array of colliders we store hit objects in
+    //some constants
     protected const int WalkSpeed = 5;
     protected const int RunSpeed = 15;
     protected const int MoveForceMultiplier = 25;
+    //damage logic, the dealt damage is substracted from Enitity's HP
     public void TakeDamage(int amount)
     {
-        var ownName = name;
         Hp -= amount - Defense / 100;
-        Debug.Log(ownName + " Took " + amount + " damage, current HP: " + Hp);
+        Debug.Log(OwnName + " Took " + amount + " damage, current HP: " + Hp);
         hpText.SetText("HP: " + Hp);
-        if (Hp > 0) return;
+        if (Hp > 0) return; //if the Entity has 0 HP, it dies
         Die();
-        Debug.Log("Entity (" + ownName + ") died!");
+        Debug.Log("Entity (" + OwnName + ") died!");
     }
 
     // ReSharper disable once VirtualMemberNeverOverridden.Global
     protected virtual void Attack(Vector3 spherePosOffset,int radius)
     {
         //docs here
-        anim.SetTrigger(AttackingPmHash);
-        var colliders = new Collider[16];
-        var atkPos = transform.localPosition + spherePosOffset;
-        Physics.OverlapSphereNonAlloc(atkPos, radius, colliders);
+        atkPos = transform.localPosition + spherePosOffset; //position of the hitbox
+        Physics.OverlapSphereNonAlloc(atkPos, radius, colliders); //creating the hitbox sphere and colllecting colliders inside
         var collidersList = colliders.ToList();
-        collidersList.RemoveAll(c => c is null || !c.TryGetComponent(out Entity controller) || controller == this);
+        collidersList.RemoveAll(c => c is null || !c.TryGetComponent(out Entity controller) || controller == this); //removing non-entities and the attacking Entity itself
         collidersList.ForEach(c =>
         {
             //Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));
-            c.GetComponent<Entity>().TakeDamage(AtkPower);
+            c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
         });
     }
 
+    //draws the hitbox sphere in scene view
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.localPosition + AtkSpherePos,AtkSphereRadius);

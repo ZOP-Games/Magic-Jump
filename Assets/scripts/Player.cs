@@ -11,16 +11,15 @@ public class Player : Entity
     // this is for things unique to the player (controls, spells, etc.)
 
     //references to some objects in the scene
-
-
     public PauseScreen pause; //the pause screen
     public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
-    //setting attack and move state hashes
+    //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
     protected override Vector3 AtkSpherePos => new(0, 1, 1);
-    protected override int AtkSphereRadius => 2; 
+    protected override int AtkSphereRadius => 2;
+    protected override string OwnName { get; set; }
 
     private bool mozog; //bool for checking if the player is moving or not
     private Vector2 mPos; //Vector2 containing joystck input data
@@ -30,7 +29,7 @@ public class Player : Entity
     private int moveSpeedId; //id of the moveSpeed parameter, for controlling animation speed from script
     private PlayerInput pInput; //playerInput component
     private Transform tf; //the player's Transform
-    private CinemachineVirtualCamera vCam; //the main camera in the scene
+    private CinemachineVirtualCamera vCam; //the main virtual camera in the scene
 
     //some constants to make code readable + adjustable
     private const int JumpForce = 400;
@@ -203,12 +202,12 @@ public class Player : Entity
     //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
     private void FixedUpdate()
     {
-        var angle = Mathf.Atan2(mPos.x, mPos.y);
-        angle *= Mathf.Rad2Deg;
-        Debug.Log("mPos: " + mPos + "angle: " + angle);
-        tf.localEulerAngles += new Vector3(0,angle/50,0);
-        if (running) Move(tf.forward, RunSpeed); //moving the running player
-        else if (mozog) Move(tf.InverseTransformDirection(tf.forward));  //moving the player
+        //movement logic
+        var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;    //getting the angle from stick input
+        //Debug.Log("mPos: " + mPos + "angle: " + angle);
+        tf.localEulerAngles += new Vector3(0,angle/50,0);   //rotating the playing
+        if (running) Move(tf.forward, RunSpeed); //moving the running player forward
+        else if (mozog) Move(tf.InverseTransformDirection(tf.forward));  //moving the player forward
     }
 
 
@@ -242,12 +241,13 @@ public class Player : Entity
 
         InvokeRepeating(nameof(ShowFPS), 0, 0.5f); //starting to display FPS
         tag = "Player"; //setting a player, helps w/ identification
+        OwnName = name;
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
         anim = GetComponent<Animator>();
         tf = transform;
-        vCam = Camera.main!.GetComponent<CinemachineVirtualCamera>();
+        vCam = Camera.main!.GetComponent<CinemachineVirtualCamera>();   //getting virtual camera and setting damping to default value
         vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
-        hpText = GetComponentInChildren<TextMeshPro>();
+        hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
         hpText.SetText("HP: 100");
     }
 
