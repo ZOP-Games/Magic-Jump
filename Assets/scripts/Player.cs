@@ -20,7 +20,7 @@ public class Player : Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
     protected override Vector3 AtkSpherePos => new(0, 1, 1);
-    protected override int AtkSphereRadius => 2;
+    protected override int AtkSphereRadius => 2; 
 
     private bool mozog; //bool for checking if the player is moving or not
     private Vector2 mPos; //Vector2 containing joystck input data
@@ -54,7 +54,6 @@ public class Player : Entity
         if (!context.canceled && !mPos.CompareWithValue(0, GameHelper.Operation.Equal)) return;
         mozog = false;
         anim.SetBool(MovingPmHash, false);
-        mPos = Vector2.zero;
 
     }
 
@@ -204,15 +203,12 @@ public class Player : Entity
     //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
     private void FixedUpdate()
     {
-        var angle = (Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg);
-        if (mPos.y < 0 && Mathf.Approximately(mPos.x,0))
-        {
-            tf.Rotate(tf.up,180,Space.Self);
-        }
+        var angle = Mathf.Atan2(mPos.x, mPos.y);
+        angle *= Mathf.Rad2Deg;
+        Debug.Log("mPos: " + mPos + "angle: " + angle);
         tf.localEulerAngles += new Vector3(0,angle/50,0);
-        mPos.y = Mathf.Abs(mPos.y);
-        if (running) Move(mPos.ToVector3(), RunSpeed); //moving the player
-        else if (mozog) Move(mPos.ToVector3());  //moving the player
+        if (running) Move(tf.forward, RunSpeed); //moving the running player
+        else if (mozog) Move(tf.InverseTransformDirection(tf.forward));  //moving the player
     }
 
 
