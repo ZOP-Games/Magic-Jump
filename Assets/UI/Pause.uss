@@ -1,0 +1,68 @@
+#body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgb(226, 135, 67);
+    justify-content: center;
+}
+
+#body-head{
+    margin: 1%;
+    font-size:500%;
+}
+
+.container {
+    margin-top: 5%;
+    padding-top: 5%;
+    width: 30%;
+    height: 80%;
+    background-color: brown;
+    border-radius: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+Button {
+    width: 75%;
+    height: 5%;
+    margin-top: 5%;
+    background-color: rgb(81, 37, 21);
+}
+
+#status {
+    margin-left: 10%;
+}
+
+#status-head {
+    -unity-font-style: bold;
+}
+
+.status-row {
+    display: flex;
+    flex-direction: row;
+    width:75%;
+    justify-content:space-between;
+    margin-bottom:10%;
+}
+
+#status-xp-content{
+    margin-top:1%;
+    width:30%;
+}
+
+#status-xp-content Label{
+    font-size:100%;
+    color: rgb(69,69,69);
+}
+
+#guide{
+    align-self:flex-end;
+    margin-bottom:2%;
+}
+
+.unity-text-element {
+    font-size: 250%;
+    color:gainsboro;
+}
+

@@ -11,7 +11,7 @@ public class Player : Entity
     // this is for things unique to the player (controls, spells, etc.)
 
     //references to some objects in the scene
-    public PauseScreen pause; //the pause screen
+    public MenuScreen menu; //the menu screen
     public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
     //setting Entity properties, for more info -> see Entity
@@ -126,27 +126,20 @@ public class Player : Entity
 
     public void Pause(InputAction.CallbackContext context)
     {
-        Debug.Log("pause is " + context.phase);
+        //Debug.Log("menu is " + context.phase);
         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-        switch (context.phase)
-        {
-            case InputActionPhase.Performed:
-                pause.Pause();
-                break;
-            case InputActionPhase.Canceled:
-                Debug.Log("Paused");
-                pInput.SwitchCurrentActionMap("UI"); //changes input action map to UI
-                paused = true;
-                break;
-        }
-
+        if (!context.canceled) return;
+        Debug.Log("Paused");
+        pInput.SwitchCurrentActionMap("UI");
+        menu.Pause();
+        paused = true;
     }
 
     public void UnPause(InputAction.CallbackContext context)
     {
-        Debug.Log("unpause is " + context.phase);
-        if (!context.performed || !paused) return;
-        pause.UnPause();
+        //Debug.Log("unpause is " + context.phase);
+        if (!context.canceled || !paused) return;
+        menu.UnPause();
         Debug.Log("Resumed");
         pInput.SwitchCurrentActionMap("Player"); //changes input action map back to player
         paused = false;
@@ -231,7 +224,6 @@ public class Player : Entity
             pInput.actions["Run"].canceled += Run;
             pInput.actions["Spell"].performed += UseSpell;
             pInput.actions["Change"].performed += ChangeSpell;
-            pInput.actions["Pause"].performed += Pause;
             pInput.actions["Pause"].canceled += Pause;
             pInput.actions["Exit"].canceled += UnPause;
             pInput.actions["Show Objective"].performed += ShowObjective;

@@ -1,23 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public class PauseScreen : MonoBehaviour
+using UnityEngine.UIElements;
+public class MenuScreen : MonoBehaviour
 {
-   //base class for pause screens
-   public GameObject gObj;
+   //script for managing menus
+   private GameObject gObj;
+   private UIDocument doc;
 
-   //displays the other menu screens
-   protected void Show(GameObject prevScreen)
-   {
-       prevScreen.SetActive(false);
-       gObj.SetActive(true);
-   }
-
-   //pause logic: freeze the game and fixes InputSystem so it will still work
+   //menu logic: freeze the game and fixes InputSystem so it will still work
    public void Pause()
    {
+       gObj = gObj != null ? gObj : gameObject;
        Debug.Log("pauseScreen is up");
        gObj.SetActive(true);
        InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
@@ -33,4 +27,10 @@ public class PauseScreen : MonoBehaviour
        InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
    }
 
+   private void Awake()
+   {
+       doc = GetComponent<UIDocument>();
+       var playerName = doc.rootVisualElement.Q<Label>("status-name-content");
+       playerName.text = "hello";
+   }
 }
