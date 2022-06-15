@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Menu.uss?fileID=7433441132597879392&amp;guid=313a1d4d5b571944fb42331f8b198ac0&amp;type=3#Menu" />
+    <Style src="project://database/Assets/UI/Global.uss?fileID=7433441132597879392&amp;guid=3317fd51b9749e5419cd4929ea21c1c8&amp;type=3#Global" />
+    <ui:VisualElement name="body" style="flex-grow: 1;">
+        <ui:VisualElement name="menu" class="container jc">
+            <ui:Label text="Magic Jump" display-tooltip-when-elided="true" name="menu-head" class="menu-text" />
+            <ui:Button text="Continue" display-tooltip-when-elided="true" name="continue" class="menu-text" />
+            <ui:Button text="New Game" display-tooltip-when-elided="true" name="newgame" class="menu-text" />
+            <ui:Button text="Options" display-tooltip-when-elided="true" name="options" class="menu-text" />
+            <ui:Button text="Exit" display-tooltip-when-elided="true" name="exit" class="menu-text" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

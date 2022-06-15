@@ -1,26 +1,6 @@
-#body {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    background-color: rgb(226, 135, 67);
-    justify-content: center;
-}
-
 #body-head{
     margin: 1%;
     font-size:500%;
-}
-
-.container {
-    margin-top: 5%;
-    padding-top: 5%;
-    width: 30%;
-    height: 80%;
-    background-color: brown;
-    border-radius: 15px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
 
 Button {

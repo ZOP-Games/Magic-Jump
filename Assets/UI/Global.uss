@@ -1,0 +1,26 @@
+#body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgb(226, 135, 67);
+    justify-content: center;
+    align-items:center;
+}
+
+
+.unity-text-element {
+    font-size: 24;
+    color:gainsboro;
+}
+
+.container {
+    padding-top: 5%;
+    width: 30%;
+    height: 80%;
+    background-color: brown;
+    border-radius: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-shrink:2;
+}
