@@ -6,13 +6,8 @@
 }
 
 #menu-head {
-    font-size: 60;
+    font-size: 100px;
     -unity-font-style: bold;
    padding-bottom:2%;
-}
-
-.unity-button {
-    background-color: rgb(120, 69, 42);
-    border-radius: 7px;
 }
 

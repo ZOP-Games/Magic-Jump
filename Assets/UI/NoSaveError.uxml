@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="body" style="flex-direction: column; justify-content: space-around;">
+        <ui:Label text="No save data detected!" display-tooltip-when-elided="true" />
+        <ui:Button text="Ok" display-tooltip-when-elided="true" style="border-left-color: rgb(120, 69, 42); border-right-color: rgb(120, 69, 42); border-top-color: rgb(120, 69, 42); border-bottom-color: rgb(120, 69, 42);" />
+    </ui:VisualElement>
+</ui:UXML>

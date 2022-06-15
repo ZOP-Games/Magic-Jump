@@ -7,20 +7,37 @@
     align-items:center;
 }
 
-
+.head{
+    font-size:75px;
+}
 .unity-text-element {
-    font-size: 24;
+    font-size: 30px;
     color:gainsboro;
 }
 
 .container {
     padding-top: 5%;
-    width: 30%;
-    height: 80%;
+    width: 40%;
+    height: 90%;
     background-color: brown;
     border-radius: 15px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-shrink:2;
+}
+
+
+.unity-button{
+    border: 1px solid rgb(120, 69, 42);
+    border-radius:7px;
+    background-color:rgb(120, 69, 42);
+}
+
+.visible{
+    display:flex;
+}
+
+.hidden{
+    display:none;
 }

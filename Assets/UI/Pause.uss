@@ -1,17 +1,26 @@
-#body-head{
-    margin: 1%;
-    font-size:500%;
+#body{
+    flex-direction:column;
+    justify-content:space-around;
 }
 
-Button {
+#body-head{
+    font-size:75px;
+    align-self:flex-start;
+    margin-left:2%;
+}
+
+#body-content{
+    background-color:transparent;
+    width:90%;
+    flex-direction:row-reverse;
+    padding:0;
+    margin:0;
+    justify-content:space-between;
+}
+.unity-button {
     width: 75%;
     height: 5%;
     margin-top: 5%;
-    background-color: rgb(81, 37, 21);
-}
-
-#status {
-    margin-left: 10%;
 }
 
 #status-head {
@@ -38,7 +47,6 @@ Button {
 
 #guide{
     align-self:flex-end;
-    margin-bottom:2%;
 }
 
 .unity-text-element {

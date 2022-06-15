@@ -1,12 +1,14 @@
 using UnityEngine;
 using GameExtensions;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 
 public class Menu : MonoBehaviour
 {
 
     public GameObject loading;  //the loading screen
+    private VisualElement UIroot;
 
     // this has all the things for the menu like button events, menu mechanics and more...
     public void NewGame()
@@ -22,12 +24,12 @@ public class Menu : MonoBehaviour
 
     }
 
-    public void Continue(GameObject noSaveError)
+    public void Continue()
     {
         //checking for save file, showing error if there isn't one, greying out the button would be a better solution though
         if (!PlayerPrefs.HasKey("game_progress"))
         {
-            noSaveError.SetActive(true);
+            
 
         }
         else
@@ -60,8 +62,8 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         PlayerPrefs.DeleteAll(); //This deletes the player's progress, for testing only!
-
-        
+        UIroot = GetComponent<UIDocument>().rootVisualElement;
+        UIroot.Q<Button>("continue").clicked += Continue;
     }
 
 }
