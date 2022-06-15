@@ -10,5 +10,5 @@
             <ui:Button text="Exit" display-tooltip-when-elided="true" name="exit" class="menu-text" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:Instance template="NoSaveError" name="NoSaveError" class="hidden" style="position: absolute; top: 408px; left: 690px; height: 246px; width: 556px;" />
+    <ui:Instance template="NoSaveError" name="NoSaveError" class="window hidden" />
 </ui:UXML>

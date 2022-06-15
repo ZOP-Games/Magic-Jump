@@ -2,12 +2,19 @@
     width: 90%;
     align-items: flex-start;
     justify-content: space-around;
-    padding-left:3%;
+    padding-left: 3%;
 }
 
 #menu-head {
     font-size: 100px;
     -unity-font-style: bold;
-   padding-bottom:2%;
+    padding-bottom: 2%;
 }
 
+.window {
+    position: absolute;
+    top: 408px;
+    left: 690px;
+    height: 246px;
+    width: 556px;
+}
