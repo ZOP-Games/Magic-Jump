@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using GameExtensions;
 using UnityEngine.SceneManagement;
@@ -9,7 +11,6 @@ public class Menu : MonoBehaviour
 
     //public GameObject loading;  //the loading screen, not needed yet
     private VisualElement uiRoot;
-    private TemplateContainer noSaveError;
 
 
 
@@ -23,7 +24,6 @@ public class Menu : MonoBehaviour
         System.GC.Collect();
         //loading the game
         SceneManager.LoadScene(1);
-        
     }
 
     public void Continue()
@@ -32,8 +32,7 @@ public class Menu : MonoBehaviour
         //checking for save file, showing error if there isn't one, greying out the button would be a better solution though
         if (!PlayerPrefs.HasKey("game_progress"))
         {
-            noSaveError.RemoveFromClassList("hidden");
-
+            Debug.Log("focused element" + uiRoot.focusController.focusedElement);
         }
         else
         {
@@ -46,28 +45,22 @@ public class Menu : MonoBehaviour
     //shows the options menu
     public void Options()
     {
-            
+
     }
-
-
-    //presses ok and closes the error window
-    // ReSharper disable once InconsistentNaming
-    public void ok()
-    {
-       noSaveError.AddToClassList("hidden");
-    }
-
 
     private void Start()
     {
-        PlayerPrefs.DeleteAll(); //This deletes the player's progress, for testing only!
         uiRoot = GetComponent<UIDocument>().rootVisualElement;
-        noSaveError = uiRoot.Q<TemplateContainer>("NoSaveError");
         uiRoot.Q<Button>("continue").clicked += Continue;
-        uiRoot.Q<Button>("ok").clicked += ok;
         uiRoot.Q<Button>("newgame").clicked += NewGame;
         uiRoot.Q<Button>("options").clicked += Options;
         uiRoot.Q<Button>("exit").clicked += GameHelper.Quit;
+        if(PlayerPrefs.HasKey("game_progress")) uiRoot.Q<Button>("continue").Focus();
+        else
+        {
+            uiRoot.Q<Button>("continue").AddToClassList("hidden");
+            uiRoot.Q<Button>("newgame").Focus();
+        }
     }
 
 }

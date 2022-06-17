@@ -1,4 +1,3 @@
-using System.Collections;
 using Cinemachine;
 using GameExtensions;
 using UnityEngine;
@@ -231,7 +230,8 @@ public class Player : Entity
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
         anim = GetComponent<Animator>();
         tf = transform;
-        vCam = Camera.main!.GetComponent<CinemachineVirtualCamera>();   //getting virtual camera and setting damping to default value
+        vCam = CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera;   //getting virtual camera and setting damping to default value
+        Debug.Assert(vCam != null, nameof(vCam) + " != null");
         vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
         hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
         hpText.SetText("HP: 100");
