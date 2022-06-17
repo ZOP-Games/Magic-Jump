@@ -12,7 +12,7 @@ public class Player : Entity
 
     //references to some objects in the scene
     public MenuScreen menu; //the menu screen
-    public TextMeshProUGUI fpsText; //the TMP text for displaying FPS
+    [SerializeField]private TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -25,7 +25,6 @@ public class Player : Entity
     private Vector2 mPos; //Vector2 containing joystck input data
     private bool grounded; //bool for checking if the player is on ground or not
     private bool running; //bool for checking if the player is running or not
-    private bool paused; //bool for checking if the game is paused or not
     private int moveSpeedId; //id of the moveSpeed parameter, for controlling animation speed from script
     private PlayerInput pInput; //playerInput component
     private Transform tf; //the player's Transform
@@ -36,24 +35,24 @@ public class Player : Entity
     private const int DodgePower = 23;
     private const int LookTimeout = 3;
     private const int WalkDamping = 5;
-    private const int RunDamping = 1;
+    private const int RunDamping = 2;
 
     //input event handlers
     public void Move(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            mPos = context.ReadValue<Vector2>().normalized; //storing input data
+            mPos = context.ReadValue<Vector2>(); //storing input data
             anim.SetBool(MovingPmHash, true); //playing the move animation
             anim.SetFloat(moveSpeedId, 1); //setting aniation playback speed to 1
             mozog = true; //telling the code in FixedUpdate() that the player is moving
         }
 
         //if the player lets go of the stick, stop moving + checks in case of stick drift
-        if (!context.canceled && !mPos.CompareWithValue(0, GameHelper.Operation.Equal)) return;
+        if (!context.canceled) return;
         mozog = false;
         anim.SetBool(MovingPmHash, false);
-
+        mPos = Vector2.zero;
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -130,19 +129,15 @@ public class Player : Entity
         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
         if (!context.canceled) return;
         Debug.Log("Paused");
-        pInput.SwitchCurrentActionMap("UI");
         menu.Pause();
-        paused = true;
     }
 
     public void UnPause(InputAction.CallbackContext context)
     {
-        //Debug.Log("unpause is " + context.phase);
-        if (!context.canceled || !paused) return;
+        Debug.Log("unpause is " + context.phase);
+        if (!context.canceled || pInput.currentActionMap.name == "Player") return;
         menu.UnPause();
         Debug.Log("Resumed");
-        pInput.SwitchCurrentActionMap("Player"); //changes input action map back to player
-        paused = false;
     }
 
     public void ShowObjective(InputAction.CallbackContext context)
@@ -197,10 +192,9 @@ public class Player : Entity
     {
         //movement logic
         var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;    //getting the angle from stick input
-        //Debug.Log("mPos: " + mPos + "angle: " + angle);
-        tf.localEulerAngles += new Vector3(0,angle/50,0);   //rotating the playing
-        if (running) Move(tf.forward, RunSpeed); //moving the running player forward
-        else if (mozog) Move(tf.InverseTransformDirection(tf.forward));  //moving the player forward
+        tf.localEulerAngles += new Vector3(0,angle/50,0);   //rotating the player
+        if (running) Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
+        else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
     }
 
 
@@ -213,7 +207,7 @@ public class Player : Entity
 
         #region PiSetup
 
-//setting up PlayerInput so I don't have to do it all the time
+            //setting up PlayerInput so I don't have to do it all the time
             pInput.actions["Move"].performed += Move;
             pInput.actions["Move"].canceled += Move;
             pInput.actions["Jump"].performed += Jump;
@@ -225,9 +219,9 @@ public class Player : Entity
             pInput.actions["Spell"].performed += UseSpell;
             pInput.actions["Change"].performed += ChangeSpell;
             pInput.actions["Pause"].canceled += Pause;
-            pInput.actions["Exit"].canceled += UnPause;
+            pInput.actions["Exit"].canceled +=  UnPause;
             pInput.actions["Show Objective"].performed += ShowObjective;
-
+            pInput.SwitchCurrentActionMap("Player");
 
             #endregion
 

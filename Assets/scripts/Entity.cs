@@ -33,8 +33,6 @@ public abstract class Entity : MonoBehaviour
     protected Animator anim;
     protected TextMeshPro hpText;
 
-    private readonly Collider[] colliders = new Collider[16];
-
     private Vector3 atkPos;//an array of colliders we store hit objects in
     //some constants
     protected const int WalkSpeed = 5;
@@ -55,10 +53,12 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Attack(Vector3 spherePosOffset,int radius)
     {
         //docs here
+        anim.SetTrigger(AttackingPmHash);
         atkPos = transform.localPosition + spherePosOffset; //position of the hitbox
+        var colliders = new Collider[16];
         Physics.OverlapSphereNonAlloc(atkPos, radius, colliders); //creating the hitbox sphere and colllecting colliders inside
         var collidersList = colliders.ToList();
-        collidersList.RemoveAll(c => c is null || !c.TryGetComponent(out Entity controller) || controller == this); //removing non-entities and the attacking Entity itself
+        collidersList.RemoveAll(c => c is null || !c!.TryGetComponent(out Entity controller) || controller == this); //removing non-entities and the attacking Entity itself
         collidersList.ForEach(c =>
         {
             //Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));

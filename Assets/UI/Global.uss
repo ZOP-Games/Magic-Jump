@@ -1,5 +1,4 @@
 #body {
-    display: flex;
     flex-grow: 1;
     flex-direction: row;
     background-color: rgb(226, 135, 67);
@@ -29,9 +28,18 @@
 
 
 .unity-button{
-    border: 1px solid rgb(120, 69, 42);
+    border-color:rgb(120, 69, 42);
     border-radius:7px;
     background-color:rgb(120, 69, 42);
+}
+
+.unity-button:hover{
+    background-color:rgb(110, 59, 32);
+    border-color:rgb(120, 69, 42);
+}
+
+.unity-button:focus{
+    background-color:green;
 }
 
 .visible{
@@ -39,5 +47,5 @@
 }
 
 .hidden{
-    display:none;
+    display:none !important;
 }

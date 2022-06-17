@@ -29,7 +29,7 @@
                     "id": "3629d31b-c417-4fc1-a03a-862ef7a15cde",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -197,7 +197,7 @@
                     "type": "Value",
                     "id": "7a475787-c609-4cae-baad-7dc2899f1c3d",
                     "expectedControlType": "Vector2",
-                    "processors": "StickDeadzone,NormalizeVector2",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -298,7 +298,7 @@
                     "id": "55852f10-abb7-46c8-bb76-9f226a2307fb",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone",
                     "groups": "Controller",
                     "action": "Move",
                     "isComposite": false,
@@ -583,7 +583,7 @@
                     "name": "",
                     "id": "1a5bf41a-4b19-476d-80fc-8a7043c9aa46",
                     "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "Controller",
                     "action": "Spell",

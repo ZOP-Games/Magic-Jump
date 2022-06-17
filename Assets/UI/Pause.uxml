@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Pause.uss?fileID=7433441132597879392&amp;guid=803d23d5f735f4340887b30660e671a7&amp;type=3#Pause" />
-    <ui:VisualElement name="body" style="flex-direction: column;">
+    <ui:VisualElement name="body" class="hidden" style="flex-direction: column;">
         <ui:Label text="Paused" display-tooltip-when-elided="true" name="body-head" class="head" />
         <ui:VisualElement name="body-content" class="container" style="justify-content: space-between;">
             <ui:VisualElement name="guide">

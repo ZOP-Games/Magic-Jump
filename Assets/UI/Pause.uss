@@ -49,8 +49,4 @@
     align-self:flex-end;
 }
 
-.unity-text-element {
-    font-size: 250%;
-    color:gainsboro;
-}
 

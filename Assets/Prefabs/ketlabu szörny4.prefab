@@ -4713,7 +4713,7 @@ GameObject:
   - component: {fileID: 1319783003029838566}
   - component: {fileID: 2096270242309357178}
   m_Layer: 0
-  m_Name: Retopo_Cube.001
+  m_Name: LOD_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14484,6 +14484,7 @@ GameObject:
   - component: {fileID: 2804643460277301734}
   - component: {fileID: 2360962791078905175}
   - component: {fileID: 2808176979907686200}
+  - component: {fileID: 3706914141779235586}
   m_Layer: 0
   m_Name: "ketlabu sz\xF6rny4"
   m_TagString: Untagged
@@ -14571,6 +14572,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 47.677612, y: 35.877106, z: 50.29991}
   m_Center: {x: -4.4579697, y: 3.0156941, z: -0.39333344}
+--- !u!205 &3706914141779235586
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018977245602332211}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -6.461979, y: 2.6064339, z: 0.000009536743}
+  m_Size: 53.980724
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.2070147
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2096270242309357178}
+  m_Enabled: 1
 --- !u!1 &9035147155013711845
 GameObject:
   m_ObjectHideFlags: 0
