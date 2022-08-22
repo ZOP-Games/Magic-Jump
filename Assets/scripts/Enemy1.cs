@@ -36,6 +36,7 @@ public class Enemy1 : EnemyBase
             rb.isKinematic = false;
         }
         if (!other.CompareTag("Player")) return;
+        LookAtMe(transform);
         StartCoroutine(Check(other));
         canCheck = true;
     }
@@ -44,6 +45,7 @@ public class Enemy1 : EnemyBase
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        DontLookAtMe(transform);
         StopCoroutine(Check(other));
         canCheck = false;
         StopAiming();

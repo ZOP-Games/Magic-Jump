@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody),typeof(Animator),typeof(BoxCollider))]
@@ -7,7 +8,7 @@ using UnityEngine;
 public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
-    
+    [SerializeField] private CinemachineTargetGroup ctg;
     /*The enemy will only attack when the player is within this range (should be in meters,
     but because of scaling it's quite inconsistent, try to experiment with values)*/
     protected int AtkRange { get; set; }
@@ -15,9 +16,12 @@ public abstract class EnemyBase : Entity
     protected abstract float Height { get; }
     //WaitForSeconds object for enemies, this defines how often they Aim
     private const float TrackInterval = .1f;
+    private const float LookAtWeight = 0.1f;
+    private const float LookAtRadius = 1;
     //death logic, just destroys itself
     protected override void Die()
     {
+        DontLookAtMe(transform);
         Destroy(gameObject);
     }
 
@@ -63,6 +67,15 @@ public abstract class EnemyBase : Entity
     }
 
 
+    protected void LookAtMe(Transform target)
+    {
+        ctg.AddMember(target,LookAtWeight,LookAtRadius);
+    }
+
+    protected void DontLookAtMe(Transform target)
+    {
+        ctg.RemoveMember(target);
+    }
 
     protected void Start()
     {

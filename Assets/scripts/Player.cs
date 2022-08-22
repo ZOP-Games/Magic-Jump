@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using Cinemachine;
 using GameExtensions;
 using UnityEngine;
@@ -36,6 +36,7 @@ public class Player : Entity
     private const int LookTimeout = 3;
     private const int WalkDamping = 5;
     private const int RunDamping = 2;
+
 
     //input event handlers
     public void Move(InputAction.CallbackContext context)
