@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody),typeof(Animator),typeof(BoxCollider))]
+[RequireComponent(typeof(LODGroup))]
 public abstract class EnemyBase : Entity
 {
     //Base class for enemies, for things all enemies do
@@ -9,8 +11,9 @@ public abstract class EnemyBase : Entity
     /*The enemy will only attack when the player is within this range (should be in meters,
     but because of scaling it's quite inconsistent, try to experiment with values)*/
     protected int AtkRange { get; set; }
+    protected  abstract Vector3 ForwardDirection { get; }
+    protected abstract float Height { get; }
     //WaitForSeconds object for enemies, this defines how often they Aim
-    private const float LookAtHeight = 1.5f;
     private const float TrackInterval = .1f;
     //death logic, just destroys itself
     protected override void Die()
@@ -26,7 +29,7 @@ public abstract class EnemyBase : Entity
         var transform1 = transform;
         var position = playerTf.position;
         //setting angle, looking at the player's transform
-        var fixedPos = new Vector3(position.x, LookAtHeight, position.z);
+        var fixedPos = new Vector3(position.x, Height, position.z);
         transform1.LookAt(fixedPos);
         transform1.Rotate(0,offset,0);  //rotation offset because zoli
         //setting position, moving until the player is within range
@@ -55,7 +58,7 @@ public abstract class EnemyBase : Entity
     private void TrackPlayer()
     {
         anim.SetBool(MovingPmHash,true);
-        Move(Vector3.right); //I'm not dumb anymore yay! (but zoli is)
+        Move(ForwardDirection); //I'm not dumb anymore yay! (but zoli is)
         //Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
     }
 
