@@ -1,17 +1,19 @@
 using System.Linq;
 using Cinemachine;
-using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+
 // ReSharper disable MemberCanBeMadeStatic.Global
 
+[RequireComponent(typeof(PlayerInput),typeof(Rigidbody),typeof(BoxCollider))]
+[RequireComponent(typeof(Animator))]
 public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
 
     //references to some objects in the scene
-    public MenuScreen menu; //the menu screen
+    [SerializeField]private MenuScreen menu; //the menu screen
     [SerializeField]private TextMeshProUGUI fpsText; //the TMP text for displaying FPS
 
     //setting Entity properties, for more info -> see Entity
@@ -36,6 +38,7 @@ public class Player : Entity
     private const int LookTimeout = 3;
     private const int WalkDamping = 5;
     private const int RunDamping = 2;
+    private const int Constraints = 80;
 
 
     //input event handlers
@@ -230,6 +233,16 @@ public class Player : Entity
         tag = "Player"; //setting a player, helps w/ identification
         OwnName = name;
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
+
+        #region rbSetup
+
+        rb.drag = 0.1f;
+        rb.angularDrag = 0.05f;
+        rb.constraints = (RigidbodyConstraints)Constraints;
+        
+
+            #endregion
+        
         anim = GetComponent<Animator>();
         tf = transform;
         vCam = CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera;   //getting virtual camera and setting damping to default value
