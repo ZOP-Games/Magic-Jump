@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 3571376159448562439}
   - component: {fileID: 5517206991543949192}
   - component: {fileID: 3637714197537744449}
-  - component: {fileID: 5620550215946916347}
+  - component: {fileID: 4144926518508765163}
   m_Layer: 0
   m_Name: mage csaj ATTACK.blend1
   m_TagString: Untagged
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f6cd43102b936b4bb0374a7f6cc217f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pause: {fileID: 0}
+  menu: {fileID: 0}
   fpsText: {fileID: 0}
 --- !u!114 &5517206991543949192
 MonoBehaviour:
@@ -727,8 +727,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!65 &5620550215946916347
-BoxCollider:
+--- !u!136 &4144926518508765163
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -737,9 +737,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2915993, y: 2.448864, z: 1.1619993}
-  m_Center: {x: -0.016200066, y: 1.2618446, z: -0.14579958}
+  m_Radius: 0.62
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!1 &352997538967256116
 GameObject:
   m_ObjectHideFlags: 0

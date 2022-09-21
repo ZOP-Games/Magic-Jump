@@ -5,22 +5,21 @@ using UnityEngine.InputSystem;
 using TMPro;
 
 // ReSharper disable MemberCanBeMadeStatic.Global
-
-[RequireComponent(typeof(PlayerInput),typeof(Rigidbody),typeof(BoxCollider))]
-[RequireComponent(typeof(Animator))]
+//todo: give player to pause menu
+[RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
 
-    //references to some objects in the scene
-    [SerializeField]private MenuScreen menu; //the menu screen
-    [SerializeField]private TextMeshProUGUI fpsText; //the TMP text for displaying FPS
+    //public references to some objects in the scene
+    public MenuScreen Menu { get; set; } //the menu screen
+    public PlayerInput pInput; //playerInput component
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
-    protected override Vector3 AtkSpherePos => new(0, 1, 1);
-    protected override int AtkSphereRadius => 2;
+    protected override Vector3 AtkSpherePos => new(0, 1, 0.5f);
+    protected override int AtkSphereRadius => 1;
     protected override string OwnName { get; set; }
 
     private bool mozog; //bool for checking if the player is moving or not
@@ -28,7 +27,6 @@ public class Player : Entity
     private bool grounded; //bool for checking if the player is on ground or not
     private bool running; //bool for checking if the player is running or not
     private int moveSpeedId; //id of the moveSpeed parameter, for controlling animation speed from script
-    private PlayerInput pInput; //playerInput component
     private Transform tf; //the player's Transform
     private CinemachineVirtualCamera vCam; //the main virtual camera in the scene
 
@@ -132,15 +130,21 @@ public class Player : Entity
         //Debug.Log("menu is " + context.phase);
         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
         if (!context.canceled) return;
+        Menu.Open();
         Debug.Log("Paused");
-        menu.Pause();
+    }
+
+    public void UnPause()
+    {
+        Menu.Close();
+        Debug.Log("Resumed");
     }
 
     public void UnPause(InputAction.CallbackContext context)
     {
         Debug.Log("unpause is " + context.phase);
         if (!context.canceled || pInput.currentActionMap.name == "Player") return;
-        menu.UnPause();
+        Menu.Close();
         Debug.Log("Resumed");
     }
 
@@ -164,12 +168,6 @@ public class Player : Entity
     {
         Debug.Log("player died :(");
         gameObject.SetActive(false);
-    }
-
-    //show FPS so we can see it in builds
-    private void ShowFPS()
-    {
-        fpsText.SetText("FPS: " + 1 / Time.deltaTime); //FPS = 1 / frametime
     }
 
     //jumping thing: checks for being on the ground before jumping
@@ -204,7 +202,7 @@ public class Player : Entity
 
     //Start() runs once when the object is enabled, lots of early game setup goes here
     private void Start()
-    { 
+    {
         moveSpeedId = Animator.StringToHash("moveSpeed"); //setting moveSpeedId
         pInput = GetComponent<PlayerInput>(); //setting PlayerInput
         //PlayerInput setup inside
@@ -228,9 +226,7 @@ public class Player : Entity
             pInput.SwitchCurrentActionMap("Player");
 
             #endregion
-
-        InvokeRepeating(nameof(ShowFPS), 0, 0.5f); //starting to display FPS
-        tag = "Player"; //setting a player, helps w/ identification
+            tag = "Player"; //setting a player, helps w/ identification
         OwnName = name;
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
 
@@ -242,7 +238,7 @@ public class Player : Entity
         
 
             #endregion
-        
+
         anim = GetComponent<Animator>();
         tf = transform;
         vCam = CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera;   //getting virtual camera and setting damping to default value
@@ -252,5 +248,5 @@ public class Player : Entity
     }
 
 
-    }
+}
     

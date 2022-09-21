@@ -1,25 +1,18 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using GameExtensions;
 public abstract class MenuScreen : MonoBehaviour
 {
     protected abstract PlayerInput PInput { get; }
+    protected abstract GameObject GObj { get; }
 
-    protected void Quit()
+    public virtual void Open()
     {
-        GameHelper.Quit();
+        GObj.SetActive(true);
     }
-    public void Pause()
+    public virtual void Close()
     {
-        InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
-        PInput.SwitchCurrentActionMap("UI");
-        Time.timeScale = 0;
+        GObj.SetActive(false);
     }
-    public void UnPause()
-    {
-        Time.timeScale = 1;
-        InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
-        PInput.SwitchCurrentActionMap("Player");
-    }
+    
 }

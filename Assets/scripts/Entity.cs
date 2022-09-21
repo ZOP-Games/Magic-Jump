@@ -7,7 +7,7 @@ using TMPro;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 
-
+[RequireComponent(typeof(Rigidbody),typeof(Animator),typeof(Collider))]
 public abstract class Entity : MonoBehaviour
 {
     // this tells any entity we might have (the player, enemies, etc.) what they all can do
@@ -32,6 +32,7 @@ public abstract class Entity : MonoBehaviour
     protected Rigidbody rb;
     protected Animator anim;
     protected TextMeshPro hpText;
+    protected Collider col;
 
     private Vector3 atkPos; //position of the attack sphere
     //some constants
