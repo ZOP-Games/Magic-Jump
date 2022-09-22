@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody),typeof(Animator),typeof(BoxCollider))]
 [RequireComponent(typeof(LODGroup))]
 public abstract class EnemyBase : Entity
 {

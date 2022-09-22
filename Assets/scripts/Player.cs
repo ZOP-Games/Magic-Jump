@@ -3,17 +3,17 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using GameExtensions;
 
-// ReSharper disable MemberCanBeMadeStatic.Global
-//todo: give player to pause menu
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
+    private Warehouse wh;
 
     //public references to some objects in the scene
-    public MenuScreen Menu { get; set; } //the menu screen
-    public PlayerInput pInput; //playerInput component
+    private MenuScreen Menu { get; set; } //the menu screen
+    public PlayerInput PInput { get; private set; } //playerInput component
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -143,7 +143,7 @@ public class Player : Entity
     public void UnPause(InputAction.CallbackContext context)
     {
         Debug.Log("unpause is " + context.phase);
-        if (!context.canceled || pInput.currentActionMap.name == "Player") return;
+        if (!context.canceled || PInput.currentActionMap.name == "Player") return;
         Menu.Close();
         Debug.Log("Resumed");
     }
@@ -203,30 +203,33 @@ public class Player : Entity
     //Start() runs once when the object is enabled, lots of early game setup goes here
     private void Start()
     {
+        _ = new WarehouseFactory(this);
+        if(WarehouseFactory.Warehouse is not null) wh = WarehouseFactory.Warehouse;
+        Menu = wh.ActiveScreen;
         moveSpeedId = Animator.StringToHash("moveSpeed"); //setting moveSpeedId
-        pInput = GetComponent<PlayerInput>(); //setting PlayerInput
+        PInput = GetComponent<PlayerInput>(); //setting PlayerInput
         //PlayerInput setup inside
 
         #region PiSetup
 
             //setting up PlayerInput so I don't have to do it all the time
-            pInput.actions["Move"].performed += Move;
-            pInput.actions["Move"].canceled += Move;
-            pInput.actions["Jump"].performed += Jump;
-            pInput.actions["Attack"].performed += LightAttack;
-            pInput.actions["Heavy Attack"].performed += HeavyAttack;
-            pInput.actions["Dodge"].performed += Dodge;
-            pInput.actions["Run"].performed += Run;
-            pInput.actions["Run"].canceled += Run;
-            pInput.actions["Spell"].performed += UseSpell;
-            pInput.actions["Change"].performed += ChangeSpell;
-            pInput.actions["Pause"].canceled += Pause;
-            pInput.actions["Exit"].canceled +=  UnPause;
-            pInput.actions["Show Objective"].performed += ShowObjective;
-            pInput.SwitchCurrentActionMap("Player");
+            PInput.actions["Move"].performed += Move;
+            PInput.actions["Move"].canceled += Move;
+            PInput.actions["Jump"].performed += Jump;
+            PInput.actions["Attack"].performed += LightAttack;
+            PInput.actions["Heavy Attack"].performed += HeavyAttack;
+            PInput.actions["Dodge"].performed += Dodge;
+            PInput.actions["Run"].performed += Run;
+            PInput.actions["Run"].canceled += Run;
+            PInput.actions["Spell"].performed += UseSpell;
+            PInput.actions["Change"].performed += ChangeSpell;
+            PInput.actions["Pause"].canceled += Pause;
+            PInput.actions["Exit"].canceled +=  UnPause;
+            PInput.actions["Show Objective"].performed += ShowObjective;
+            PInput.SwitchCurrentActionMap("Player");
 
             #endregion
-            tag = "Player"; //setting a player, helps w/ identification
+        tag = "Player"; //setting a player, helps w/ identification
         OwnName = name;
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
 
