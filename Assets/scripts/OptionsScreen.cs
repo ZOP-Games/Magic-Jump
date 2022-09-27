@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,17 @@ public class OptionsScreen : MenuScreen
 {
     protected override GameObject GObj => gameObject;
     public override bool IsActive { get; protected set; }
+    public override event EventHandler Opened;
+    public override event EventHandler Closed;
 
-    private void Start()
+    public override void Close()
     {
-        if (WarehouseFactory.Warehouse is null) return;
-        wh = WarehouseFactory.Warehouse;
+        Closed?.Invoke(this,EventArgs.Empty);
+        base.Close();
+    }
+
+    private void OnEnable()
+    {
+        Opened?.Invoke(this,EventArgs.Empty);
     }
 }

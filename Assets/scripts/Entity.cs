@@ -31,7 +31,6 @@ public abstract class Entity : MonoBehaviour
     protected Rigidbody rb;
     protected Animator anim;
     protected TextMeshPro hpText;
-    protected Collider col;
 
     private Vector3 atkPos; //position of the attack sphere
     //some constants

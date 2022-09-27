@@ -1,12 +1,14 @@
+using System;
 using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 public abstract class MenuScreen : MonoBehaviour
 {
     protected abstract GameObject GObj { get; }
-    protected Warehouse wh;
     public abstract bool IsActive { get; protected set; }
-    
+    public abstract event EventHandler Opened;
+    public abstract event EventHandler Closed;
 
     public virtual void Open()
     {

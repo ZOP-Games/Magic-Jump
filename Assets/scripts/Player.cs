@@ -3,17 +3,15 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-using GameExtensions;
-
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
-    private Warehouse wh;
-
+    //todo: revisions for menu<->Player comms
     //public references to some objects in the scene
-    private MenuScreen Menu { get; set; } //the menu screen
+    [SerializeField]private MenuScreen menu; //the menu screen
     public PlayerInput PInput { get; private set; } //playerInput component
+    private MenuScreen pause;
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -130,13 +128,13 @@ public class Player : Entity
         //Debug.Log("menu is " + context.phase);
         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
         if (!context.canceled) return;
-        Menu.Open();
+        menu.Open();
         Debug.Log("Paused");
     }
 
     public void UnPause()
     {
-        Menu.Close();
+        menu.Close();
         Debug.Log("Resumed");
     }
 
@@ -144,7 +142,7 @@ public class Player : Entity
     {
         Debug.Log("unpause is " + context.phase);
         if (!context.canceled || PInput.currentActionMap.name == "Player") return;
-        Menu.Close();
+        menu.Close();
         Debug.Log("Resumed");
     }
 
@@ -173,20 +171,13 @@ public class Player : Entity
     //jumping thing: checks for being on the ground before jumping
     protected void OnCollisionStay(Collision collision)
     {
-        if (collision.collider is TerrainCollider && !grounded)
-        {
-
-            grounded = true; //if the player is touching the ground, they can jump
-        }
+        if (collision.collider is TerrainCollider && !grounded) grounded = true;    //if the player is touching the ground, they can jump
 
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.collider is TerrainCollider && grounded)
-        {
-            grounded = false; //as soon as the player leaves the ground, they can't jump
-        }
+        if (collision.collider is TerrainCollider && grounded) grounded = false;    //as soon as the player leaves the ground, they can't jump
     }
 
     //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
@@ -203,9 +194,13 @@ public class Player : Entity
     //Start() runs once when the object is enabled, lots of early game setup goes here
     private void Start()
     {
-        _ = new WarehouseFactory(this);
-        if(WarehouseFactory.Warehouse is not null) wh = WarehouseFactory.Warehouse;
-        Menu = wh.ActiveScreen;
+        pause = menu;
+        menu.Opened += (sender, _) =>
+        {
+            menu = sender as MenuScreen;
+            Debug.Log(sender + " has opened and is the current menu");
+        };
+        menu.Closed += (_, _) => menu = pause;
         moveSpeedId = Animator.StringToHash("moveSpeed"); //setting moveSpeedId
         PInput = GetComponent<PlayerInput>(); //setting PlayerInput
         //PlayerInput setup inside
@@ -232,7 +227,7 @@ public class Player : Entity
         tag = "Player"; //setting a player, helps w/ identification
         OwnName = name;
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
-
+        //Rigibody setup inside
         #region rbSetup
 
         rb.drag = 0.1f;
