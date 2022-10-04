@@ -5,19 +5,18 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 public abstract class MenuScreen : MonoBehaviour
 {
-    protected abstract GameObject GObj { get; }
-    public abstract bool IsActive { get; protected set; }
-    public abstract event EventHandler Opened;
-    public abstract event EventHandler Closed;
+    protected GameObject GObj => gameObject;
+    protected MenuController Controller => MenuController.GetInstance();
+    protected MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
 
     public virtual void Open()
     {
-        IsActive = true;
+        Controller.ActiveScreen = this;
         GObj.SetActive(true);
     }
     public virtual void Close()
     {
-        IsActive = false;
+        Controller.ActiveScreen = Parent;
         GObj.SetActive(false);
     }
 

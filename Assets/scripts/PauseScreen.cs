@@ -13,10 +13,6 @@ public class PauseScreen : MenuScreen
 {
     private static PlayerInput PInput => PlayerInput.GetPlayerByIndex(0);
     private EventSystem ES => EventSystem.current;
-    protected override GameObject GObj => gameObject;
-    public override bool IsActive { get; protected set; }
-    public override event EventHandler Opened;
-    public override event EventHandler Closed;
 
     public void Quit()
     {
@@ -25,8 +21,7 @@ public class PauseScreen : MenuScreen
 
     public override void Close()
     {
-        Closed?.Invoke(this,EventArgs.Empty);
-        IsActive = false;
+        Controller.ActiveScreen = Parent;
         GObj.SetActive(false);
         Time.timeScale = 1;
         InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
@@ -36,13 +31,11 @@ public class PauseScreen : MenuScreen
 
     public override void Open()
     {
-        IsActive = true;
+        Controller.ActiveScreen = this;
         InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
         PInput.SwitchCurrentActionMap("UI");
         Time.timeScale = 0;
         GObj.SetActive(true);
         ES.SetSelectedGameObject(GetComponentInChildren<Button>().gameObject);
-        Debug.Log(ES.currentSelectedGameObject.name);
-        Opened?.Invoke(this,EventArgs.Empty);
     }
 }
