@@ -4,6 +4,9 @@ using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
+
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
 {
@@ -12,14 +15,15 @@ public class Player : Entity
     //public references to some objects in the scene
     //todo: player<->menus comms
     public PlayerInput PInput { get; private set; } //playerInput component
-    private static MenuController Menus => MenuController.Controller;
+    private static MenuController Menus => MenuController.Controller; 
+    [FormerlySerializedAs("sdsEvent")] public UnityEvent sceneStart = new();
+
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
     protected override int MovingPmHash => Animator.StringToHash("moving");
     protected override Vector3 AtkSpherePos => new(0, 1, 0.5f);
     protected override int AtkSphereRadius => 1;
-    protected override string OwnName { get; set; }
 
     private bool mozog; //bool for checking if the player is moving or not
     private Vector2 mPos; //Vector2 containing joystck input data
@@ -133,18 +137,18 @@ public class Player : Entity
         Debug.Log("Paused");
     }
 
-    public void UnPause()
+    public void CloseMenu()
     {
         Menus.CloseActive();
-        Debug.Log("Resumed");
+        Debug.Log("Closed active menu");
     }
 
-    public void UnPause(InputAction.CallbackContext context)
+    public void CloseMenu(InputAction.CallbackContext context)
     {
         Debug.Log("unpause is " + context.phase);
         if (!context.canceled || PInput.currentActionMap.name == "Player") return;
         Menus.CloseActive();
-        Debug.Log("Resumed");
+        Debug.Log("Closed active menu");
     }
 
     public void ShowObjective(InputAction.CallbackContext context)
@@ -213,13 +217,12 @@ public class Player : Entity
             PInput.actions["Spell"].performed += UseSpell;
             PInput.actions["Change"].performed += ChangeSpell;
             PInput.actions["Pause"].canceled += Pause;
-            PInput.actions["Exit"].canceled +=  UnPause;
+            PInput.actions["Exit"].canceled +=  CloseMenu;
             PInput.actions["Show Objective"].performed += ShowObjective;
             PInput.SwitchCurrentActionMap("Player");
 
             #endregion
         tag = "Player"; //setting a player, helps w/ identification
-        OwnName = name;
         rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform
         //Rigibody setup inside
         #region rbSetup
@@ -237,8 +240,8 @@ public class Player : Entity
         if (vCam != null) vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
         hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
         hpText.SetText("HP: 100");
-        
+        sceneStart.AddListener(Menus.SetPause);
+        sceneStart.Invoke();
     }
-
 }
     

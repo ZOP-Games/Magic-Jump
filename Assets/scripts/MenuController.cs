@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+// ReSharper disable UseNullPropagation
 
 public class MenuController : MonoBehaviour
 {
 
         [CanBeNull] public MenuScreen ActiveScreen { get; set; }
-        [SerializeField]private MenuScreen pause;
+        private MenuScreen pause;
         public static MenuController Controller => GetInstance();
 
         public void OpenPause()
@@ -18,15 +20,20 @@ public class MenuController : MonoBehaviour
 
         public void CloseActive()
         {
-            ActiveScreen!.Close();
+            if(ActiveScreen is not null)ActiveScreen.Close();
         }
 
-        public static MenuController GetInstance()
+        private static MenuController GetInstance()
         {
-            MenuController controller = null;
-            _ = SceneManager.GetActiveScene().GetRootGameObjects().First(o => o.TryGetComponent(out controller));
+            var controller = FindObjectsOfType<MenuController>().FirstOrDefault();
+            if (controller is null) Debug.LogError("u need a menuController u idoit");
             return controller;
         }
 
-    }
+        public void SetPause()
+        {
+            pause = FindObjectOfType<PauseScreen>(true);
+            if(pause is null) Debug.LogError("where is pause??");
+        }
+}
 

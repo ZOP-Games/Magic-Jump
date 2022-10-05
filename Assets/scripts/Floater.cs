@@ -10,7 +10,6 @@ public class Floater : EnemyBase
     protected override int MovingPmHash => Animator.StringToHash("moving");
     protected override Vector3 AtkSpherePos => Vector3.zero;
     protected override int AtkSphereRadius => 3;
-    protected override string OwnName { get; set; }
     protected override Vector3 ForwardDirection => Vector3.forward;
 
     protected override float Height => 3;
@@ -56,7 +55,6 @@ public class Floater : EnemyBase
         //setting the attack stat for the enemy and getting some components from the gameobject
         AtkRange = 10;
         AtkPower = 1;
-        OwnName = name;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         hpText = GetComponentInChildren<TextMeshPro>();

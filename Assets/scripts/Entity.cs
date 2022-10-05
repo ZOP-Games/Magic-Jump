@@ -25,8 +25,7 @@ public abstract class Entity : MonoBehaviour
     protected abstract int MovingPmHash { get; }
     protected abstract Vector3 AtkSpherePos { get;} //position of the Enitity's hitbox
     protected abstract int AtkSphereRadius { get; } //the radius of the hitbox sphere
-    protected abstract string OwnName { get; set; } //name of the Entity
-
+    private string OwnName => name; //name of the Entity
     //some components
     protected Rigidbody rb;
     protected Animator anim;
