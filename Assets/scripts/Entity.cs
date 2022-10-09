@@ -70,7 +70,7 @@ public abstract class Entity : MonoBehaviour
         Gizmos.DrawWireSphere(transform.localPosition + AtkSpherePos,AtkSphereRadius);
     }
 
-    protected abstract void Die();
+    public abstract void Die();
 
     //common move method for all Entities
     protected void Move(Vector3 direction, int maxSpeed = 5)

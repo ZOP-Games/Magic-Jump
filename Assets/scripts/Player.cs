@@ -167,7 +167,7 @@ public class Player : Entity
     }
 
 
-    protected override void Die()
+    public override void Die()
     {
         Debug.Log("player died :(");
         gameObject.SetActive(false);
