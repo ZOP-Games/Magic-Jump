@@ -173,6 +173,18 @@ public class Player : Entity
         gameObject.SetActive(false);
     }
 
+    public override void Stun()
+    {
+        base.Stun();
+        PInput.DeactivateInput();
+    }
+
+    protected override void UnStun()
+    {
+        PInput.ActivateInput();
+        base.UnStun();
+    }
+
     //jumping thing: checks for being on the ground before jumping
     protected void OnCollisionStay(Collision collision)
     {

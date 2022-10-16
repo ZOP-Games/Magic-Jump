@@ -16,7 +16,6 @@ public abstract class EnemyBase : Entity
     private const float TrackInterval = .1f;
     private const float LookAtWeight = 0.1f;
     private const float LookAtRadius = 1;
-    private const int StunTime = 3;
     //death logic, just destroys itself
     public override void Die()
     {
@@ -76,12 +75,16 @@ public abstract class EnemyBase : Entity
         ctg.RemoveMember(target);
     }
 
-    public void Stun()
+    public override void Stun()
     {
-        rb.isKinematic = true;
         CancelInvoke(nameof(TrackPlayer));
-        InvokeRepeating(nameof(TrackPlayer),StunTime,TrackInterval);
-        rb.isKinematic = false;
+        base.Stun();
+    }
+
+    protected override void UnStun()
+    {
+        base.UnStun();
+        InvokeRepeating(nameof(TrackPlayer),0,TrackInterval);
     }
 
     protected void Start()

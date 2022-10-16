@@ -36,6 +36,7 @@ public abstract class Entity : MonoBehaviour
     protected const int WalkSpeed = 5;
     protected const int RunSpeed = 15;
     protected const int MoveForceMultiplier = 25;
+    protected const int StunTime = 3;
     //damage logic, the dealt damage is substracted from Enitity's HP
     public void TakeDamage(int amount)
     {
@@ -100,4 +101,14 @@ public abstract class Entity : MonoBehaviour
         
     }
 
+    public virtual void Stun()
+    {
+        rb.isKinematic = true;
+        Invoke(nameof(UnStun),StunTime);
+    }
+
+    protected virtual void UnStun()
+    {
+        rb.isKinematic = false;
+    }
 }
