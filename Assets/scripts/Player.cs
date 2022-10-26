@@ -13,10 +13,10 @@ public class Player : Entity
     // this is for things unique to the player (controls, spells, etc.)
 
     //public references to some objects in the scene
-    //todo: player<->menus comms
     public PlayerInput PInput { get; private set; } //playerInput component
-    private static MenuController Menus => MenuController.Controller; 
+    private MenuController menus;
     [FormerlySerializedAs("sdsEvent")] public UnityEvent sceneStart = new();
+    private readonly SpellManager spells = SpellManager.Instance;
 
 
     //setting Entity properties, for more info -> see Entity
@@ -133,13 +133,13 @@ public class Player : Entity
         //Debug.Log("menu is " + context.phase);
         // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
         if (!context.canceled) return;
-        Menus.OpenPause();
+        menus.OpenPause();
         Debug.Log("Paused");
     }
 
     public void CloseMenu()
     {
-        Menus.CloseActive();
+        menus.CloseActive();
         Debug.Log("Closed active menu");
     }
 
@@ -147,7 +147,7 @@ public class Player : Entity
     {
         Debug.Log("unpause is " + context.phase);
         if (!context.canceled || PInput.currentActionMap.name == "Player") return;
-        Menus.CloseActive();
+        menus.CloseActive();
         Debug.Log("Closed active menu");
     }
 
@@ -252,8 +252,7 @@ public class Player : Entity
         if (vCam != null) vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
         hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
         hpText.SetText("HP: 100");
-        sceneStart.AddListener(Menus.SetPause);
-        sceneStart.Invoke();
+        menus = MenuController.Controller;
     }
 }
     

@@ -1805,7 +1805,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5988868112066b4f9be04a47516d57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pause: {fileID: 4703012525571810105, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
 --- !u!4 &2016771231
 Transform:
   m_ObjectHideFlags: 0
@@ -1860,7 +1859,7 @@ MonoBehaviour:
   m_MoveAction: {fileID: -1488257409336013611, guid: 06fc5c275387bc847adb6c11a7246b44, type: 3}
   m_SubmitAction: {fileID: -4022929013898869409, guid: 06fc5c275387bc847adb6c11a7246b44, type: 3}
   m_CancelAction: {fileID: 8531433489749287818, guid: 06fc5c275387bc847adb6c11a7246b44, type: 3}
-  m_LeftClickAction: {fileID: -4022929013898869409, guid: 06fc5c275387bc847adb6c11a7246b44, type: 3}
+  m_LeftClickAction: {fileID: 3233804807501616223, guid: 06fc5c275387bc847adb6c11a7246b44, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
   m_ScrollWheelAction: {fileID: 0}
