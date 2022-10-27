@@ -41,7 +41,6 @@ public class MainMenu : MenuScreen
         //PlayerPrefs.DeleteAll();
         Open();
         ES.SetSelectedGameObject(PlayerPrefs.HasKey("game_progress") ? GetComponentsInChildren<Button>()[1].gameObject : GetComponentInChildren<Button>().gameObject);
-        SceneManager.sceneLoaded += Controller.SetPause;
         DontDestroyOnLoad(Controller.gameObject);
     }
 }

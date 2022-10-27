@@ -3,7 +3,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
@@ -31,10 +30,8 @@ public class MenuController : MonoBehaviour
             return controller;
         }
 
-        public void SetPause(Scene newScene,LoadSceneMode lsm)
+        public void Start()
         {
-            _ = lsm;
-            if (newScene.buildIndex != 1) return;
             pause = FindObjectOfType<PauseScreen>(true);
             if(pause is null) Debug.LogError("where is pause??");
         }

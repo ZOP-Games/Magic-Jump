@@ -15,8 +15,6 @@ public class Player : Entity
     //public references to some objects in the scene
     public PlayerInput PInput { get; private set; } //playerInput component
     private MenuController menus;
-    [FormerlySerializedAs("sdsEvent")] public UnityEvent sceneStart = new();
-    private readonly SpellManager spells = SpellManager.Instance;
 
 
     //setting Entity properties, for more info -> see Entity

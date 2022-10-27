@@ -10,7 +10,8 @@ namespace GameExtensions
     {
         public List<IGrouping<SpellType,ISpell>> PlayerSpells { get; }
         public List<IGrouping<SpellType,ISpell>> EnemySpells { get; }
-        public static SpellManager Instance => new();
+        public static SpellManager Instance { get; } = new();
+
 
         public SpellManager()
         {

@@ -8,35 +8,35 @@ namespace GameExtensions
     public static class GameHelper
     {
         //enum for vector comparing
-        public enum Operation
+        public enum VectorCompareOperation
         {
             Equal = 0,
             GreaterOrEqual = 1,
             LessOrEqual = 2
         }
 
-        //vector comparer, decides whether all axes of the vector are <Operation> to the specified value
+        //vector comparer, decides whether all axes of the vector are <VectorCompareOperation> to the specified value
         //this an extension method, you can call it by <A vector3 object>.CompareWithValue(...)
-        public static bool CompareWithValue(this Vector3 vector, float value, Operation operation)
+        public static bool CompareWithValue(this Vector3 vector, float value, VectorCompareOperation vectorCompareOperation)
         {
-            return operation switch
+            return vectorCompareOperation switch
             {
-                Operation.Equal => Mathf.Approximately(vector.x, value) || Mathf.Approximately(vector.y, value) ||
+                VectorCompareOperation.Equal => Mathf.Approximately(vector.x, value) || Mathf.Approximately(vector.y, value) ||
                                    Mathf.Approximately(vector.z, value),
-                Operation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0 ||
+                VectorCompareOperation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0 ||
                                             (vector.z - value) <= 0,
-                Operation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0 || (vector.z - value) >= 0,
+                VectorCompareOperation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0 || (vector.z - value) >= 0,
                 _ => false
             };
         }
         //Vector2 overload of CompareWithValue above, works the same but w/ Vector2-s
-        public static bool CompareWithValue(this Vector2 vector, float value, Operation operation)
+        public static bool CompareWithValue(this Vector2 vector, float value, VectorCompareOperation vectorCompareOperation)
         {
-            return operation switch
+            return vectorCompareOperation switch
             {
-                Operation.Equal => Mathf.Approximately(vector.x, value) || Mathf.Approximately(vector.y, value),
-                Operation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0,
-                Operation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0,
+                VectorCompareOperation.Equal => Mathf.Approximately(vector.x, value) || Mathf.Approximately(vector.y, value),
+                VectorCompareOperation.GreaterOrEqual => (vector.x - value) <= 0 || (vector.y - value) <= 0,
+                VectorCompareOperation.LessOrEqual => (vector.x - value) >= 0 || (vector.y - value) >= 0,
                 _ => false
             };
         }
