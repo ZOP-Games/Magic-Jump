@@ -11,7 +11,7 @@ namespace GameExtensions
         public string Description { get; }
         public byte Level { get; }
         public int Power => 0;
-        public bool IsUsedByPlayer { get; }
+        public bool Unlocked { get; }
 
         public EnemyStunSpell(string name, SpellType type, string description, byte level, bool isUsedByPlayer)
         {
@@ -19,13 +19,13 @@ namespace GameExtensions
             Type = type;
             Description = description;
             Level = level;
-            IsUsedByPlayer = isUsedByPlayer;
+            Unlocked = isUsedByPlayer;
         }
 
         public  void Use(IEnumerable<Entity> targets, int amount = 1)
         {
             var targetList = targets.ToList();
-            switch (IsUsedByPlayer)
+            switch (Unlocked)
             {
                 case true:
                     targetList = targetList.Where(e => e is EnemyBase).ToList();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,20 +50,26 @@ public abstract class Entity : MonoBehaviour
     }
 
     // ReSharper disable once VirtualMemberNeverOverridden.Global
-    protected virtual void Attack(Vector3 spherePosOffset,int radius)
+    protected virtual void Attack()
     {
         //docs here
         anim.SetTrigger(AttackingPmHash);
-        atkPos = transform.localPosition + spherePosOffset; //position of the hitbox
-        var colliders = new Collider[16];   //an array of colliders we store hit objects in
-        Physics.OverlapSphereNonAlloc(atkPos, radius, colliders); //creating the hitbox sphere and colllecting colliders inside
-        var collidersList = colliders.ToList();
-        collidersList.RemoveAll(c => c is null || !c.TryGetComponent(out Entity controller) || controller == this); //removing non-entities and the attacking Entity itself
+        var collidersList = GetEntities(AtkSpherePos,AtkSphereRadius);
         collidersList.ForEach(c =>
         {
             //Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));
             c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
         });
+    }
+
+    protected List<Entity> GetEntities(Vector3 spherePosOffset,int radius)
+    {
+        atkPos = transform.localPosition + spherePosOffset; //position of the hitbox
+        var colliders = new Collider[16];   //an array of colliders we store hit objects in
+        Physics.OverlapSphereNonAlloc(atkPos, radius, colliders);   //creating the hitbox sphere and colllecting colliders inside
+        var entities = colliders.Where(c => c is not null).Select(c => c.GetComponent<Entity>()).ToList();
+        entities.RemoveAll(c => c is null || c == this);  //removing nulls and the attacking Entity itself
+        return entities;
     }
 
     //draws the hitbox sphere in scene view

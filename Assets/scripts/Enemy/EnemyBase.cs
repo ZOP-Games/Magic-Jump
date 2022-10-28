@@ -45,7 +45,7 @@ public abstract class EnemyBase : Entity
             CancelInvoke(nameof(TrackPlayer));
             anim.SetBool(MovingPmHash, false);
             //Debug.Log("enemy is attacking");
-            Attack(AtkSpherePos,AtkSphereRadius);
+            Attack();
             
         }
     }

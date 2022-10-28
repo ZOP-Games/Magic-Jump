@@ -11,14 +11,14 @@ namespace GameExtensions
         public string Description { get; }
         public byte Level { get; }
         public int Power => int.MaxValue;
-        public bool IsUsedByPlayer { get; }
+        public bool Unlocked { get; }
         public KillSpell(string name,SpellType type,string description,byte lvl,bool isUsedByPlayer)
         {
             Name = name;
             Type = type;
             Description = description;
             Level = lvl;
-            IsUsedByPlayer = isUsedByPlayer;
+            Unlocked = isUsedByPlayer;
 
         }
 

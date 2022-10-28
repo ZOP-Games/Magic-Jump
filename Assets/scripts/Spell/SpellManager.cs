@@ -11,7 +11,7 @@ namespace GameExtensions
         public List<IGrouping<SpellType,ISpell>> PlayerSpells { get; }
         public List<IGrouping<SpellType,ISpell>> EnemySpells { get; }
         public static SpellManager Instance { get; } = new();
-
+        public ISpell SelectedSpell { get; set; }
 
         public SpellManager()
         {
@@ -29,6 +29,7 @@ namespace GameExtensions
                 new KillSpell("evil Thunder Shock - levle 3",SpellType.Lightning,"fak u but lvl 3",3,false)
 
             }.GroupBy(s => s.Type).ToList();
+            SelectedSpell = PlayerSpells.First().First();
         }
 
 

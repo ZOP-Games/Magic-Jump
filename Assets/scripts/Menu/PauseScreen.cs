@@ -8,7 +8,6 @@ using GameExtensions;
 
 public class PauseScreen : MenuScreen
 {
-    private static PlayerInput PInput => PlayerInput.GetPlayerByIndex(0);
 
     public void Quit()
     {

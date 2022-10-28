@@ -15,7 +15,8 @@ public class Player : Entity
     //public references to some objects in the scene
     public PlayerInput PInput { get; private set; } //playerInput component
     private MenuController menus;
-
+    private readonly SpellManager spells = SpellManager.Instance;
+    private SpellScreen spellScreen;
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -69,7 +70,7 @@ public class Player : Entity
     {
         if (context.performed)
         {
-            Attack(AtkSpherePos,AtkSphereRadius); //see Entity.Attack()
+            Attack(); //see Entity.Attack()
         }
     }
 
@@ -108,22 +109,18 @@ public class Player : Entity
 
     public void UseSpell(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            //not much here
-            //play animation
-            //apply effects
-            Debug.Log("Use Spell");
-        }
+        if (!context.performed) return;
+        //play animation
+        var spell = spells.SelectedSpell;
+        spell.Use(GetEntities(AtkSpherePos,AtkSphereRadius));
+        Debug.Log("Use Spell: " + spell);
     }
 
     public void ChangeSpell(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            //not much here
-            Debug.Log("Change Spell");
-        }
+        if (!context.performed) return;
+        spellScreen.Open();
+        Debug.Log("Change Spell to: " + spells.SelectedSpell);
     }
 
     public void Pause(InputAction.CallbackContext context)
@@ -251,6 +248,7 @@ public class Player : Entity
         hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
         hpText.SetText("HP: 100");
         menus = MenuController.Controller;
+        spellScreen = FindObjectOfType<SpellScreen>(true);
     }
 }
     

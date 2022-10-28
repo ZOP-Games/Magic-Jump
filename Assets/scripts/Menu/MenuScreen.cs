@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 // ReSharper disable UseNullPropagation
 
@@ -7,13 +9,15 @@ public abstract class MenuScreen : MonoBehaviour
 {
     protected GameObject GObj => gameObject;
     protected static MenuController Controller => MenuController.Controller;
-    public MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
+    [CanBeNull] public MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
     protected static EventSystem ES => EventSystem.current;
+    protected static PlayerInput PInput => PlayerInput.GetPlayerByIndex(0);
 
     public virtual void Open()
     {
         Controller.ActiveScreen = this;
         GObj.SetActive(true);
+        if(Parent is null) PInput.SwitchCurrentActionMap("UI");
         var firstButton = GetComponentInChildren<Button>();
         if(firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
     }
@@ -22,6 +26,7 @@ public abstract class MenuScreen : MonoBehaviour
         Controller.ActiveScreen = Parent;
         if(Parent is not null) Parent.Open();
         GObj.SetActive(false);
+        if(Parent is null) PInput.SwitchCurrentActionMap("Player");
     }
 
 }

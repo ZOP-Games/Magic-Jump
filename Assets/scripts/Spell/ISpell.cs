@@ -12,7 +12,7 @@ namespace GameExtensions
         public string Description { get; }
         public byte Level { get; }
         public int Power { get; }
-        public bool IsUsedByPlayer { get; }
+        public bool Unlocked { get; }
         public void Use(IEnumerable<Entity> targets,int amount = 1);
     }
 
