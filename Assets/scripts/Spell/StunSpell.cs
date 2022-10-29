@@ -6,6 +6,7 @@ namespace GameExtensions
 {
     public class EnemyStunSpell : ISpell
     {
+        public float TargetAmount { get; }
         public string Name { get; }
         public SpellType Type {get; }
         public string Description { get; }
@@ -13,30 +14,21 @@ namespace GameExtensions
         public int Power => 0;
         public bool Unlocked { get; }
 
-        public EnemyStunSpell(string name, SpellType type, string description, byte level, bool isUsedByPlayer)
+        public EnemyStunSpell(string name, SpellType type, string description, byte level, bool isUsedByPlayer,float targetAmount)
         {
             Name = name;
             Type = type;
             Description = description;
             Level = level;
             Unlocked = isUsedByPlayer;
+            TargetAmount = targetAmount;
         }
-
-        public  void Use(IEnumerable<Entity> targets, int amount = 1)
+        public void Use(IEnumerable<Entity> targets)
         {
-            var targetList = targets.ToList();
-            switch (Unlocked)
-            {
-                case true:
-                    targetList = targetList.Where(e => e is EnemyBase).ToList();
-                    foreach (var entity in targetList.Skip(Random.Range(0,targetList.Count-(amount+1))).Take(amount)) entity.Stun();
-                    break;
-                case false:
-                    var player = targetList.FirstOrDefault(e => e is Player);
-                    if (player != null) player.Stun();
-                    break;
-            }
-            
+            if (!Unlocked) throw new SpellNotUnlockedException();
+            var tf = this as ISpell;
+            var realTargets = tf.GetRealTargets(targets);
+            foreach (var target in realTargets) target.Stun();
         }
     }
 }

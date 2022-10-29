@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace GameExtensions
 {
     public class DamageSpell : ISpell
     {
+        
+
+        public float TargetAmount { get; }
         public string Name { get; }
         public SpellType Type { get; }
         public string Description { get; }
@@ -15,7 +18,7 @@ namespace GameExtensions
         public int Power { get; }
         public bool Unlocked { get;}
 
-        public DamageSpell(string name, SpellType type, string description, byte lvl, int power, bool isUsedByPlayer)
+        public DamageSpell(string name, SpellType type, string description, byte lvl, int power, bool isUsedByPlayer,float targetAmount)
         {
             Name = name;
             Type = type;
@@ -23,23 +26,18 @@ namespace GameExtensions
             Level = lvl;
             Power = power;
             Unlocked = isUsedByPlayer;
+            TargetAmount = targetAmount;
         }
 
-        public void Use(IEnumerable<Entity> targets,int amount = 1)
+        public void Use(IEnumerable<Entity> targets)
         {
-            var targetList = targets.ToList();
-            Debug.Log("got " + targetList.Count + " enemies");
-            switch (Unlocked)
-            {
-                case true:
-                    targetList = targetList.Where(e => e is EnemyBase).ToList();
-                    foreach (var entity in targetList.Skip(Random.Range(0,targetList.Count-(amount+1))).Take(amount)) entity.TakeDamage(Power);
-                    break;
-                case false:
-                    Debug.LogException(new SpellNotUnlockedException());
-                    break;
-            }
+            if (!Unlocked) throw new SpellNotUnlockedException();
+            var tf = this as ISpell;
+            var realTargets = tf.GetRealTargets(targets);
+            foreach (var target in realTargets) target.TakeDamage(Power);
         }
+
+        
     }
 
     internal class SpellNotUnlockedException : Exception

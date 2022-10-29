@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -13,7 +14,25 @@ namespace GameExtensions
         public byte Level { get; }
         public int Power { get; }
         public bool Unlocked { get; }
-        public void Use(IEnumerable<Entity> targets,int amount = 1);
+
+        public void Use(IEnumerable<Entity> targets);
+
+        public IEnumerable<Entity> GetRealTargets(IEnumerable<Entity> targets)
+        {
+            var targetList = targets.ToList();
+            targetList = targetList.Where(e => e is EnemyBase).ToList();
+            if (TargetAmount < 1)
+            {
+                var realAmount = (int)(targetList.Count * TargetAmount);
+                return targetList.Skip(Random.Range(0, (targetList.Count + 1) - realAmount)).Take(realAmount);
+            }
+            else
+            {
+                var realAmount = (int)TargetAmount;
+                return targetList.Skip(Random.Range(0, (targetList.Count + 1) - realAmount)).Take(realAmount);
+            }
+        }
+        public float TargetAmount { get; }
     }
 
     public enum SpellType

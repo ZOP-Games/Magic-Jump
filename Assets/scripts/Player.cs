@@ -1,11 +1,8 @@
-using System.Linq;
 using Cinemachine;
 using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity

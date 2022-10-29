@@ -111,11 +111,13 @@ public abstract class Entity : MonoBehaviour
     public virtual void Stun()
     {
         rb.isKinematic = true;
+        hpText.text += "\nstun";
         Invoke(nameof(UnStun),StunTime);
     }
 
     protected virtual void UnStun()
     {
         rb.isKinematic = false;
+        hpText.SetText(hpText.text.Replace("stun",""));
     }
 }

@@ -5,28 +5,30 @@ using UnityEngine;
 using GameExtensions;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Events;
 
 public class SpellScreen : MenuScreen
 {
     private readonly SpellManager spells = SpellManager.Instance;
     private GameObject button;
-    
+    private const int MinWidth = 50;
 
     private void Start()
     {
-        button = GetComponentInChildren<Button>().gameObject;
+        button = GetComponentInChildren<Button>(true).gameObject;
         foreach (var s in spells.PlayerSpells.SelectMany(type => type))
         {
 
             var obj = Instantiate(button, GetComponentInChildren<GridLayoutGroup>().transform);
+            obj.SetActive(true);
             obj.GetComponent<Button>().onClick.AddListener(() =>
             {
                 spells.SelectedSpell = s;
                 Debug.Log("Selected spell: " + spells.SelectedSpell);
-            }); //todo:find a way to select a spell
-            obj.GetComponent<LayoutElement>().minWidth = 50;
+            });
+            obj.GetComponent<Button>().navigation = Navigation.defaultNavigation;
+            obj.GetComponent<LayoutElement>().minWidth = MinWidth;
             obj.GetComponentInChildren<TextMeshProUGUI>().SetText(s.Name);
         }
+        
     }
 }
