@@ -8,21 +8,21 @@ namespace GameExtensions
 {
     public class SpellManager
     {
-        public List<IGrouping<SpellType,ISpell>> PlayerSpells { get; }
-        public List<IGrouping<SpellType,ISpell>> EnemySpells { get; }
+        public HashSet<IGrouping<SpellType, Spell>> PlayerSpells { get; }
+        public HashSet<IGrouping<SpellType, Spell>> EnemySpells { get; }
         public static SpellManager Instance { get; } = new();
-        public ISpell SelectedSpell { get; set; }
+        public Spell SelectedSpell { get; set; }
 
         public SpellManager()
         {
-            PlayerSpells = new List<ISpell>
+            PlayerSpells = new List<Spell>
             {
                 new EnemyStunSpell("Thunder Shock - lvl 1",SpellType.Lightning,"fak u but lvl 1",1,true,1),
                 new EnemyStunSpell("Thunder Shock - lvl 2",SpellType.Lightning,"fak u but lvl 2",2,true,0.5f),
                 new KillSpell("Thunder Shock - levle 3",SpellType.Lightning,"fak u but lvl 3",3,true,0.5f)
 
-            }.GroupBy(s => s.Type).ToList();
-            //EnemySpells = new List<ISpell>    todo:do something w/ enemy spells
+            }.GroupBy(s => s.Type).ToHashSet();
+            //EnemySpells = new List<Spell>    todo:do something w/ enemy spells
             /*{
                 new DamageSpell(" evilThunder Shock - Levle 2", SpellType.Lightning, "fak u", 2, 20, false),
                 new EnemyStunSpell("evil Thunder Shock - lvl 1",SpellType.Lightning,"fak u but lvl 1",1,false),

@@ -6,21 +6,22 @@ using UnityEngine;
 
 namespace GameExtensions
 {
-    public interface ISpell
+    public abstract class Spell
     {
-        public string Name { get; }
-        public SpellType Type { get;}
-        public string Description { get; }
-        public byte Level { get; }
-        public int Power { get; }
-        public bool Unlocked { get; }
+        public abstract string Name { get; }
+        public abstract SpellType Type { get; }
+        public abstract string Description { get; }
+        public abstract byte Level { get; }
+        public abstract int Power { get; }
+        public abstract bool Unlocked { get; }
+        protected abstract float TargetAmount { get; }
+        public abstract void Use(IEnumerable<Entity> targets);
 
-        public void Use(IEnumerable<Entity> targets);
-
-        public IEnumerable<Entity> GetRealTargets(IEnumerable<Entity> targets)
+        protected IEnumerable<Entity> GetRealTargets(IEnumerable<Entity> targets)
         {
             var targetList = targets.ToList();
             targetList = targetList.Where(e => e is EnemyBase).ToList();
+            Debug.Log("I have " + targetList.Count + " targets");
             if (TargetAmount < 1)
             {
                 var realAmount = (int)(targetList.Count * TargetAmount);
@@ -32,7 +33,6 @@ namespace GameExtensions
                 return targetList.Skip(Random.Range(0, (targetList.Count + 1) - realAmount)).Take(realAmount);
             }
         }
-        public float TargetAmount { get; }
     }
 
     public enum SpellType

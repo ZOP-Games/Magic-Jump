@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace GameExtensions
 {
-    public class EnemyStunSpell : ISpell
+    public class EnemyStunSpell : Spell
     {
-        public float TargetAmount { get; }
-        public string Name { get; }
-        public SpellType Type {get; }
-        public string Description { get; }
-        public byte Level { get; }
-        public int Power => 0;
-        public bool Unlocked { get; }
+        protected override float TargetAmount { get; }
+        public override string Name { get; }
+        public override SpellType Type {get; }
+        public override string Description { get; }
+        public override byte Level { get; }
+        public override int Power => 0;
+        public override bool Unlocked { get; }
 
         public EnemyStunSpell(string name, SpellType type, string description, byte level, bool isUsedByPlayer,float targetAmount)
         {
@@ -23,11 +23,10 @@ namespace GameExtensions
             Unlocked = isUsedByPlayer;
             TargetAmount = targetAmount;
         }
-        public void Use(IEnumerable<Entity> targets)
+        public override void Use(IEnumerable<Entity> targets)
         {
             if (!Unlocked) throw new SpellNotUnlockedException();
-            var tf = this as ISpell;
-            var realTargets = tf.GetRealTargets(targets);
+            var realTargets = GetRealTargets(targets);
             foreach (var target in realTargets) target.Stun();
         }
     }

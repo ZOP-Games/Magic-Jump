@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace GameExtensions
 {
-    public class KillSpell : ISpell
+    public class KillSpell : Spell
     {
-        public float TargetAmount { get; }
-        public string Name { get; }
-        public SpellType Type { get; }
-        public string Description { get; }
-        public byte Level { get; }
-        public int Power => int.MaxValue;
-        public bool Unlocked { get; }
+        protected override float TargetAmount { get; }
+        public override string Name { get; }
+        public override SpellType Type { get; }
+        public override string Description { get; }
+        public override byte Level { get; }
+        public override int Power => int.MaxValue;
+        public override bool Unlocked { get; }
         public KillSpell(string name,SpellType type,string description,byte lvl,bool isUsedByPlayer, float targetAmount)
         {
             Name = name;
@@ -24,11 +23,10 @@ namespace GameExtensions
             Unlocked = isUsedByPlayer;
             TargetAmount = targetAmount;
         }
-        public void Use(IEnumerable<Entity> targets)
+        public override void Use(IEnumerable<Entity> targets)
         {
             if (!Unlocked) throw new SpellNotUnlockedException();
-            var tf = this as ISpell;
-            var realTargets = tf.GetRealTargets(targets);
+            var realTargets = GetRealTargets(targets);
             foreach (var target in realTargets) target.Die();
         }
     }
