@@ -11,14 +11,17 @@ public abstract class EnemyBase : Entity
     /*The enemy will only attack when the player is within this range (should be in meters,
     but because of scaling it's quite inconsistent, try to experiment with values)*/
     protected int AtkRange { get; set; }
-    protected  abstract Vector3 ForwardDirection { get; }
+    protected abstract Vector3 ForwardDirection { get; }
     protected abstract float Height { get; }
+    protected abstract byte XpReward { get; }
     private const float TrackInterval = .1f;
     private const float LookAtWeight = 0.1f;
     private const float LookAtRadius = 1;
+
     //death logic, just destroys itself
     public override void Die()
     {
+        Player.Instance.AddXp(XpReward);
         DontLookAtMe(transform);
         Destroy(gameObject);
     }

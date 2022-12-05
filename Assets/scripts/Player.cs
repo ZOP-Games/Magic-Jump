@@ -1,19 +1,23 @@
+using System.Collections;
 using Cinemachine;
 using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
 {
     // this is for things unique to the player (controls, spells, etc.)
+    public static Player Instance { get; private set; }
 
     //public references to some objects in the scene
     public PlayerInput PInput { get; private set; } //playerInput component
     private MenuController menus;
     private readonly SpellManager spells = SpellManager.Instance;
     private SpellScreen spellScreen;
+    [FormerlySerializedAs("LevelUpText")] [SerializeField] private TextMeshProUGUI levelUpText;
 
     //setting Entity properties, for more info -> see Entity
     protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -29,6 +33,10 @@ public class Player : Entity
     private Transform tf; //the player's Transform
     private CinemachineVirtualCamera vCam; //the main virtual camera in the scene
 
+    public int Xp { get; private set; }
+    public byte Lvl { get; private set; }
+    public int XpThreshold { get; private set; } = 10;
+
     //some constants to make code readable + adjustable
     private const int JumpForce = 400;
     private const int DodgePower = 23;
@@ -36,7 +44,8 @@ public class Player : Entity
     private const int WalkDamping = 5;
     private const int RunDamping = 2;
     private const int Constraints = 80;
-
+    private const int DefaultThreshold = 10;
+    private const float ThresholdMultiplier = 1.2f;
 
     //input event handlers
     public void Move(InputAction.CallbackContext context)
@@ -177,6 +186,19 @@ public class Player : Entity
         base.UnStun();
     }
 
+    public void AddXp(int amount)
+    {
+        Xp += amount;
+        if (Xp < XpThreshold) return;
+        Lvl++;
+        XpThreshold = Xp+Mathf.RoundToInt(XpThreshold * ThresholdMultiplier);
+        levelUpText.SetText(levelUpText.text.Remove(14, levelUpText.text.Length - 15));
+        levelUpText.text += Lvl;
+        StartCoroutine(levelUpText.gameObject.ActivateFor(3));
+    }
+
+    
+
     //jumping thing: checks for being on the ground before jumping
     protected void OnCollisionStay(Collision collision)
     {
@@ -237,15 +259,21 @@ public class Player : Entity
         
 
             #endregion
-
+        Instance = GameObject.Find("player").GetComponent<Player>();
         anim = GetComponent<Animator>();
         tf = transform;
         vCam = CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera;   //getting virtual camera and setting damping to default value
         if (vCam != null) vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
         hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
         hpText.SetText("HP: 100");
+        PlayerPrefs.SetInt("PlayerXp",12);
+        PlayerPrefs.SetInt("PlayerLvl",1);
+        Xp = PlayerPrefs.GetInt("PlayerXp");
+        Lvl = (byte)PlayerPrefs.GetInt("PlayerLvl");
+        XpThreshold = (int)(DefaultThreshold*ThresholdMultiplier * Lvl);
         menus = MenuController.Controller;
         spellScreen = FindObjectOfType<SpellScreen>(true);
     }
 }
+
     

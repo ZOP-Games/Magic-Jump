@@ -53,6 +53,13 @@ namespace GameExtensions
             return new Vector3(vector2.x, 0, vector2.y);
         }
 
+        public static IEnumerator ActivateFor(this GameObject obj,int time)
+        {
+            obj.SetActive(!obj.activeSelf);
+            yield return new WaitForSeconds(time);
+            obj.SetActive(!obj.activeSelf);
+        }
+
         //exit action, useful as we exit a lot
         public static void Quit()
         {

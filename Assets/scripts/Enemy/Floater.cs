@@ -13,7 +13,7 @@ public class Floater : EnemyBase
     protected override Vector3 ForwardDirection => Vector3.forward;
 
     protected override float Height => 3;
-
+    protected override byte XpReward => 12;
     private const int TurnOffset = 0;
 
     private readonly WaitForSeconds wfs = new (0.5f);

@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using GameExtensions;
+using TMPro;
 
 public class PauseScreen : MenuScreen
 {
-
     public void Quit()
     {
         GameHelper.Quit();
@@ -28,6 +27,13 @@ public class PauseScreen : MenuScreen
         InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
         PInput.SwitchCurrentActionMap("UI");
         Time.timeScale = 0;
+        var xpInfo = MenuController.Controller.XpInfo;
+        GetComponentInChildren<TextMeshProUGUI>().SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}",xpInfo.Item3,xpInfo.Item1,xpInfo.Item2-xpInfo.Item1);
         base.Open();
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("Xp info: " + MenuController.Controller.XpInfo);
     }
 }

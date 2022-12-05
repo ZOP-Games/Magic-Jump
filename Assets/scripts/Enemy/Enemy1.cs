@@ -14,7 +14,7 @@ public class Enemy1 : EnemyBase
     protected override int AtkSphereRadius => 6;
     protected override Vector3 ForwardDirection => Vector3.right;
     protected override float Height => 1.5f;
-
+    protected override byte XpReward => 12;
     private const int TurnOffset = -90;
 
     private readonly WaitForSeconds wfs = new (0.5f);
