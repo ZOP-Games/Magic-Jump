@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.Serialization;
-
+/// <summary>
+/// Class representing the player.
+/// </summary>
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
 {

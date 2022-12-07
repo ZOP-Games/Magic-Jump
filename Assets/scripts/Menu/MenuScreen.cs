@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 // ReSharper disable UseNullPropagation
-
+[RequireComponent(typeof(RectTransform))]
 public abstract class MenuScreen : MonoBehaviour
 {
     protected GameObject GObj => gameObject;
