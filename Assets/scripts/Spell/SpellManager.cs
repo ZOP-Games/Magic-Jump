@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameExtensions
+namespace GameExtensions.Spells
 {
     public class SpellManager
     {
         public HashSet<IGrouping<SpellType, Spell>> PlayerSpells { get; }
-        public HashSet<IGrouping<SpellType, Spell>> EnemySpells { get; }
+        public HashSet<IGrouping<SpellType, Spell>> EnemySpells => throw new NotImplementedException();
         public static SpellManager Instance { get; } = new();
         public Spell SelectedSpell { get; set; }
 

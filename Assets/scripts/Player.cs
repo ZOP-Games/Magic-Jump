@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Linq;
 using Cinemachine;
+using GameExtensions.Spells;
 using GameExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -160,7 +162,7 @@ public class Player : Entity
     /// <param name="context"><inheritdoc cref="Jump"/></param>
     public void LightAttack(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && Get<NonPlayer>().Any())
         {
             Attack(); //see Entity.Attack()
         }
@@ -216,7 +218,7 @@ public class Player : Entity
         if (!context.performed) return;
         //play animation
         var spell = spells.SelectedSpell;
-        spell.Use(GetEntities(AtkSpherePos,AtkSphereRadius));
+        spell.Use(GetNearbyEntities());
         Debug.Log("Use Spell: " + spell);
     }
     /// <summary>

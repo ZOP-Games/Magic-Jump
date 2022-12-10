@@ -9,7 +9,7 @@ public abstract class MenuScreen : MonoBehaviour
 {
     protected GameObject GObj => gameObject;
     protected static MenuController Controller => MenuController.Controller;
-    [CanBeNull] public MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
+    [CanBeNull] protected MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
     protected static EventSystem ES => EventSystem.current;
     protected static PlayerInput PInput => PlayerInput.GetPlayerByIndex(0);
 

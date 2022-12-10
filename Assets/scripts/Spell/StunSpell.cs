@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace GameExtensions
+namespace GameExtensions.Spells
 {
     public class EnemyStunSpell : Spell
     {

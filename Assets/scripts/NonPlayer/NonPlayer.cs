@@ -1,10 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using GameExtensions.UI;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Serialization;
 
-public abstract class NonPlayer : MonoBehaviour
+public class NonPlayer : MonoBehaviour
 {
-    protected abstract string Speech { get; }
-    protected abstract List<IUIComponent> Components { get; }
+    public string characterName;
+    [FormerlySerializedAs("firstBox")] [SerializeField] private InGameDialogBox firstDialogBox;
+
+    public void Interact()
+    {
+        firstDialogBox.Open();
+    }
 }

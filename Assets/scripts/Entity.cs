@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using GameExtensions;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 
@@ -44,6 +45,7 @@ public abstract class Entity : MonoBehaviour
         Hp -= amount - Defense / 100;
         Debug.Log(OwnName + " Took " + amount + " damage, current HP: " + Hp);
         hpText.SetText("HP: " + Hp);
+        //StartCoroutine(GameHelper.ActivateFor(, 0.5f));
         if (Hp > 0) return; //if the Entity has 0 HP, it dies
         Die();
         Debug.Log("Entity (" + OwnName + ") died!");
@@ -54,22 +56,32 @@ public abstract class Entity : MonoBehaviour
     {
         //docs here
         anim.SetTrigger(AttackingPmHash);
-        var collidersList = GetEntities(AtkSpherePos,AtkSphereRadius);
+        var collidersList = GetNearbyEntities();
         collidersList.ForEach(c =>
         {
-            //Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));
+            Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));
             c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
         });
     }
 
-    protected List<Entity> GetEntities(Vector3 spherePosOffset,int radius)
+    protected List<Entity> GetNearbyEntities()
     {
-        atkPos = transform.localPosition + spherePosOffset; //position of the hitbox
+        atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
         var colliders = new Collider[16];   //an array of colliders we store hit objects in
-        Physics.OverlapSphereNonAlloc(atkPos, radius, colliders);   //creating the hitbox sphere and colllecting colliders inside
+        Physics.OverlapSphereNonAlloc(atkPos, AtkSphereRadius, colliders);   //creating the hitbox sphere and colllecting colliders inside
         var entities = colliders.Where(c => c is not null).Select(c => c.GetComponent<Entity>()).ToList();
         entities.RemoveAll(c => c is null || c == this);  //removing nulls and the attacking Entity itself
         return entities;
+    }
+
+    protected IEnumerable<T> Get<T>()
+    {
+        atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
+        var colliders = new Collider[16];   //an array of colliders we store hit objects in
+        Physics.OverlapSphereNonAlloc(atkPos,AtkSphereRadius, colliders);   //creating the hitbox sphere and colllecting colliders inside
+        var hits = colliders.Where(c => c is not null).Select(c => c.GetComponent<T>()).ToList();
+        hits.RemoveAll(c => c is null);  //removing nulls
+        return hits;
     }
 
     //draws the hitbox sphere in scene view

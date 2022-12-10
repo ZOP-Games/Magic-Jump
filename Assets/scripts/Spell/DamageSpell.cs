@@ -4,7 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
 
-namespace GameExtensions
+namespace GameExtensions.Spells
 {
     public class DamageSpell : Spell
     {

@@ -59,6 +59,12 @@ namespace GameExtensions
             yield return new WaitForSeconds(time);
             obj.SetActive(!obj.activeSelf);
         }
+        public static IEnumerator ActivateFor(System.Action enabler,System.Action disabler, float time)
+        {
+            enabler.Invoke();
+            yield return new WaitForSeconds(time);
+            disabler.Invoke();
+        }
 
         //exit action, useful as we exit a lot
         public static void Quit()
