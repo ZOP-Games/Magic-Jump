@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.Serialization;
-using UnityEngine.Video;
 
 /// <summary>
 /// Class representing the player.
