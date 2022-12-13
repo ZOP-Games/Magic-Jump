@@ -12,9 +12,9 @@ using UnityEngine.Serialization;
 namespace GameExtensions.UI
 {
     [RequireComponent(typeof(Image))]
-    internal class InGameDialogBox : MenuScreen,IBox
+    internal class InGameDialogBox : MenuScreen
     {
-        [FormerlySerializedAs("nextBox")] [FormerlySerializedAs("NextBox")] [CanBeNull][SerializeField] private InGameDialogBox nextDialogBox;
+        [CanBeNull][SerializeField] private InGameDialogBox nextDialogBox;
         [SerializeField] private string title;
         [SerializeField] private string text;
 
@@ -38,7 +38,7 @@ namespace GameExtensions.UI
             if(Parent is null && PInput.currentActionMap.name != "UI") PInput.SwitchCurrentActionMap("UI");
         }
 
-        private void Start()
+        private void OnEnable()
         {
             TitleBox.SetText(title);
             TextBox.SetText(text);

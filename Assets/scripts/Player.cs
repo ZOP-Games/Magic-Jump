@@ -3,10 +3,13 @@ using System.Linq;
 using Cinemachine;
 using GameExtensions.Spells;
 using GameExtensions;
+using GameExtensions.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.Video;
+
 /// <summary>
 /// Class representing the player.
 /// </summary>
@@ -162,10 +165,12 @@ public class Player : Entity
     /// <param name="context"><inheritdoc cref="Jump"/></param>
     public void LightAttack(InputAction.CallbackContext context)
     {
-        if (context.performed && Get<NonPlayer>().Any())
+        var nonPlayers = Get<NonPlayer>().ToList();
+        if (context.performed && !nonPlayers.Any())
         {
             Attack(); //see Entity.Attack()
         }
+        else if(nonPlayers.Any()) nonPlayers.First().Interact();
     }
     /// <summary>
     /// Event handler for second (heavy) attacking.
@@ -274,6 +279,14 @@ public class Player : Entity
         Debug.Log("Show Objective");
         Invoke(nameof(DoneLooking), LookTimeout); //after 3 seconds, return to normal camera view
     }
+
+    public void ContinueDialog(InputAction.CallbackContext context)
+    {
+        Debug.Log("continuing is " + context.phase);
+        if (!context.canceled || menus.ActiveScreen is not InGameDialogBox box) return;
+        Debug.Log("found " + box.name + ", I'm doing continues");
+        box.Continue();
+    }
     /// <summary>
     /// Looks back at the player.
     /// </summary>
@@ -370,6 +383,7 @@ public class Player : Entity
             PInput.actions["Pause"].canceled += Pause;
             PInput.actions["Exit"].canceled +=  CloseMenu;
             PInput.actions["Show Objective"].performed += ShowObjective;
+            PInput.actions["Select"].performed += ContinueDialog;
             PInput.SwitchCurrentActionMap("Player");
 
             #endregion
