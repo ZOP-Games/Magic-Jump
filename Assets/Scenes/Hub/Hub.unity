@@ -2396,10 +2396,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: "ketlabu sz\xF6rny4"
       objectReference: {fileID: 0}
-    - target: {fileID: 9018977245602332211, guid: 738c97c7ca205ad47a269955c296e566, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 738c97c7ca205ad47a269955c296e566, type: 3}
 --- !u!1001 &4703012525649510426
@@ -2561,10 +2557,6 @@ PrefabInstance:
     - target: {fileID: 6906900515627682704, guid: 8d18dad9b6530f04b9c6da922aa195be, type: 3}
       propertyPath: m_Name
       value: sculpt_enemy_lebego
-      objectReference: {fileID: 0}
-    - target: {fileID: 6906900515627682704, guid: 8d18dad9b6530f04b9c6da922aa195be, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8354453686883384948, guid: 8d18dad9b6530f04b9c6da922aa195be, type: 3}
       propertyPath: ctg

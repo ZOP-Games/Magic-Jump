@@ -14,7 +14,7 @@ public abstract class EnemyBase : Entity
     protected abstract Vector3 ForwardDirection { get; }
     protected abstract float Height { get; }
     protected abstract byte XpReward { get; }
-    private const float TrackInterval = .1f;
+    private const float TrackInterval = .5f;
     private const float LookAtWeight = 0.1f;
     private const float LookAtRadius = 1;
 

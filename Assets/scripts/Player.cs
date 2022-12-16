@@ -282,7 +282,7 @@ public class Player : Entity
     public void ContinueDialog(InputAction.CallbackContext context)
     {
         Debug.Log("continuing is " + context.phase);
-        if (!context.canceled || menus.ActiveScreen is not InGameDialogBox box) return;
+        if (!context.performed || menus.ActiveScreen is not InGameDialogBox box) return;
         Debug.Log("found " + box.name + ", I'm doing continues");
         box.Continue();
     }
@@ -382,7 +382,7 @@ public class Player : Entity
             PInput.actions["Pause"].canceled += Pause;
             PInput.actions["Exit"].canceled +=  CloseMenu;
             PInput.actions["Show Objective"].performed += ShowObjective;
-            PInput.actions["Select"].performed += ContinueDialog;
+            PInput.actions["Interact"].performed += ContinueDialog;
             PInput.SwitchCurrentActionMap("Player");
 
             #endregion

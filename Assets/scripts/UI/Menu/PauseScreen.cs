@@ -8,6 +8,7 @@ using TMPro;
 
 public class PauseScreen : MenuScreen
 {
+    private TextMeshProUGUI XpText => GetComponentsInChildren<TextMeshProUGUI>().Last();
     public void Quit()
     {
         GameHelper.Quit();
@@ -28,7 +29,7 @@ public class PauseScreen : MenuScreen
         PInput.SwitchCurrentActionMap("UI");
         Time.timeScale = 0;
         var xpInfo = MenuController.Controller.XpInfo;
-        GetComponentInChildren<TextMeshProUGUI>().SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}",xpInfo.Item3,xpInfo.Item1,xpInfo.Item2-xpInfo.Item1);
+        XpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}",xpInfo.Item3,xpInfo.Item1,xpInfo.Item2-xpInfo.Item1);
         base.Open();
     }
 
