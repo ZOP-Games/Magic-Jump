@@ -29,7 +29,7 @@ public abstract class EnemyBase : Entity
     
     //aiming logic: finding the player, moving towards it and start attacking
     // ReSharper disable once VirtualMemberNeverOverridden.Global
-    protected virtual void Aim(Transform playerTf, int offset)
+    protected virtual void Aim(Transform playerTf, int offset)  //todo: try setting up AI navigation instead
     {
         var transform1 = transform;
         var position = playerTf.position;

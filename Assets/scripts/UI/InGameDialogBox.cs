@@ -57,10 +57,6 @@ namespace GameExtensions.UI
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
             if(Parent is null && PInput.currentActionMap.name != "UI") PInput.SwitchCurrentActionMap("UI");
-        }
-
-        private void OnEnable()
-        {
             title = Owner.characterName;
             TitleBox.SetText(title);
             TextBox.SetText(text);
