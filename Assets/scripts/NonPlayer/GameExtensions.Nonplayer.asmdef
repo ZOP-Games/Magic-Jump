@@ -1,0 +1,16 @@
+{
+    "name": "GameExtensions.Nonplayer",
+    "rootNamespace": "",
+    "references": [
+        "GUID:069afe868941aee4d9abc4c862a57276"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

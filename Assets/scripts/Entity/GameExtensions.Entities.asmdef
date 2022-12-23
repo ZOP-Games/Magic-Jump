@@ -1,0 +1,20 @@
+{
+    "name": "Enemy",
+    "rootNamespace": "",
+    "references": [
+        "Cinemachine",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "GameExtensions.UI.Menus",
+        "GameExt"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

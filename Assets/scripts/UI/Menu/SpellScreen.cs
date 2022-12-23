@@ -1,34 +1,37 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
-using GameExtensions.Spells;
 using UnityEngine.UI;
+using GameExtensions;
 using TMPro;
-
-public class SpellScreen : MenuScreen
+namespace GameExtensions.UI.Menus
 {
-    private readonly SpellManager spells = SpellManager.Instance;
-    private GameObject button;
-    private const int MinWidth = 50;
-
-    private void Start()
+    public class SpellScreen : MenuScreen
     {
-        button = GetComponentInChildren<Button>(true).gameObject;
-        foreach (var s in spells.PlayerSpells.SelectMany(type => type))
-        {
+        private HashSet<> spellNames;
+        private GameObject button;
+        private const int MinWidth = 50;
 
-            var obj = Instantiate(button, GetComponentInChildren<GridLayoutGroup>().transform);
-            obj.SetActive(true);
-            obj.GetComponent<Button>().onClick.AddListener(() =>
+        private void Start()
+        {
+            button = GetComponentInChildren<Button>(true).gameObject;
+            foreach (var s in spells.PlayerSpells.SelectMany(type => type))
             {
-                spells.SelectedSpell = s;
-                Debug.Log("Selected spell: " + spells.SelectedSpell);
-            });
-            obj.GetComponent<Button>().navigation = Navigation.defaultNavigation;
-            obj.GetComponent<LayoutElement>().minWidth = MinWidth;
-            obj.GetComponentInChildren<TextMeshProUGUI>().SetText(s.Name);
-        }
+
+                var obj = Instantiate(button, GetComponentInChildren<GridLayoutGroup>().transform);
+                obj.SetActive(true);
+                obj.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    spells.SelectedSpell = s;
+                    Debug.Log("Selected spell: " + spells.SelectedSpell);
+                });
+                obj.GetComponent<Button>().navigation = Navigation.defaultNavigation;
+                obj.GetComponent<LayoutElement>().minWidth = MinWidth;
+                obj.GetComponentInChildren<TextMeshProUGUI>().SetText(s.Name);
+            }
+            //todo:modularize code
         
+        }
     }
 }

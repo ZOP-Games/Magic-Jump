@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System.Collection.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Events;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
-public class MenuController : MonoBehaviour
+namespace GameExtensions.UI.Menus
 {
-    /// <summary>Item1: XP, Item2: Xp threshold, Item3: Level</summary>
-    public (int, int, byte) XpInfo { get; private set; }
-    [CanBeNull] public MenuScreen ActiveScreen { get; set; }
+    public class MenuController : MonoBehaviour
+    {
+        /// <summary>Item1: XP, Item2: Xp threshold, Item3: Level</summary>
+        public (int, int, byte) XpInfo { get; private set; }
+        [CanBeNull] public MenuScreen ActiveScreen { get; set; }
         private MenuScreen pause;
         public static MenuController Controller {
             get
@@ -38,5 +39,6 @@ public class MenuController : MonoBehaviour
             pause = FindObjectOfType<PauseScreen>(true);
             if(pause is null) Debug.LogError("where is pause??");
         }
+    }
 }
 

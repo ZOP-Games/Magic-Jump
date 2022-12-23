@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+using System.Collections;
 
-public class OptionsScreen : MenuScreen
+namespace GameExtensions.UI.Menus
 {
+    public class OptionsScreen : MenuScreen
+    {
     
+    }
 }
