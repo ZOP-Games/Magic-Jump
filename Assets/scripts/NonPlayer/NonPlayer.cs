@@ -15,9 +15,9 @@ public class NonPlayer : MonoBehaviour
     /// </summary>
     public string characterName;
     /// <summary>
-    /// The first <see cref="InGameDialogBox"/> the character will say when interacted with.
+    /// The first <see cref="IContinuable"/> the character will show when interacted with.
     /// </summary>
-    private InGameDialogBox firstDialogBox;
+    private MenuScreen firstDialogBox;
 
     /// <summary>
     /// Starts an interaction with the NPC and opens the first dialog box.
@@ -30,7 +30,7 @@ public class NonPlayer : MonoBehaviour
     private void Start()
     {
 
-        firstDialogBox = GetComponentInChildren<InGameDialogBox>(true);
-        Debug.Log("children : " + GetComponentsInChildren<InGameDialogBox>().Length);
+        firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
+        Debug.Log("children : " + GetComponentsInChildren<IContinuable>().Length);
     }
 }

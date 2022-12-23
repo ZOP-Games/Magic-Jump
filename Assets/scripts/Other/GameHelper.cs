@@ -59,11 +59,17 @@ namespace GameExtensions
             yield return new WaitForSeconds(time);
             obj.SetActive(!obj.activeSelf);
         }
-        public static IEnumerator ActivateFor(System.Action enabler,System.Action disabler, float time)
+
+        public static Transform GetNextSibling(this Transform tf)
         {
-            enabler.Invoke();
-            yield return new WaitForSeconds(time);
-            disabler.Invoke();
+            try
+            {
+                return tf.parent.GetChild(tf.GetSiblingIndex() + 1);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         //exit action, useful as we exit a lot

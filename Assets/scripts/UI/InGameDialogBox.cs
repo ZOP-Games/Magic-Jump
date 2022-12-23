@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
+using GameExtensions;
 
 // ReSharper disable UseNullPropagation
 
@@ -15,13 +15,14 @@ namespace GameExtensions.UI
     /// Represents a dialog box of a <see cref="NonPlayer"/> which contains the text it's saying. 
     /// </summary>
     [RequireComponent(typeof(Image))]
-    internal class InGameDialogBox : MenuScreen
+    internal class InGameDialogBox : MenuScreen, IContinuable
     {
         /// <summary>
-        /// The next <see cref="InGameDialogBox"/> the <see cref="NonPlayer"/> will say after continuing.
+        /// The next <see cref="IContinuable"/> the <see cref="NonPlayer"/> will show after continuing.
         /// </summary>
         /// <remarks>This can be null.</remarks>
-        [CanBeNull][SerializeField] private InGameDialogBox nextDialogBox;
+        [CanBeNull]
+        private MenuScreen NextBox => transform.GetNextSibling() is not null ? transform.GetNextSibling().GetComponent<IContinuable>() as MenuScreen: null;
         /// <summary>
         /// The title of the box.
         /// </summary>
@@ -35,6 +36,7 @@ namespace GameExtensions.UI
         /// The <see cref="TextMeshProUGUI"/> box containing the title.
         /// </summary>
         private TextMeshProUGUI TitleBox => GetComponentInChildren<TextMeshProUGUI>();
+
         /// <summary>
         /// The <see cref="TextMeshProUGUI"/> box containing the text.
         /// </summary>
@@ -43,9 +45,9 @@ namespace GameExtensions.UI
         private NonPlayer Owner => GetComponentInParent<NonPlayer>();
         public void Continue()
         {
-            if (nextDialogBox is not null)
+            if (NextBox is not null)
             {
-                nextDialogBox.Open();
+                NextBox.Open();
                 GObj.SetActive(false);
             }
             else Close();
