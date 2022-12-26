@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using GameExtensions;
 using TMPro;
-namespace GameExtensions.UI.Menus
+namespace GameExtensions.Spells
 {
     public class SpellScreen : MenuScreen
     {
-        private SpellManager spells;
+        private SpellManager spells = SpellManager.Instance;
         private GameObject button;
         private const int MinWidth = 50;
 

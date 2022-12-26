@@ -432,7 +432,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 107391806}
-  - component: {fileID: 107391805}
   m_Layer: 0
   m_Name: menucontroller
   m_TagString: Untagged
@@ -440,18 +439,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &107391805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107391804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5988868112066b4f9be04a47516d57e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &107391806
 Transform:
   m_ObjectHideFlags: 0
@@ -749,17 +736,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a410b213209442fb15a69799f0240a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &326055969 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 786086619190275573, guid: 3c0ef67b5af2e6c4590053c33c86b39d, type: 3}
-  m_PrefabInstance: {fileID: 1426870875934862666}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d637cbbf981c5c4f8f68f8873d8c226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &385463545
@@ -2274,7 +2250,7 @@ PrefabInstance:
     - target: {fileID: 1229243262436921511, guid: 3c0ef67b5af2e6c4590053c33c86b39d, type: 3}
       propertyPath: nextDialogBox
       value: 
-      objectReference: {fileID: 326055969}
+      objectReference: {fileID: 0}
     - target: {fileID: 1426870875421203379, guid: 3c0ef67b5af2e6c4590053c33c86b39d, type: 3}
       propertyPath: m_RootOrder
       value: 11

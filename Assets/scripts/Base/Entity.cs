@@ -82,7 +82,7 @@ namespace GameExtensions
             return entities;
         }
 
-        protected IEnumerable<T> Get<T>()
+        public IEnumerable<T> Get<T>() where T: Component
         {
             atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
             var colliders = new Collider[16]; //an array of colliders we store hit objects in

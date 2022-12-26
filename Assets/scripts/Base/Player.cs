@@ -4,6 +4,7 @@ using System.Linq;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
@@ -43,11 +44,6 @@ namespace GameExtensions
         /// The active <see cref="MenuController"></see> instance.
         /// </summary>
         private MenuController menus;
-
-        /// <summary>
-        /// The active <see cref="SpellManager"/> instance.
-        /// </summary>
-        private readonly SpellManager spells = SpellManager.Instance;
 
         /// <summary>
         /// Used for checking if the player is moving or not
@@ -182,7 +178,7 @@ namespace GameExtensions
         public void LightAttack(InputAction.CallbackContext context)
         {
             Attack(); //see Entity.Attack()
-            var nonPlayers = Get<NonPlayer>().ToList();
+            
         }
         //todo:move interact event to Nonplayer namespace
 
@@ -233,19 +229,6 @@ namespace GameExtensions
         }
 
         /// <summary>
-        /// Event handler for using spells.
-        /// </summary>
-        /// <param name="context"><inheritdoc cref="Jump"/></param>
-        public void UseSpell(InputAction.CallbackContext context)
-        {
-            if (!context.performed) return;
-            //play animation
-            var spell = spells.SelectedSpell;
-            spell.Use(GetNearbyEntities());
-            Debug.Log("Use Spell: " + spell);
-        }
-
-        /// <summary>
         /// Event handler for changing spells.
         /// </summary>
         /// <param name="context"><inheritdoc cref="Jump"/></param>
@@ -253,7 +236,6 @@ namespace GameExtensions
         {
             if (!context.performed) return;
             menus.OpenSpell();
-            Debug.Log("Change Spell to: " + spells.SelectedSpell);
         }
 
         /// <summary>
@@ -302,14 +284,6 @@ namespace GameExtensions
             Debug.Log("Show Objective");
             Invoke(nameof(DoneLooking), LookTimeout); //after 3 seconds, return to normal camera view
         }
-
-        public void ContinueDialog(InputAction.CallbackContext context)
-        {
-            Debug.Log("continuing is " + context.phase);
-            if (!context.performed || menus.ActiveScreen is not InGameDialogBox box) return;
-            Debug.Log("found " + box.name + ", I'm doing continues");
-            box.Continue();
-        }//todo:move Continue to NonPlayer namespace
 
         /// <summary>
         /// Looks back at the player.
@@ -366,6 +340,55 @@ namespace GameExtensions
             StartCoroutine(levelUpText.gameObject.ActivateFor(3));
         }
 
+        #region InputActionAdder
+
+        /// <summary>
+        /// Adds an <see cref="UnityAction"/> to the input action list.
+        /// </summary>
+        /// <param name="actionName">The name of the <see cref="InputAction"/>.</param>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="type">When you want to listen to the event.</param>
+        public void AddInputAction(string actionName, UnityAction action, ActionType type = ActionType.Performed)
+        {
+            switch (type)
+            {
+                case ActionType.Started : 
+                    void StartedCallback(InputAction.CallbackContext context)
+                    {
+                        if (context.started) action.Invoke();
+                    }
+                    PInput.actions[actionName].started += StartedCallback;
+                    break;
+                case ActionType.Performed:
+                    void PerformedCallback(InputAction.CallbackContext context)
+                    {
+                        if (context.performed) action.Invoke();
+                    }
+                    PInput.actions[actionName].performed += PerformedCallback;
+                    break;
+                case ActionType.Canceled: 
+                    void CancelledCallback(InputAction.CallbackContext context)
+                    {
+                        if (context.canceled) action.Invoke();
+                    }
+                    PInput.actions[actionName].canceled += CancelledCallback;
+                    break;
+                default: Debug.LogError("bad ActionType found");
+                    break;
+            }
+        }
+        /// <summary>
+        /// Defines which event the added action will add to.
+        /// </summary>
+        public enum ActionType
+        {
+            Started,
+            Performed,
+            Canceled
+        }
+
+        #endregion
+        
 
         protected void OnCollisionStay(Collision collision)
         {
@@ -407,12 +430,10 @@ namespace GameExtensions
             PInput.actions["Dodge"].performed += Dodge;
             PInput.actions["Run"].performed += Run;
             PInput.actions["Run"].canceled += Run;
-            PInput.actions["Spell"].performed += UseSpell;
             PInput.actions["Change"].performed += ChangeSpell;
             PInput.actions["Pause"].canceled += Pause;
             PInput.actions["Exit"].canceled += CloseMenu;
             PInput.actions["Show Objective"].performed += ShowObjective;
-            PInput.actions["Interact"].performed += ContinueDialog;
             PInput.SwitchCurrentActionMap("Player");
 
             #endregion

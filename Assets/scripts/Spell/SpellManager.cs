@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameExtensions 
+namespace GameExtensions.Spells 
 {
     public class SpellManager
     {
