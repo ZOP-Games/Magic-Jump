@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameExtensions.UI
+namespace GameExtensions.Nonplayer
 {
     public class InGameListBox : MenuScreen, IContinuable
     {

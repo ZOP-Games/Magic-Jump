@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
-namespace GameExtensions
+namespace GameExtensions 
 {
     //this is a class that does things we want to use in a lot of places, extending the base unity api 
     public static class GameHelper

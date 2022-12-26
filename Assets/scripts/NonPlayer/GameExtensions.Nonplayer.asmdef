@@ -2,7 +2,9 @@
     "name": "GameExtensions.Nonplayer",
     "rootNamespace": "",
     "references": [
-        "GUID:069afe868941aee4d9abc4c862a57276"
+        "GUID:3f945c094a7aed545a4e13467b341380",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

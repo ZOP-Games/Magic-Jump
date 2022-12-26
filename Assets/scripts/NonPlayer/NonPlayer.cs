@@ -1,36 +1,39 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using GameExtensions.UI.Menu;
+using System.Collections;
 using UnityEngine;
+using GameExtensions;
 
-/// <summary>
-/// An object reprsenting an NPC (Non-Player Character).
-/// </summary>
-public class NonPlayer : MonoBehaviour
+namespace GameExtensions.Nonplayer
 {
     /// <summary>
-    /// The name of the character.
+    /// An object reprsenting an NPC (Non-Player Character).
     /// </summary>
-    public string characterName;
-    /// <summary>
-    /// The first <see cref="IContinuable"/> the character will show when interacted with.
-    /// </summary>
-    private MenuScreen firstDialogBox;
-
-    /// <summary>
-    /// Starts an interaction with the NPC and opens the first dialog box.
-    /// </summary>
-    public void Interact()
+    public class NonPlayer : MonoBehaviour
     {
-        firstDialogBox.Open();
-    }
+        /// <summary>
+        /// The name of the character.
+        /// </summary>
+        public string characterName;
+        /// <summary>
+        /// The first <see cref="IContinuable"/> the character will show when interacted with.
+        /// </summary>
+        private MenuScreen firstDialogBox;
 
-    private void Start()
-    {
+        /// <summary>
+        /// Starts an interaction with the NPC and opens the first dialog box.
+        /// </summary>
+        public void Interact()
+        {
+            firstDialogBox.Open();
+        }
 
-        firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
-        Debug.Log("children : " + GetComponentsInChildren<IContinuable>().Length);
+        private void Start()
+        {
+
+            firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
+            Debug.Log("children : " + GetComponentsInChildren<IContinuable>().Length);
+        }
+
+
     }
 }

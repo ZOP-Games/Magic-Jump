@@ -9,7 +9,7 @@ namespace GameExtensions.UI.Menus
 {
     public class SpellScreen : MenuScreen
     {
-        private HashSet<> spellNames;
+        private SpellManager spells;
         private GameObject button;
         private const int MinWidth = 50;
 
@@ -31,7 +31,6 @@ namespace GameExtensions.UI.Menus
                 obj.GetComponentInChildren<TextMeshProUGUI>().SetText(s.Name);
             }
             //todo:modularize code
-        
         }
     }
 }

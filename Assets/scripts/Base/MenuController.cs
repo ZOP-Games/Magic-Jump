@@ -1,18 +1,20 @@
-﻿using System.Collection.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
-namespace GameExtensions.UI.Menus
+namespace GameExtensions 
 {
     public class MenuController : MonoBehaviour
     {
         /// <summary>Item1: XP, Item2: Xp threshold, Item3: Level</summary>
         public (int, int, byte) XpInfo { get; private set; }
         [CanBeNull] public MenuScreen ActiveScreen { get; set; }
-        private MenuScreen pause;
+        [SerializeField]private MenuScreen pause;
+        [FormerlySerializedAs("spellScreen")] [SerializeField] private MenuScreen spells;
         public static MenuController Controller {
             get
             {
@@ -29,6 +31,11 @@ namespace GameExtensions.UI.Menus
             pause.Open();
         }
 
+        public void OpenSpell()
+        {
+            spells.Open();
+        }
+
         public void CloseActive()
         {
             if (ActiveScreen is not null) ActiveScreen.Close();
@@ -36,7 +43,6 @@ namespace GameExtensions.UI.Menus
 
         public void Start()
         {
-            pause = FindObjectOfType<PauseScreen>(true);
             if(pause is null) Debug.LogError("where is pause??");
         }
     }

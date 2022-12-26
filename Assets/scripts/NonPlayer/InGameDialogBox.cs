@@ -9,7 +9,7 @@ using GameExtensions;
 
 // ReSharper disable UseNullPropagation
 
-namespace GameExtensions.UI
+namespace GameExtensions.Nonplayer
 {
     /// <summary>
     /// Represents a dialog box of a <see cref="NonPlayer"/> which contains the text it's saying. 

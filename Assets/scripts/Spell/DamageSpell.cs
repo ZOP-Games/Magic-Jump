@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using GameExtensions;
 using UnityEngine;
 
 namespace GameExtensions.Spells

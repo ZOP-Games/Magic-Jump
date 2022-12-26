@@ -1,3 +1,16 @@
 {
-	"name": "GameExtensions.UI"
+    "name": "GameExtensions.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3f945c094a7aed545a4e13467b341380"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

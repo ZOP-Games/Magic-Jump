@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameExtensions;
 using UnityEngine;
 
 namespace GameExtensions.Spells

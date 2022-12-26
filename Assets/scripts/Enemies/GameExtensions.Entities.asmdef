@@ -1,12 +1,9 @@
 {
-    "name": "Enemy",
+    "name": "GameExtensions.Enemies",
     "rootNamespace": "",
     "references": [
-        "Cinemachine",
-        "Unity.InputSystem",
-        "Unity.TextMeshPro",
-        "GameExtensions.UI.Menus",
-        "GameExt"
+        "GameExtensions",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

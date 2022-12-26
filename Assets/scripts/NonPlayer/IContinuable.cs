@@ -1,4 +1,4 @@
-﻿namespace GameExtensions.UI
+﻿namespace GameExtensions.Nonplayer
 {
     public interface IContinuable
     {
