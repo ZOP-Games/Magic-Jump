@@ -31,7 +31,6 @@ namespace GameExtensions.Spells
                 obj.GetComponent<LayoutElement>().minWidth = MinWidth;
                 obj.GetComponentInChildren<TextMeshProUGUI>().SetText(s.Name);
             }
-            //todo:modularize code
         }
     }
 }
