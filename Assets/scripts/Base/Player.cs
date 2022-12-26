@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+// ReSharper disable UseNullPropagation
 
 namespace GameExtensions 
 {
@@ -40,10 +41,6 @@ namespace GameExtensions
         protected override Vector3 AtkSpherePos => new(0, 1, 0.5f);
         protected override int AtkSphereRadius => 1;
 
-        /// <summary>
-        /// The active <see cref="MenuController"></see> instance.
-        /// </summary>
-        private MenuController menus;
 
         /// <summary>
         /// Used for checking if the player is moving or not
@@ -228,49 +225,6 @@ namespace GameExtensions
             vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
         }
 
-        /// <summary>
-        /// Event handler for changing spells.
-        /// </summary>
-        /// <param name="context"><inheritdoc cref="Jump"/></param>
-        public void ChangeSpell(InputAction.CallbackContext context)
-        {
-            if (!context.performed) return;
-            menus.OpenSpell();
-        }
-
-        /// <summary>
-        /// Event handler for pausing.
-        /// </summary>
-        /// <param name="context"><inheritdoc cref="Jump"/></param>
-        public void Pause(InputAction.CallbackContext context)
-        {
-            //Debug.Log("menu is " + context.phase);
-            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-            if (!context.canceled) return;
-            menus.OpenPause();
-            Debug.Log("Paused");
-        }
-
-        /// <summary>
-        /// Closes the active menu. Used for when a <see cref="UnityEngine.UI.Button"/> is pressed.
-        /// </summary>
-        public void CloseMenu()
-        {
-            menus.CloseActive();
-            Debug.Log("Closed active menu");
-        }
-
-        /// <summary>
-        /// Closes the active menu. Used for pressing the 'cancel' <see cref="UnityEngine.InputSystem.InputAction"/>.
-        /// </summary>
-        /// <param name="context"><inheritdoc cref="Jump"/></param>
-        public void CloseMenu(InputAction.CallbackContext context)
-        {
-            Debug.Log("unpause is " + context.phase);
-            if (!context.canceled || PInput.currentActionMap.name == "Player") return;
-            menus.CloseActive();
-            Debug.Log("Closed active menu");
-        }
 
         /// <summary>
         /// Event handler for looking at the objective.
@@ -388,7 +342,9 @@ namespace GameExtensions
         }
 
         #endregion
-        
+
+
+        public static event UnityAction PlayerReady;
 
         protected void OnCollisionStay(Collision collision)
         {
@@ -430,9 +386,6 @@ namespace GameExtensions
             PInput.actions["Dodge"].performed += Dodge;
             PInput.actions["Run"].performed += Run;
             PInput.actions["Run"].canceled += Run;
-            PInput.actions["Change"].performed += ChangeSpell;
-            PInput.actions["Pause"].canceled += Pause;
-            PInput.actions["Exit"].canceled += CloseMenu;
             PInput.actions["Show Objective"].performed += ShowObjective;
             PInput.SwitchCurrentActionMap("Player");
 
@@ -452,7 +405,6 @@ namespace GameExtensions
 
             anim = GetComponent<Animator>();
             tf = transform;
-            menus = MenuController.Controller;
             Instance = GameObject.Find("player").GetComponent<Player>(); //setting Instance
             vCam = CinemachineCore.Instance
                     .GetVirtualCamera(0) as
@@ -465,6 +417,7 @@ namespace GameExtensions
             Xp = PlayerPrefs.GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
+            if(PlayerReady is not null)PlayerReady.Invoke();
         }
     }
 }

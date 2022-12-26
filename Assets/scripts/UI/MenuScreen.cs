@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 // ReSharper disable UseNullPropagation
-namespace GameExtensions 
+namespace GameExtensions.UI
 {
     [RequireComponent(typeof(RectTransform))]
     public abstract class MenuScreen : MonoBehaviour

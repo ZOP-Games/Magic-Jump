@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using GameExtensions.UI;
 
 namespace GameExtensions.Nonplayer
 {

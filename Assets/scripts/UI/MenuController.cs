@@ -3,10 +3,11 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
-namespace GameExtensions 
+namespace GameExtensions.UI
 {
     public class MenuController : MonoBehaviour
     {
@@ -38,12 +39,22 @@ namespace GameExtensions
 
         public void CloseActive()
         {
-            if (ActiveScreen is not null) ActiveScreen.Close();
+            Debug.Log("heyyo");
+            if (ActiveScreen is not null && Player.Instance.PInput.currentActionMap.name != "Player") ActiveScreen.Close();
         }
 
         public void Start()
         {
             if(pause is null) Debug.LogError("where is pause??");
+            
+            Player.PlayerReady += () =>
+            {
+                var player = Player.Instance;
+                player.AddInputAction("Change", OpenSpell);
+                player.AddInputAction("Pause", OpenPause);
+                player.AddInputAction("Exit", CloseActive);
+            };
+
         }
     }
 }

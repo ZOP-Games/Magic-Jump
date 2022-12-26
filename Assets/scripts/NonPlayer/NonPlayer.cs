@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using GameExtensions;
+using GameExtensions.UI;
 
 namespace GameExtensions.Nonplayer
 {
@@ -33,8 +33,12 @@ namespace GameExtensions.Nonplayer
 
             firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
             Debug.Log("children : " + GetComponentsInChildren<IContinuable>().Length);
-            Player.Instance.AddInputAction("Attack", CheckForInteraction);
-            Player.Instance.AddInputAction("Interact",ContinueDialog);
+            Player.PlayerReady += () =>
+            {
+                Player.Instance.AddInputAction("Attack", CheckForInteraction);
+                Player.Instance.AddInputAction("Interact", ContinueDialog);
+            };
+
         }
 
         private static void CheckForInteraction()

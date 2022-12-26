@@ -6,11 +6,16 @@ namespace GameExtensions.Spells
     public class SpellController : MonoBehaviour
     {
         private  readonly SpellManager spells = SpellManager.Instance;
-        private readonly Player player = Player.Instance;
+        private Player player;
 
         private void Start()
         {
-            player.AddInputAction("Spell",UseSpell);
+            Player.PlayerReady += () =>
+            {
+                player = Player.Instance;
+                player.AddInputAction("Spell", UseSpell);
+            };
+
         }
 
         /// <summary>

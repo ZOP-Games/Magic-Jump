@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using GameExtensions;
+using GameExtensions.UI;
 
 // ReSharper disable UseNullPropagation
 

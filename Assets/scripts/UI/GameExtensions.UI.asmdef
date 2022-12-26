@@ -2,7 +2,8 @@
     "name": "GameExtensions.UI",
     "rootNamespace": "",
     "references": [
-        "GUID:3f945c094a7aed545a4e13467b341380"
+        "GUID:3f945c094a7aed545a4e13467b341380",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
