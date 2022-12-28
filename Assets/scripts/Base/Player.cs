@@ -402,7 +402,7 @@ namespace GameExtensions
             rb.constraints = (RigidbodyConstraints) Constraints;
 
             #endregion
-
+            
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = GameObject.Find("player").GetComponent<Player>(); //setting Instance

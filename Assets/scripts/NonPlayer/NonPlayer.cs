@@ -32,7 +32,6 @@ namespace GameExtensions.Nonplayer
         {
 
             firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
-            Debug.Log("children : " + GetComponentsInChildren<IContinuable>().Length);
             Player.PlayerReady += () =>
             {
                 Player.Instance.AddInputAction("Attack", CheckForInteraction);

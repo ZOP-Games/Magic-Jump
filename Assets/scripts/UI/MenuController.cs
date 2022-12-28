@@ -2,8 +2,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
@@ -14,8 +13,8 @@ namespace GameExtensions.UI
         /// <summary>Item1: XP, Item2: Xp threshold, Item3: Level</summary>
         public (int, int, byte) XpInfo { get; private set; }
         [CanBeNull] public MenuScreen ActiveScreen { get; set; }
-        [SerializeField]private MenuScreen pause;
-        [FormerlySerializedAs("spellScreen")] [SerializeField] private MenuScreen spells;
+        private MenuScreen pause;
+        private MenuScreen spells;
         public static MenuController Controller {
             get
             {
@@ -39,20 +38,22 @@ namespace GameExtensions.UI
 
         public void CloseActive()
         {
-            Debug.Log("heyyo");
+            Debug.Log("heyyo, " + Player.Instance.PInput.currentActionMap.name);
             if (ActiveScreen is not null && Player.Instance.PInput.currentActionMap.name != "Player") ActiveScreen.Close();
         }
 
         public void Start()
         {
-            if(pause is null) Debug.LogError("where is pause??");
-            
+
             Player.PlayerReady += () =>
             {
                 var player = Player.Instance;
                 player.AddInputAction("Change", OpenSpell);
                 player.AddInputAction("Pause", OpenPause);
                 player.AddInputAction("Exit", CloseActive);
+                pause = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Pause").GetComponent<MenuScreen>();
+                pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
+                spells = GameObject.Find("spell menu").GetComponent<MenuScreen>();
             };
 
         }

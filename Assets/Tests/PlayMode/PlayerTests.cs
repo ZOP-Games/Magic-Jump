@@ -1,47 +1,80 @@
 using System.Collections;
 using System.Linq;
+using GameExtensions;
+using GameExtensions.UI;
+using GameExtensions.UI.Menus;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using GameExtensions;
-using TMPro;
-using UnityEditor;
 
-public class PlayerTests
+public class PlayerTests : InputTestFixture
 {
-    private GameObject gObj = new ();
-    [Test]
-    public void PlayerTestsSimplePasses()
-    {
-        
-    }
-
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
+    private Gamepad gamepad = InputSystem.AddDevice<Gamepad>();
+    private const int HubBuildIndex = 1;
+    private static readonly Vector3 StartPos = new Vector3(1, 0, 1);
+
     [UnityTest]
-    public IEnumerator PlayerTestsWithEnumeratorPasses()
+    public IEnumerator HubLoadTest()
     {
-        //setup
-        var pip = gObj.AddComponent<PlayerInput>();
-        gObj.AddComponent<Rigidbody>();
-        gObj.AddComponent<CapsuleCollider>();
-        var hp = new GameObject
-        {
-            transform =
-            {
-                parent = gObj.transform
-            }
-        };
-        hp.AddComponent<TextMeshProUGUI>();
-        var player = gObj.AddComponent<Player>();
-        pip.currentActionMap = InputActionMap.FromJson("{\r    \"maps\": [\r        {\r            \"name\": \"Player\",\r            \"id\": \"dc3cb403-f49c-454c-85ad-0f550bb3d09c\",\r            \"actions\": [\r                {\r                    \"name\": \"Move\",\r                    \"type\": \"Value\",\r                    \"id\": \"7a475787-c609-4cae-baad-7dc2899f1c3d\",\r                    \"expectedControlType\": \"Vector2\",\r                    \"processors\": \"NormalizeVector2\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": true\r                },\r                {\r                    \"name\": \"Look\",\r                    \"type\": \"Value\",\r                    \"id\": \"1a43bdcc-37da-4bf3-b105-048d4f85611b\",\r                    \"expectedControlType\": \"Vector2\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": true\r                },\r                {\r                    \"name\": \"Jump\",\r                    \"type\": \"Button\",\r                    \"id\": \"4cc0dfe2-d16f-462e-9681-177528ba6431\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Attack\",\r                    \"type\": \"Button\",\r                    \"id\": \"5bf8cd2c-5658-4818-8bea-319e4c78f5b0\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Heavy Attack\",\r                    \"type\": \"Button\",\r                    \"id\": \"4c4f5077-fd12-4f25-a78e-920b68fd26d2\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Dodge\",\r                    \"type\": \"Button\",\r                    \"id\": \"7cc3dc34-2307-4be8-8000-950b9ce9f87a\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Pause\",\r                    \"type\": \"Button\",\r                    \"id\": \"2b579096-340d-4c0c-a7c6-078c13328847\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"Press(behavior=2)\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Run\",\r                    \"type\": \"Button\",\r                    \"id\": \"d317ea4a-a9f1-446d-9651-1be854782e2e\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Change\",\r                    \"type\": \"Button\",\r                    \"id\": \"63567cb0-c1f8-45d3-b72a-b037e374606f\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Show Objective\",\r                    \"type\": \"Button\",\r                    \"id\": \"7b50ce5b-95d8-49c4-b86d-e7761512a4ea\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                },\r                {\r                    \"name\": \"Spell\",\r                    \"type\": \"Button\",\r                    \"id\": \"46c05599-cede-40bf-97cc-e31a30b12b8b\",\r                    \"expectedControlType\": \"Button\",\r                    \"processors\": \"\",\r                    \"interactions\": \"\",\r                    \"initialStateCheck\": false\r                }\r            ],\r            \"bindings\": [\r                {\r                    \"name\": \"\",\r                    \"id\": \"55852f10-abb7-46c8-bb76-9f226a2307fb\",\r                    \"path\": \"<Gamepad>/leftStick\",\r                    \"interactions\": \"\",\r                    \"processors\": \"StickDeadzone\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Move\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"2D Vector\",\r                    \"id\": \"97ad585e-714c-442e-ac57-1caab55b9179\",\r                    \"path\": \"2DVector\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"\",\r                    \"action\": \"Move\",\r                    \"isComposite\": true,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"up\",\r                    \"id\": \"1b9fb36e-3b74-46c3-a193-320201ef9d96\",\r                    \"path\": \"<Keyboard>/#(W)\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Move\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": true\r                },\r                {\r                    \"name\": \"down\",\r                    \"id\": \"31c6755d-e587-4059-bc8a-2506ccde7a7b\",\r                    \"path\": \"<Keyboard>/#(S)\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Move\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": true\r                },\r                {\r                    \"name\": \"left\",\r                    \"id\": \"f99d3ea7-75f2-4f40-af89-7bdae2491e67\",\r                    \"path\": \"<Keyboard>/#(A)\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Move\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": true\r                },\r                {\r                    \"name\": \"right\",\r                    \"id\": \"7955ffd4-9f67-4075-b644-1578ec900493\",\r                    \"path\": \"<Keyboard>/d\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Move\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": true\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"8207d656-8b2c-46e4-a9fb-2b195b37ff71\",\r                    \"path\": \"<Gamepad>/rightStick\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Look\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"6f77855b-1e02-4ace-be44-44b76b94badd\",\r                    \"path\": \"<Mouse>/delta\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Look\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"06693b2a-8294-46e9-beb6-00a0f21a105a\",\r                    \"path\": \"<Gamepad>/buttonSouth\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Jump\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"9713216d-bd53-4453-a510-583bbbbee363\",\r                    \"path\": \"<Keyboard>/space\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Jump\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"7fe79ff8-7baf-40ed-94fe-dc6c8cac3919\",\r                    \"path\": \"<Gamepad>/buttonWest\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Attack\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"86d6b5a8-b6a5-483f-a97d-b892f92b245d\",\r                    \"path\": \"<Mouse>/leftButton\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Attack\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"d986eea4-697f-4225-9353-78276713dc3b\",\r                    \"path\": \"<Gamepad>/buttonNorth\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"\",\r                    \"action\": \"Heavy Attack\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"64d8f05b-bfd5-4695-a04b-607074965ab0\",\r                    \"path\": \"<Mouse>/rightButton\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Heavy Attack\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"236ebc44-b0f9-409d-98d5-013954a2f1bd\",\r                    \"path\": \"<Gamepad>/buttonEast\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Dodge\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"5af935e3-4f6a-4980-8214-66cf70340ecd\",\r                    \"path\": \"<Keyboard>/ctrl\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Dodge\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"423069aa-7cf7-4997-a967-a89d6781aebe\",\r                    \"path\": \"<Gamepad>/start\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Pause\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"2f97b002-a2a2-4c9a-a6e9-755731d9fb48\",\r                    \"path\": \"<DualShockGamepad>/start\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Pause\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"907350b1-4420-43ac-b215-4740e92a5bbf\",\r                    \"path\": \"<Keyboard>/escape\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Pause\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"a6983001-68f0-419c-90fa-d0ab52592e08\",\r                    \"path\": \"<Gamepad>/leftStickPress\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Run\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"4ff0eabd-8395-4d83-b9bf-4644dadb3e81\",\r                    \"path\": \"<Keyboard>/shift\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Run\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"a073477e-7aa8-47a8-86d9-82c8a9dfdba7\",\r                    \"path\": \"<Gamepad>/rightShoulder\",\r                    \"interactions\": \"Hold\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Change\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"9f017f8d-cf61-4b3e-87e7-f0da18b6f588\",\r                    \"path\": \"<Keyboard>/q\",\r                    \"interactions\": \"Hold\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Change\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"087945f2-9dbc-4d6e-bbff-fe1294d288b3\",\r                    \"path\": \"<Gamepad>/leftShoulder\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Show Objective\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"945b746c-f0cf-4b54-8518-1da3b1512be4\",\r                    \"path\": \"<Keyboard>/f\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Show Objective\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"5f440395-a736-49c3-bf5b-b1338d49bf5c\",\r                    \"path\": \"<Keyboard>/q\",\r                    \"interactions\": \"\",\r                    \"processors\": \"\",\r                    \"groups\": \"Keyboard\",\r                    \"action\": \"Spell\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                },\r                {\r                    \"name\": \"\",\r                    \"id\": \"1a5bf41a-4b19-476d-80fc-8a7043c9aa46\",\r                    \"path\": \"<Gamepad>/rightShoulder\",\r                    \"interactions\": \"Tap\",\r                    \"processors\": \"\",\r                    \"groups\": \"Controller\",\r                    \"action\": \"Spell\",\r                    \"isComposite\": false,\r                    \"isPartOfComposite\": false\r                }\r            ]\r        }\r    ]\r}").FirstOrDefault();
+        yield return SceneSetup();
+        Assert.That(SceneManager.GetActiveScene().buildIndex is HubBuildIndex);
+        Assert.That(Object.FindObjectOfType<Player>() is not null);
         yield return null;
-        Player.PlayerReady += () =>
-        {
-            Assert.IsNotNull(Player.Instance);
-            Assert.AreEqual(player.Lvl, 1);
-            Assert.Greater(player.XpThreshold, 0);
-        };
     }
+
+    [UnityTest]
+    public IEnumerator PlayerJumpTest()
+    {
+        var player = Object.FindObjectOfType<Player>();
+        var tf = player.transform.position;
+        Assert.That(player is not null);
+        Assert.That(player.PInput.currentControlScheme == "Controller");
+        Assert.That(tf == StartPos);
+        yield return null;
+        var y =tf.y;
+        Press(gamepad.buttonSouth);
+        yield return null;
+        Assert.That(tf.y, Is.GreaterThan(y));
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerAttackTest()
+    {
+        var player = Object.FindObjectOfType<Player>();
+        yield return null;
+        var enemy = Object.FindObjectOfType<EnemyBase>();
+        Assert.That(enemy is not null);
+    }
+
+    private IEnumerator SceneSetup()
+    {
+        gamepad = InputSystem.AddDevice<Gamepad>();
+        var es = new GameObject ();
+        es.AddComponent<EventSystem>();
+        var mc = new GameObject ();
+        mc.AddComponent<MenuController> ();
+        GameObject gObj = new ();
+        var mainMenu = gObj.AddComponent<MainMenu>();
+        for (var i = 0; i < 4; i++)
+        {
+            var child = new GameObject
+            {
+                transform =
+                {
+                    parent = mainMenu.transform
+                }
+            };
+            child.AddComponent<Button>();
+        }
+        Assert.That(mc.GetComponent<MenuController>() is not null);
+        yield return null;
+        yield return new WaitWhile(() => SceneManager.GetActiveScene().buildIndex == 0);
+    }
+
 }

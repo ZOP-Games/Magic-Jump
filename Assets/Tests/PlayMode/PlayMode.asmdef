@@ -5,8 +5,10 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "GameExtensions",
+        "GameExtensions.UI.Menus",
+        "GameExtensions.UI",
         "Unity.InputSystem",
-        "Unity.TextMeshPro"
+        "Unity.InputSystem.TestFramework"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

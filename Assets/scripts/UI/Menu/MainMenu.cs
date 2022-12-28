@@ -41,7 +41,7 @@ namespace GameExtensions.UI.Menus
         private void Start()
         {
             //PlayerPrefs.DeleteAll();
-            Open();
+            //Open();
             ES.SetSelectedGameObject(PlayerPrefs.HasKey("game_progress") ? GetComponentsInChildren<Button>()[1].gameObject : GetComponentInChildren<Button>().gameObject);
             DontDestroyOnLoad(Controller.gameObject);
         }
