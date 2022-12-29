@@ -16,7 +16,7 @@ namespace GameExtensions.Nonplayer
     /// Represents a dialog box of a <see cref="NonPlayer"/> which contains the text it's saying. 
     /// </summary>
     [RequireComponent(typeof(Image))]
-    internal class InGameDialogBox : MenuScreen, IContinuable
+    public class InGameDialogBox : MenuScreen, IContinuable
     {
         /// <summary>
         /// The next <see cref="IContinuable"/> the <see cref="NonPlayer"/> will show after continuing.

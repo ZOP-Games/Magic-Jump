@@ -38,7 +38,6 @@ namespace GameExtensions.UI
 
         public void CloseActive()
         {
-            Debug.Log("heyyo, " + Player.Instance.PInput.currentActionMap.name);
             if (ActiveScreen is not null && Player.Instance.PInput.currentActionMap.name != "Player") ActiveScreen.Close();
         }
 
@@ -51,9 +50,9 @@ namespace GameExtensions.UI
                 player.AddInputAction("Change", OpenSpell);
                 player.AddInputAction("Pause", OpenPause);
                 player.AddInputAction("Exit", CloseActive);
-                pause = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Pause").GetComponent<MenuScreen>();
-                pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
-                spells = GameObject.Find("spell menu").GetComponent<MenuScreen>();
+                pause = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Pause")?.GetComponent<MenuScreen>();
+                pause!.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
+                spells = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Spell Menu")?.GetComponent<MenuScreen>();
             };
 
         }

@@ -17,7 +17,7 @@ namespace GameExtensions
         protected abstract Vector3 ForwardDirection { get; }
         protected abstract float Height { get; }
         protected abstract byte XpReward { get; }
-        private const float TrackInterval = .5f;
+        private const float TrackInterval = 1f;
         private const float LookAtWeight = 0.1f;
         private const float LookAtRadius = 1;
 
@@ -67,7 +67,7 @@ namespace GameExtensions
         private void TrackPlayer()
         {
             anim.SetBool(MovingPmHash, true);
-            Move(ForwardDirection); //I'm not dumb anymore yay! (but zoli is)
+            Move(ForwardDirection *2); //I'm not dumb anymore yay! (but zoli is)
             //Debug.Log("aiming, new rot: " + transform1.eulerAngles +", new pos: " + transform1.position);
         }
 

@@ -30,6 +30,8 @@ namespace GameExtensions.Spells
                 obj.GetComponent<Button>().navigation = Navigation.defaultNavigation;
                 obj.GetComponent<LayoutElement>().minWidth = MinWidth;
                 obj.GetComponentInChildren<TextMeshProUGUI>().SetText(s.Name);
+                var firstButton = GetComponentInChildren<Button>();
+                if(firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
             }
         }
     }

@@ -414,7 +414,7 @@ namespace GameExtensions
             hpText.SetText("HP: 100");
             PlayerPrefs.SetInt("PlayerXp", 12); //setting XP (for dev purposes)
             PlayerPrefs.SetInt("PlayerLvl", 1);
-            Xp = PlayerPrefs.GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold
+            Xp = PlayerPrefs.GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
             if(PlayerReady is not null)PlayerReady.Invoke();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -32,6 +33,5 @@ namespace GameExtensions.UI
             GObj.SetActive(false);
             if(Parent is null) PInput.SwitchCurrentActionMap("Player");
         }
-
     }
 }

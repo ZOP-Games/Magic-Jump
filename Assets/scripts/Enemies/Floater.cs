@@ -10,8 +10,8 @@ namespace GameExtensions.Enemies
     public class Floater : EnemyBase
     {
         //class for the Floater enemy, it's the same as enemy1 for now
-        protected override int AttackingPmHash => Animator.StringToHash("attacking");
-        protected override int MovingPmHash => Animator.StringToHash("moving");
+        protected override int AttackingPmHash => Animator.StringToHash("Attack");
+        protected override int MovingPmHash => Animator.StringToHash("Running");
         protected override Vector3 AtkSpherePos => Vector3.zero;
         protected override int AtkSphereRadius => 3;
         protected override Vector3 ForwardDirection => Vector3.forward;
@@ -59,7 +59,7 @@ namespace GameExtensions.Enemies
         protected new void Start()
         {
             //setting the attack stat for the enemy and getting some components from the gameobject
-            AtkRange = 10;
+            AtkRange = 4;
             AtkPower = 1;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
