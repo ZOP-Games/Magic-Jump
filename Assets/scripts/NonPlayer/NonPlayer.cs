@@ -9,12 +9,13 @@ namespace GameExtensions.Nonplayer
     /// <summary>
     /// An object reprsenting an NPC (Non-Player Character).
     /// </summary>
-    public class NonPlayer : MonoBehaviour
+    public class NonPlayer : MonoBehaviour, IInteractable
     {
         /// <summary>
         /// The name of the character.
         /// </summary>
-        public string characterName;
+        public string OwnName => ownName;
+        [SerializeField]private string ownName;
         /// <summary>
         /// The first <see cref="IContinuable"/> the character will show when interacted with.
         /// </summary>
@@ -30,14 +31,13 @@ namespace GameExtensions.Nonplayer
 
         private void Start()
         {
-
+            
             firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
             Player.PlayerReady += () =>
             {
                 Player.Instance.AddInputAction("Attack", CheckForInteraction);
                 Player.Instance.AddInputAction("Interact", ContinueDialog);
             };
-
         }
 
         private static void CheckForInteraction()

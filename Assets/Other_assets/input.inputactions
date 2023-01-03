@@ -53,10 +53,10 @@
                 {
                     "name": "Interact",
                     "type": "Button",
-                    "id": "da8bed35-2005-4843-ace4-3205cbee2114",
+                    "id": "9b59cc4c-371b-4e90-936f-782acf4e6bc2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -206,9 +206,9 @@
                 },
                 {
                     "name": "",
-                    "id": "1ee71355-42eb-4f7d-9ca9-0ccbb3d6b7a4",
+                    "id": "99c1a8ab-4dee-4f05-b8d0-76e4ecc279aa",
                     "path": "<Gamepad>/buttonWest",
-                    "interactions": "Press(behavior=1)",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Controller",
                     "action": "Interact",
@@ -217,9 +217,9 @@
                 },
                 {
                     "name": "",
-                    "id": "9d2c7296-dc71-4f02-abf3-b9159a8de351",
+                    "id": "86f11cf4-c3ed-4161-b464-01e8e7003769",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Press(behavior=1)",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Interact",

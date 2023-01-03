@@ -54,7 +54,6 @@ namespace GameExtensions.UI
                 pause!.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
                 spells = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Spell Menu")?.GetComponent<MenuScreen>();
             };
-
         }
     }
 }

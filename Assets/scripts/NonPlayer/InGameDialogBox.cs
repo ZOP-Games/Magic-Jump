@@ -27,12 +27,19 @@ namespace GameExtensions.Nonplayer
         /// <summary>
         /// The title of the box.
         /// </summary>
-        private string title;
+        public string Title { get => title; set => title = value; }
+        [SerializeField]private string title;
         /// <summary>
         /// The text of the box.
         /// </summary>
         [SerializeField] private string text;
+        public string Text
+        {
+            get => text;
+            set => text = value;
+        }
 
+        private IInteractable owner;
         /// <summary>
         /// The <see cref="TextMeshProUGUI"/> box containing the title.
         /// </summary>
@@ -42,8 +49,6 @@ namespace GameExtensions.Nonplayer
         /// The <see cref="TextMeshProUGUI"/> box containing the text.
         /// </summary>
         private TextMeshProUGUI TextBox => GetComponentsInChildren<TextMeshProUGUI>()[1];
-
-        private NonPlayer Owner => GetComponentInParent<NonPlayer>();
         public void Continue()
         {
             if (NextBox is not null)
@@ -59,8 +64,9 @@ namespace GameExtensions.Nonplayer
         {
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
+            owner = GetComponentInParent<IInteractable>();
+            title = owner.OwnName;
             if(Parent is null && PInput.currentActionMap.name != "UI") PInput.SwitchCurrentActionMap("UI");
-            title = Owner.characterName;
             TitleBox.SetText(title);
             TextBox.SetText(text);
         }
