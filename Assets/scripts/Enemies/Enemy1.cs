@@ -18,31 +18,13 @@ namespace GameExtensions.Enemies
         protected override Vector3 ForwardDirection => Vector3.right;
         protected override float Height => 1.5f;
         protected override byte XpReward => 12;
-        private const int TurnOffset = -90;
-
-        private readonly WaitForSeconds wfs = new(0.5f);
-
-        private bool canCheck;
-
-        //if the player enters the aim trigger, it starts the Check coroutine
-        private IEnumerator Check(Collider other)
-        {
-            Aim(other.transform, TurnOffset);
-            yield return wfs;
-            if (canCheck) StartCoroutine(Check(other));
-        }
+        protected override Transform PlayerTransform { get; set; }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (rb.isKinematic)
-            {
-                rb.isKinematic = false;
-            }
-
             if (!other.CompareTag("Player")) return;
             LookAtMe(transform);
-            StartCoroutine(Check(other));
-            canCheck = true;
+            InvokeRepeating(nameof(Aim),0,TrackInterval);
         }
 
         //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
@@ -50,11 +32,8 @@ namespace GameExtensions.Enemies
         {
             if (!other.CompareTag("Player")) return;
             DontLookAtMe(transform);
-            StopCoroutine(Check(other));
-            canCheck = false;
             StopAiming();
         }
-
 
         protected new void Start()
         {
@@ -65,6 +44,7 @@ namespace GameExtensions.Enemies
             anim = GetComponent<Animator>();
             hpText = GetComponentInChildren<TextMeshPro>();
             hpText.SetText("HP: 100");
+            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
         }
     }
 }

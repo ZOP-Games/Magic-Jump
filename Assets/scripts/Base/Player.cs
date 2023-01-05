@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -118,11 +119,22 @@ namespace GameExtensions
         /// </summary>
         /// <remarks>It generally should be smaller than <see cref="WalkDamping"/>. </remarks>
         private const int RunDamping = 2;
+        
+        /// <summary>
+        /// Drag of the <see cref="Rigidbody"/> component.
+        /// </summary>
+        /// <remarks>Don't change this unless things don't move as they should.</remarks>
+        private const float Drag = 3f;
 
+        /// <summary>
+        /// Angular drag of the <see cref="Rigidbody"/> comonent.
+        /// </summary>
+        /// <remarks>Don't change this unless things don't move as they should.</remarks>
+        private const float AngularDrag = 0.05f;
         /// <summary>
         /// Constraint sum of the <see cref="Rigidbody"/> component. See <see href="https://docs.unity3d.com/ScriptReference/Rigidbody-constraints.html"/> for details.
         /// </summary>
-        /// <remarks>Don't change this unless physics don't move as they should.</remarks>
+        /// <remarks>Don't change this unless things don't move as they should.</remarks>
         private const int Constraints = 80;
 
         /// <summary>
@@ -177,7 +189,6 @@ namespace GameExtensions
             Attack(); //see Entity.Attack()
             
         }
-        //todo:move interact event to Nonplayer namespace
 
         /// <summary>
         /// Event handler for second (heavy) attacking.
@@ -363,9 +374,14 @@ namespace GameExtensions
         {
             //movement logic
             var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
-            tf.localEulerAngles += new Vector3(0, angle / 50, 0); //rotating the player
+            tf.localEulerAngles += new Vector3(0, angle * Time.fixedDeltaTime, 0); //rotating the player
             if (running) Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
             else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
+        }
+
+        private void LateUpdate()
+        {
+            Debug.DrawRay(tf.position,rb.velocity,Color.green,5);
         }
 
 

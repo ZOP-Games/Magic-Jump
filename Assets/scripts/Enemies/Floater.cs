@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace GameExtensions.Enemies
 {
-
-
     public class Floater : EnemyBase
     {
         //class for the Floater enemy, it's the same as enemy1 for now
@@ -15,34 +13,17 @@ namespace GameExtensions.Enemies
         protected override Vector3 AtkSpherePos => Vector3.zero;
         protected override int AtkSphereRadius => 3;
         protected override Vector3 ForwardDirection => Vector3.forward;
-
+        protected override Transform PlayerTransform { get; set; }
         protected override float Height => 3;
         protected override byte XpReward => 12;
-        private const int TurnOffset = 0;
 
         private readonly WaitForSeconds wfs = new(0.5f);
 
-        private bool canCheck;
-
-        //if the player enters the aim trigger, it starts the Check coroutine
-        private IEnumerator Check(Collider other)
-        {
-            Aim(other.transform, TurnOffset);
-            yield return wfs;
-            if (canCheck) StartCoroutine(Check(other));
-        }
-
         private void OnTriggerEnter(Collider other)
         {
-            if (rb.isKinematic)
-            {
-                rb.isKinematic = false;
-            }
-
             if (!other.CompareTag("Player")) return;
             LookAtMe(transform);
-            StartCoroutine(Check(other));
-            canCheck = true;
+            InvokeRepeating(nameof(Aim), 0, TrackInterval);
         }
 
         //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
@@ -50,8 +31,6 @@ namespace GameExtensions.Enemies
         {
             if (!other.CompareTag("Player")) return;
             DontLookAtMe(transform);
-            StopCoroutine(Check(other));
-            canCheck = false;
             StopAiming();
         }
 
@@ -65,6 +44,7 @@ namespace GameExtensions.Enemies
             anim = GetComponent<Animator>();
             hpText = GetComponentInChildren<TextMeshPro>();
             hpText.SetText("HP: 100");
+            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
         }
     }
 }

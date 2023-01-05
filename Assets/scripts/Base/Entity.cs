@@ -25,34 +25,29 @@ namespace GameExtensions
 
         //hashes of animator state names, use these for state checks
         protected abstract int AttackingPmHash { get; }
-
         protected abstract int MovingPmHash { get; }
         protected abstract Vector3 AtkSpherePos { get; } //position of the Enitity's hitbox
         protected abstract int AtkSphereRadius { get; } //the radius of the hitbox sphere
-
-        private string OwnName => name; //name of the Entity
 
         //some components
         protected Rigidbody rb;
         protected Animator anim;
         protected TextMeshPro hpText;
 
-        private Vector3 atkPos; //position of the attack sphere
-
         //some constants
         protected const int WalkSpeed = 5;
         protected const int RunSpeed = 15;
         protected const int MoveForceMultiplier = 25;
-
         protected const int StunTime = 3;
 
+        private string OwnName => name; //name of the Entity
+        private Vector3 atkPos; //position of the attack sphere
         //damage logic, the dealt damage is substracted from Enitity's HP
         public void TakeDamage(int amount)
         {
             Hp -= amount - Defense / 100;
             Debug.Log(OwnName + " Took " + amount + " damage, current HP: " + Hp);
             hpText.SetText("HP: " + Hp);
-            //StartCoroutine(GameHelper.ActivateFor(, 0.5f));
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
             Debug.Log("Entity (" + OwnName + ") died!");
