@@ -64,6 +64,7 @@ namespace GameExtensions
             CancelInvoke(nameof(Attack));
             anim.SetBool(MovingPmHash,false);
             CancelInvoke(nameof(Aim));
+            rb.Sleep();
         }
 
         protected void LookAtMe(Transform target)

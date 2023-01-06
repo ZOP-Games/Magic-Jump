@@ -16,7 +16,7 @@ namespace GameExtensions
     /// Class representing the player.
     /// </summary>
     [RequireComponent(typeof(PlayerInput))]
-    public class Player : Entity
+    public sealed class Player : Entity
     {
         // this is for things unique to the player (controls, spells, etc.)
         /// <summary>
@@ -124,13 +124,13 @@ namespace GameExtensions
         /// Drag of the <see cref="Rigidbody"/> component.
         /// </summary>
         /// <remarks>Don't change this unless things don't move as they should.</remarks>
-        private const float Drag = 3f;
+        private const float Drag = .1f;
 
         /// <summary>
         /// Angular drag of the <see cref="Rigidbody"/> comonent.
         /// </summary>
         /// <remarks>Don't change this unless things don't move as they should.</remarks>
-        private const float AngularDrag = 0.05f;
+        private const float AngularDrag = 1;
         /// <summary>
         /// Constraint sum of the <see cref="Rigidbody"/> component. See <see href="https://docs.unity3d.com/ScriptReference/Rigidbody-constraints.html"/> for details.
         /// </summary>
@@ -357,7 +357,7 @@ namespace GameExtensions
 
         public static event UnityAction PlayerReady;
 
-        protected void OnCollisionStay(Collision collision)
+        private void OnCollisionStay(Collision collision)
         {
             if (collision.collider is TerrainCollider && !grounded)
                 grounded = true; //if the player is touching the ground, they can jump
@@ -377,13 +377,12 @@ namespace GameExtensions
             tf.localEulerAngles += new Vector3(0, angle * Time.fixedDeltaTime, 0); //rotating the player
             if (running) Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
             else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
+            /*if (!(rb.angularVelocity.y > 2) || angle != 0) return;
+            var vel = rb.angularVelocity;
+            vel.y = 0;
+            rb.angularVelocity = vel;
+            Debug.LogWarning("antisBinalla");*/
         }
-
-        private void LateUpdate()
-        {
-            Debug.DrawRay(tf.position,rb.velocity,Color.green,5);
-        }
-
 
         //Start() runs once when the object is enabled, lots of early game setup goes here
         private void Start()
@@ -413,8 +412,8 @@ namespace GameExtensions
 
             #region rbSetup
 
-            rb.drag = 0.1f;
-            rb.angularDrag = 0.05f;
+            rb.drag = Drag;
+            rb.angularDrag = AngularDrag;
             rb.constraints = (RigidbodyConstraints) Constraints;
 
             #endregion
