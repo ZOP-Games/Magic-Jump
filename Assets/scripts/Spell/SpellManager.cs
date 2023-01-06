@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 
 namespace GameExtensions.Spells 
 {
@@ -10,6 +11,7 @@ namespace GameExtensions.Spells
         public HashSet<IGrouping<SpellType, Spell>> EnemySpells => throw new NotImplementedException();
         public static SpellManager Instance { get; } = new();
         public Spell SelectedSpell { get; set; }
+        public event UnityAction SelectedSpellChanged;
 
         public SpellManager()
         {
@@ -28,6 +30,11 @@ namespace GameExtensions.Spells
 
             }.GroupBy(s => s.Type).ToList();*/
             SelectedSpell = PlayerSpells.First().First();
+        }
+
+        public void FinishChange()
+        { 
+            SelectedSpellChanged?.Invoke();
         }
 
 

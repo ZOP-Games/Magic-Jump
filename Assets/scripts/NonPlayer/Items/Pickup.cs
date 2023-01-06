@@ -45,7 +45,6 @@ namespace GameExtensions.Nonplayer.Items
 
         public void Interact()
         {
-            Debug.Log("henlo, u can " + (canInteract ? "" : "not") + "get me");
             if(!canInteract) return;
             descBox.Open();
             ObtainItem();

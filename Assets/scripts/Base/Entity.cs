@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
@@ -14,9 +15,10 @@ namespace GameExtensions
     public abstract class Entity : MonoBehaviour
     {
         // this tells any entity we might have (the player, enemies, etc.) what they all can do
+        public event UnityAction HealthChanged;
 
         //public stats, so anyone can read them and set them
-        public int Hp { get; set; } = 100;
+        public int Hp { get; private set; } = 100;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public int AtkPower { get; set; } = 10;
@@ -32,7 +34,6 @@ namespace GameExtensions
         //some components
         protected Rigidbody rb;
         protected Animator anim;
-        protected TextMeshPro hpText;
 
         //some constants
         protected const int WalkSpeed = 5;
@@ -41,13 +42,15 @@ namespace GameExtensions
         protected const int StunTime = 3;
 
         private string OwnName => name; //name of the Entity
+
         private Vector3 atkPos; //position of the attack sphere
+
         //damage logic, the dealt damage is substracted from Enitity's HP
         public void TakeDamage(int amount)
         {
             Hp -= amount - Defense / 100;
-            Debug.Log(OwnName + " Took " + amount + " damage, current HP: " + Hp);
-            hpText.SetText("HP: " + Hp);
+            Debug.Log(OwnName + " Took " + amount + " damage, current HP: " + Hp); 
+            HealthChanged?.Invoke();
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
             Debug.Log("Entity (" + OwnName + ") died!");
@@ -77,7 +80,7 @@ namespace GameExtensions
             return entities;
         }
 
-        public IEnumerable<T> Get<T>() where T: Component
+        public IEnumerable<T> Get<T>() where T : Component
         {
             atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
             var colliders = new Collider[16]; //an array of colliders we store hit objects in
@@ -127,14 +130,13 @@ namespace GameExtensions
         public virtual void Stun()
         {
             rb.isKinematic = true;
-            hpText.text += "\nstun";
             Invoke(nameof(UnStun), StunTime);
         }
 
         protected virtual void UnStun()
         {
             rb.isKinematic = false;
-            hpText.SetText(hpText.text.Replace("stun", ""));
         }
+
     }
 }

@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-// ReSharper disable UseNullPropagation
 
 namespace GameExtensions 
 {
@@ -354,7 +353,6 @@ namespace GameExtensions
 
         #endregion
 
-
         public static event UnityAction PlayerReady;
 
         private void OnCollisionStay(Collision collision)
@@ -377,11 +375,6 @@ namespace GameExtensions
             tf.localEulerAngles += new Vector3(0, angle * Time.fixedDeltaTime, 0); //rotating the player
             if (running) Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
             else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
-            /*if (!(rb.angularVelocity.y > 2) || angle != 0) return;
-            var vel = rb.angularVelocity;
-            vel.y = 0;
-            rb.angularVelocity = vel;
-            Debug.LogWarning("antisBinalla");*/
         }
 
         //Start() runs once when the object is enabled, lots of early game setup goes here
@@ -425,14 +418,12 @@ namespace GameExtensions
                     .GetVirtualCamera(0) as
                 CinemachineVirtualCamera; //getting virtual camera and setting damping to default value
             if (vCam != null) vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
-            hpText = GetComponentInChildren<TextMeshPro>(); //getting hp text and setting to default value
-            hpText.SetText("HP: 100");
             PlayerPrefs.SetInt("PlayerXp", 12); //setting XP (for dev purposes)
             PlayerPrefs.SetInt("PlayerLvl", 1);
             Xp = PlayerPrefs.GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
-            if(PlayerReady is not null)PlayerReady.Invoke();
+            PlayerReady?.Invoke();
         }
     }
 }

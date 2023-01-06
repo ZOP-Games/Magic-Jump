@@ -25,7 +25,7 @@ namespace GameExtensions.Spells
                 obj.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     spells.SelectedSpell = s;
-                    Debug.Log("Selected spell: " + spells.SelectedSpell);
+                    spells.FinishChange();
                 });
                 obj.GetComponent<Button>().navigation = Navigation.defaultNavigation;
                 obj.GetComponent<LayoutElement>().minWidth = MinWidth;

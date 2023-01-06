@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using GameExtensions;
+using GameExtensions.Enemies;
 
 namespace GameExtensions.Spells
 {

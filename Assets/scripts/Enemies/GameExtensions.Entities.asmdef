@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "GameExtensions",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Cinemachine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using GameExtensions;
+using GameExtensions.Enemies;
 using GameExtensions.UI;
 using GameExtensions.UI.Menus;
 using NUnit.Framework;
