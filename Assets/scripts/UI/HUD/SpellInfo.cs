@@ -2,6 +2,7 @@
 using GameExtensions.Spells;
 using UnityEngine;
 using TMPro;
+
 namespace GameExtensions.UI.HUD
 {
     public class SpellInfo : MonoBehaviour
