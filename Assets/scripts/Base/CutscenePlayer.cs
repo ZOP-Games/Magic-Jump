@@ -7,13 +7,15 @@ namespace GameExtensions
     public class CutscenePlayer : MonoBehaviour
     {
         [SerializeField]private GameObject skipText;
+        [SerializeField] private int cutsceneId;
         private VideoPlayer video;
         private GameObject background;
         private GameObject screen;
         private Player player;
         private PlayerInput pInput;
+        private SaveManager saveManager;
         private bool tryingToSkip;
-
+        
         private Vector3 triggerPos;
         private float triggerRadius;
         private void OnTriggerEnter(Collider other)
@@ -54,6 +56,7 @@ namespace GameExtensions
             skipText.SetActive(false);
             tryingToSkip = false;
             pInput.SwitchCurrentActionMap("Player");
+            saveManager.LastCutscene = cutsceneId;
         }
 
         private void OnDrawGizmosSelected()
@@ -74,6 +77,7 @@ namespace GameExtensions
                 var trigger = GetComponentInChildren<SphereCollider>();
                 triggerRadius = trigger.radius;
                 triggerPos = trigger.center;
+                saveManager =SaveManager.Instance;
             };
             
         }
