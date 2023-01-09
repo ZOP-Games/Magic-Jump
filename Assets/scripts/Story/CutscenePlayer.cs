@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.InputSystem;
-namespace GameExtensions
+
+namespace GameExtensions.Story
 {
     public class CutscenePlayer : MonoBehaviour
     {
@@ -56,7 +57,6 @@ namespace GameExtensions
             skipText.SetActive(false);
             tryingToSkip = false;
             pInput.SwitchCurrentActionMap("Player");
-            saveManager.LastCutscene = cutsceneId;
         }
 
         private void OnDrawGizmosSelected()
