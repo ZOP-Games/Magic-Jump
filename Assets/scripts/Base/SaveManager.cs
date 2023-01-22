@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+
 namespace GameExtensions
 {
     public class SaveManager
     {
+        private SaveManager() {}
         public static SaveManager Instance => new();
 
-        private readonly List<SaveDataEntry> entries = new();
         private readonly string savePath = Application.persistentDataPath + "/Saves/savegame.mjsf";
         
         public void SaveGame()
         {
-            if(entries.Count == 0) return;
-            
             var stream = new FileStream(savePath, FileMode.Create);
-            var json = JsonUtility.ToJson(entries);
+            //var objects = todo:fix saving
+            var json = JsonUtility.ToJson();
             var writer = new BinaryWriter(stream);
             writer.Write(json);
             writer.Flush();
@@ -31,14 +32,9 @@ namespace GameExtensions
             {
                 var stream = new FileStream(savePath, FileMode.Open);
                 var sr = new BinaryReader(stream);
-                var saveData = JsonUtility.FromJson<List<SaveDataEntry>>(sr.ReadString());
                 //todo:load player state
             }
         }
 
-        public void AddData(string name, string value,System.Type type)
-        {
-           entries.Add(new SaveDataEntry(name,value,type)); 
-        }
     }
 }        

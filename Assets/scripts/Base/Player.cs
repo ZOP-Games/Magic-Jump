@@ -27,7 +27,7 @@ namespace GameExtensions
         /// <summary>
         /// The player's <see cref="PlayerInput"/> component.
         /// </summary>
-        public PlayerInput PInput { get; private set; }
+        [field:NonSerialized]public PlayerInput PInput { get; private set; }
 
         /// <summary>
         /// The "level up!" text object.
@@ -70,7 +70,7 @@ namespace GameExtensions
         /// <summary>
         /// the player's <see cref="Transform"/>.
         /// </summary>
-        private Transform tf;
+        [SerializeField][HideInInspector]private Transform tf;
 
         /// <summary>
         /// the main <see cref="CinemachineVirtualCamera"/> in the scene

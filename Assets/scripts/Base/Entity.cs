@@ -9,16 +9,14 @@ using UnityEngine.Events;
 
 namespace GameExtensions 
 {
-
-
-    [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Collider))]
+    [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Collider)), SaveToFile]
     public abstract class Entity : MonoBehaviour
     {
         // this tells any entity we might have (the player, enemies, etc.) what they all can do
         public event UnityAction HealthChanged;
 
         //public stats, so anyone can read them and set them
-        public int Hp { get; private set; } = 100;
+        public int Hp { get; protected set; } = 100;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public int AtkPower { get; set; } = 10;

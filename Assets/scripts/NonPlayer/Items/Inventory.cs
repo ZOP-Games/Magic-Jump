@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace GameExtensions.Nonplayer.Items
 {
+    [SaveToFile]
     public class Inventory
     {
+        private Inventory() {}
         public static Inventory Instance => new();
 
         public static readonly HashSet<Item> AllItems = new()
@@ -17,37 +19,12 @@ namespace GameExtensions.Nonplayer.Items
             new Item("fak", "very has")
         };
 
-        //public HashSet<Item> Items { get; private set; }  //just adding a new set because there is no save feature yet
-        public HashSet<Item> Items => new();
-
-        public void SaveItems()
-        {
-            var itemStrings = Items.Select(x => x.ToString());
-            var itemString = itemStrings.Aggregate((current, item) => current + item);
-            PlayerPrefs.SetString("items", itemString);
-        }
-
-        private HashSet<Item> FetchItems()
-        {
-            var itemStrings = PlayerPrefs.GetString("items").Split(';').Intersect(AllItems.Select(i => i.Name)).ToList();
-            var itemSet = new HashSet<Item>();
-            foreach (var item in itemStrings)
-            {
-                itemSet.Add(AllItems.First(i => i.Name == item));
-            } 
-            return itemSet;
-
-        }
+        public List<Item> Items => new();
 
         public void AddItem(Pickup pickup)
         {
-            if(!AllItems.Contains(pickup.BaseItem)) return;
+            if (!AllItems.Contains(pickup.BaseItem)) return;
             Items.Add(pickup.BaseItem);
-        }
-
-        public void Start()
-        {
-            //Items = FetchItems();
         }
     }
 }

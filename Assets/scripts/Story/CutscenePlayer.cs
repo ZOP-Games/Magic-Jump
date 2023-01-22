@@ -15,6 +15,7 @@ namespace GameExtensions.Story
         private Player player;
         private PlayerInput pInput;
         private SaveManager saveManager;
+        private StoryProgress progress;
         private bool tryingToSkip;
         
         private Vector3 triggerPos;
@@ -56,6 +57,7 @@ namespace GameExtensions.Story
             screen.SetActive(false);
             skipText.SetActive(false);
             tryingToSkip = false;
+            
             pInput.SwitchCurrentActionMap("Player");
         }
 
@@ -77,9 +79,9 @@ namespace GameExtensions.Story
                 var trigger = GetComponentInChildren<SphereCollider>();
                 triggerRadius = trigger.radius;
                 triggerPos = trigger.center;
-                saveManager =SaveManager.Instance;
             };
-            
+            saveManager =SaveManager.Instance;
+            progress = StoryProgress.Instance;
         }
     }
 }

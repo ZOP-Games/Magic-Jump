@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace GameExtensions 
 {
+    [System.Serializable]
     public abstract class Spell
     {
         public abstract string Name { get; }
