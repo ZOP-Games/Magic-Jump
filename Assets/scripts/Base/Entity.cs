@@ -9,19 +9,19 @@ using UnityEngine.Events;
 
 namespace GameExtensions 
 {
-    [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Collider)), SaveToFile]
+    [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Collider))]
     public abstract class Entity : MonoBehaviour
     {
         // this tells any entity we might have (the player, enemies, etc.) what they all can do
         public event UnityAction HealthChanged;
 
         //public stats, so anyone can read them and set them
-        public int Hp { get; protected set; } = 100;
+        [field:SerializeField]public int Hp { get; protected set; } = 100;
 
         // ReSharper disable once MemberCanBeProtected.Global
-        public int AtkPower { get; set; } = 10;
+        [field:SerializeField]public int AtkPower { get; set; } = 10;
 
-        public int Defense { get; set; } = 10;
+        [field:SerializeField]public int Defense { get; set; } = 10;
 
         //hashes of animator state names, use these for state checks
         protected abstract int AttackingPmHash { get; }

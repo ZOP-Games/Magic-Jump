@@ -15,7 +15,7 @@ namespace GameExtensions
     /// Class representing the player.
     /// </summary>
     [RequireComponent(typeof(PlayerInput))]
-    public sealed class Player : Entity
+    public sealed class Player : Entity, ISaveable
     {
         // this is for things unique to the player (controls, spells, etc.)
         /// <summary>
@@ -80,12 +80,12 @@ namespace GameExtensions
         /// <summary>
         /// The player's XP.
         /// </summary>
-        public int Xp { get; private set; }
+        [field:SerializeField]public int Xp { get; private set; }
 
         /// <summary>
         /// The player level.
         /// </summary>
-        public byte Lvl { get; private set; }
+        [field:SerializeField]public byte Lvl { get; private set; }
 
         /// <summary>
         /// The amount of XP the player needs to level up.
@@ -353,6 +353,8 @@ namespace GameExtensions
 
         #endregion
 
+
+
         public static event UnityAction PlayerReady;
 
         private void OnCollisionStay(Collision collision)
@@ -380,6 +382,7 @@ namespace GameExtensions
         //Start() runs once when the object is enabled, lots of early game setup goes here
         private void Start()
         {
+            if(Instance is not null) Destroy(this);
             PInput = GetComponent<PlayerInput>(); //setting PlayerInput
             //PlayerInput setup inside
 
@@ -425,5 +428,7 @@ namespace GameExtensions
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
             PlayerReady?.Invoke();
         }
+
+       
     }
 }

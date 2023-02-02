@@ -14,8 +14,6 @@ namespace GameExtensions.Story
         private GameObject screen;
         private Player player;
         private PlayerInput pInput;
-        private SaveManager saveManager;
-        private StoryProgress progress;
         private bool tryingToSkip;
         
         private Vector3 triggerPos;
@@ -80,8 +78,6 @@ namespace GameExtensions.Story
                 triggerRadius = trigger.radius;
                 triggerPos = trigger.center;
             };
-            saveManager =SaveManager.Instance;
-            progress = StoryProgress.Instance;
         }
     }
 }

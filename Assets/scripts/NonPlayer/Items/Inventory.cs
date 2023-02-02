@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace GameExtensions.Nonplayer.Items
 {
-    [SaveToFile]
     public class Inventory
     {
         private Inventory() {}

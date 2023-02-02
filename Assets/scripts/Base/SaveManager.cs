@@ -2,38 +2,40 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GameExtensions
 {
-    public class SaveManager
+    public static class SaveManager
     {
-        private SaveManager() {}
-        public static SaveManager Instance => new();
 
-        private readonly string savePath = Application.persistentDataPath + "/Saves/savegame.mjsf";
-        
-        public void SaveGame()
+        private static readonly string SavePath = Application.persistentDataPath + "/Saves/";
+        private const string SaveName = "Savegame";
+        private const string Extension = ".mjsd";
+
+        public static void SaveToFile(string data,byte id)
         {
-            var stream = new FileStream(savePath, FileMode.Create);
-            //var objects = todo:fix saving
-            var json = JsonUtility.ToJson();
+            var stream = new FileStream(string.Concat(SavePath,SaveName,id,Extension), FileMode.Create);
             var writer = new BinaryWriter(stream);
-            writer.Write(json);
+            writer.Write(data);
             writer.Flush();
             writer.Close();
         }
 
-        public void LoadGame()
+        public static string ReadFromFile(byte id)
         {
-            if (!File.Exists(savePath))
-                Debug.LogWarning("The specified save file was not found. Make sure the current savePath (" + savePath +
-                                 ") is correct.");
-            else
+            var saveFile = string.Concat(SavePath, SaveName, id, Extension);
+            if (!File.Exists(saveFile))
             {
-                var stream = new FileStream(savePath, FileMode.Open);
-                var sr = new BinaryReader(stream);
-                //todo:load player state
+                Debug.LogError("The specified save file was not found. Make sure the current savePath (" + saveFile +
+                                 ") is correct.");
+                throw new FileNotFoundException();
             }
+            var stream = new FileStream(saveFile, FileMode.Open);
+            var sr = new BinaryReader(stream);
+            var readData = sr.ReadString();
+            sr.Close();
+            return readData;
         }
 
     }

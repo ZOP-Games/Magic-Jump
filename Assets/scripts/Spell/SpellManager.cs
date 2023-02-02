@@ -7,13 +7,13 @@ namespace GameExtensions.Spells
 {
     public class SpellManager
     {
+        public static SpellManager Instance { get; } = new();
         public HashSet<IGrouping<SpellType, Spell>> PlayerSpells { get; }
         public HashSet<IGrouping<SpellType, Spell>> EnemySpells => throw new NotImplementedException();
-        public static SpellManager Instance { get; } = new();
         public Spell SelectedSpell { get; set; }
         public event UnityAction SelectedSpellChanged;
 
-        public SpellManager()
+        private SpellManager()
         {
             PlayerSpells = new List<Spell>
             {
