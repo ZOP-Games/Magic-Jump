@@ -636,8 +636,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168871980}
-  m_LocalRotation: {x: 0.13424131, y: 0.00000001366842, z: -0.0000000018516264, w: 0.9909487}
-  m_LocalPosition: {x: 1.4339998, y: 5.1605253, z: -13.6395855}
+  m_LocalRotation: {x: 0.13424131, y: -0.000000021737657, z: 0.0000000029447456, w: 0.9909487}
+  m_LocalPosition: {x: 1.4340005, y: 5.1605253, z: -13.6395855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2330,50 +2330,6 @@ PrefabInstance:
       objectReference: {fileID: 102340280}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54b549778dbf760489a9e9c02f19f66f, type: 3}
---- !u!1 &1081721418
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1081721420}
-  - component: {fileID: 1081721419}
-  m_Layer: 0
-  m_Name: itemController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1081721419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081721418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc104d819e702f468d2257681719bd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1081721420
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081721418}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 47.15423, y: 1.1153731, z: 71.03213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1113686305
 GameObject:
   m_ObjectHideFlags: 0
@@ -4666,7 +4622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8334306381916573094, guid: 65c45c376e504154ca58b9521ab448bc, type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 8334306381916573094, guid: 65c45c376e504154ca58b9521ab448bc, type: 3}
       propertyPath: m_LocalPosition.x

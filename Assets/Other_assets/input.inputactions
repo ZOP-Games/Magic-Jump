@@ -330,6 +330,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Save",
+                    "type": "Button",
+                    "id": "bdb983b3-6013-4bbd-b455-f6ee32932ede",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Load",
+                    "type": "Button",
+                    "id": "98234f63-9fa5-4257-b6a8-4cf9c8af1ef2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -627,6 +645,28 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Spell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "18bf63fe-5470-46ba-95d2-0f6113fc6dc6",
+                    "path": "<Keyboard>/f6",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "66c0ace7-5041-4bfd-a1bc-0f5d23e9854e",
+                    "path": "<Keyboard>/f9",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Load",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

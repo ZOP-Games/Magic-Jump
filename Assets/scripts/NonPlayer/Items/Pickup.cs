@@ -39,7 +39,7 @@ namespace GameExtensions.Nonplayer.Items
 
         public void ObtainItem()
         {
-            inventory.AddItem(this);
+            inventory.AddItem(BaseItem);
         }
 
 

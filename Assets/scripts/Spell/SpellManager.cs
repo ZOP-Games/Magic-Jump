@@ -22,7 +22,7 @@ namespace GameExtensions.Spells
                 new KillSpell("Thunder Shock - levle 3",SpellType.Lightning,"fak u but lvl 3",3,true,0.5f)
 
             }.GroupBy(s => s.Type).ToHashSet();
-            //EnemySpells = new List<Spell>    todo:do something w/ enemy spells
+            //EnemySpells = new List<Spell>    todo:do something w/ enemy spells & player spells
             /*{
                 new DamageSpell(" evilThunder Shock - Levle 2", SpellType.Lightning, "fak u", 2, 20, false),
                 new EnemyStunSpell("evil Thunder Shock - lvl 1",SpellType.Lightning,"fak u but lvl 1",1,false),

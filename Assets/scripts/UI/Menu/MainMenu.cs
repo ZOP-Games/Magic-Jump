@@ -11,25 +11,23 @@ namespace GameExtensions.UI.Menus
     {
 
         //public GameObject loading;  //the loading screen, not needed yet
-
+        [SerializeField]private Button continueButton;
+        [SerializeField]private Button newGameButton;
         // this has all the things for the menu like button events, menu mechanics and more...
         public void NewGame()
         {
-            //start a new save file
-            PlayerPrefs.SetInt("game_progress", 1);
             //FadeBlack() so the transition between scenes won't be visible to the player;
-            //run GC so memory will be ready to load the game
-            System.GC.Collect();
             //loading the game
+            SaveManager.SaveAll();
             SceneManager.LoadScene(1);
         }
         public void Continue()
         {
             Debug.Log("continue clicked");
             //checking for save file, showing error if there isn't one, greying out the button would be a better solution though
-            if (!PlayerPrefs.HasKey("game_progress")) return;
-            System.GC.Collect();
+            if (!SaveManager.SaveExists) return;
             SceneManager.LoadScene(1);
+            Player.PlayerReady += SaveManager.LoadAll;
         }
 
         public void Quit()
@@ -42,8 +40,9 @@ namespace GameExtensions.UI.Menus
         {
             //PlayerPrefs.DeleteAll();
             //Open();
-            ES.SetSelectedGameObject(PlayerPrefs.HasKey("game_progress") ? GetComponentsInChildren<Button>()[1].gameObject : GetComponentInChildren<Button>().gameObject);
+            ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
             DontDestroyOnLoad(Controller.gameObject);
+            if (!SaveManager.SaveExists) continueButton.interactable = false;
         }
     }
 }

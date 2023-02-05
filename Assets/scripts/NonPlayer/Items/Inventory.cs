@@ -1,14 +1,19 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace GameExtensions.Nonplayer.Items
 {
-    public class Inventory
+    [System.Serializable]
+    public class Inventory : ISaveable
     {
-        private Inventory() {}
+        private Inventory()
+        {
+            Player.PlayerReady += () =>
+            {
+                var isa = this as ISaveable;
+                isa.AddToList();
+            };
+        }
         public static Inventory Instance => new();
 
         public static readonly HashSet<Item> AllItems = new()
@@ -18,12 +23,20 @@ namespace GameExtensions.Nonplayer.Items
             new Item("fak", "very has")
         };
 
-        public List<Item> Items => new();
+        public List<Item> Items => items;
+        [SerializeField] private List<Item> items = new();
+        private byte id;
 
-        public void AddItem(Pickup pickup)
+        public void AddItem(Item item)
         {
-            if (!AllItems.Contains(pickup.BaseItem)) return;
-            Items.Add(pickup.BaseItem);
+            if (!AllItems.Contains(item)) return;
+            Items.Add(item);
+        }
+
+        byte ISaveable.Id
+        {
+            get => id;
+            set => id = value;
         }
     }
 }

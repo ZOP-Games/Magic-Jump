@@ -33,5 +33,15 @@ namespace GameExtensions.UI.Menus
             XpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}",xpInfo.Item3,xpInfo.Item1,xpInfo.Item2-xpInfo.Item1);
             base.Open();
         }
+
+        public void Save()
+        {
+            SaveManager.SaveAll();
+        }
+
+        public void Load()
+        {
+            SaveManager.LoadAll();
+        }
     }
 }

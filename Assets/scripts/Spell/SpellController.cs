@@ -25,7 +25,7 @@ namespace GameExtensions.Spells
         {
             //play animation
             var spell = spells.SelectedSpell;
-            spell.Use(player.Get<EnemyBase>());
+            spell.Use(player.GetNearby<EnemyBase>());
             Debug.Log("Use Spell: " + spell);
         }
     }

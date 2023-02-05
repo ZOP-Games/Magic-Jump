@@ -8,14 +8,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+// ReSharper disable MergeConditionalExpression
 
 namespace GameExtensions 
 {
     /// <summary>
     /// Class representing the player.
     /// </summary>
-    [RequireComponent(typeof(PlayerInput))]
-    public sealed class Player : Entity, ISaveable
+    [RequireComponent(typeof(PlayerInput)),Serializable]
+    public sealed class Player : Entity, ISaveable, ISerializationCallbackReceiver
     {
         // this is for things unique to the player (controls, spells, etc.)
         /// <summary>
@@ -32,8 +33,7 @@ namespace GameExtensions
         /// <summary>
         /// The "level up!" text object.
         /// </summary>
-        [FormerlySerializedAs("LevelUpText")] [SerializeField]
-        private TextMeshProUGUI levelUpText;
+        [FormerlySerializedAs("LevelUpText")] [SerializeField] private TextMeshProUGUI levelUpText;
 
         //setting Entity properties, for more info -> see Entity
         protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -70,12 +70,22 @@ namespace GameExtensions
         /// <summary>
         /// the player's <see cref="Transform"/>.
         /// </summary>
-        [SerializeField][HideInInspector]private Transform tf;
+        private Transform tf;
+
+        [SerializeField, HideInInspector] private Vector3 playerPos;
+        [SerializeField, HideInInspector] private Vector3 playerAngles;
+
 
         /// <summary>
         /// the main <see cref="CinemachineVirtualCamera"/> in the scene
         /// </summary>
         private CinemachineVirtualCamera vCam;
+
+        byte ISaveable.Id
+        {
+            get => id;
+            set => id = value;
+        }
 
         /// <summary>
         /// The player's XP.
@@ -92,6 +102,13 @@ namespace GameExtensions
         /// </summary>
         public int XpThreshold { get; private set; } = 10;
 
+        /// <summary>
+        /// Fires when the <see cref="Player"/> is done setting up.
+        /// </summary>
+        /// <remarks>Use it if you need the Player at the start of the game.</remarks>
+        public static event UnityAction PlayerReady;
+
+        private byte id;
         //some constants to make code readable + adjustable
         /// <summary>
         /// The force the player's <see cref="Rigidbody"/> pushes it up to jump. You can change its value to adjust jump height.
@@ -177,6 +194,7 @@ namespace GameExtensions
             if (!context.performed || !grounded) return;
             rb.AddForce(0, JumpForce, 0); //jump
             //Debug.Log("Jumping, velocity: " + rb.velocity.y); 
+            TakeDamage(100);
         }
 
         /// <summary>
@@ -249,6 +267,18 @@ namespace GameExtensions
             Invoke(nameof(DoneLooking), LookTimeout); //after 3 seconds, return to normal camera view
         }
 
+        public void SaveGame(InputAction.CallbackContext context)
+        {
+            if(!context.canceled) return;
+            SaveManager.SaveAll();
+        }
+
+        public void LoadGame(InputAction.CallbackContext context)
+        {
+            if (!context.canceled) return;
+            SaveManager.LoadAll();
+        }
+
         /// <summary>
         /// Looks back at the player.
         /// </summary>
@@ -267,6 +297,7 @@ namespace GameExtensions
         {
             Debug.Log("player died :(");
             gameObject.SetActive(false);
+            SaveManager.LoadAll();
         }
 
         /// <summary>
@@ -317,25 +348,22 @@ namespace GameExtensions
             switch (type)
             {
                 case ActionType.Started : 
-                    void StartedCallback(InputAction.CallbackContext context)
+                    PInput.actions[actionName].started += context =>
                     {
                         if (context.started) action.Invoke();
-                    }
-                    PInput.actions[actionName].started += StartedCallback;
+                    };
                     break;
                 case ActionType.Performed:
-                    void PerformedCallback(InputAction.CallbackContext context)
+                    PInput.actions[actionName].performed += context =>
                     {
                         if (context.performed) action.Invoke();
-                    }
-                    PInput.actions[actionName].performed += PerformedCallback;
+                    };
                     break;
-                case ActionType.Canceled: 
-                    void CancelledCallback(InputAction.CallbackContext context)
+                case ActionType.Canceled:
+                    PInput.actions[actionName].canceled += context =>
                     {
                         if (context.canceled) action.Invoke();
-                    }
-                    PInput.actions[actionName].canceled += CancelledCallback;
+                    };
                     break;
                 default: Debug.LogError("bad ActionType found");
                     break;
@@ -353,9 +381,23 @@ namespace GameExtensions
 
         #endregion
 
+        public void OnBeforeSerialize()
+        {
+            playerAngles = tf is not null ? tf.eulerAngles : Vector3.zero;
+            playerPos = tf is not null ? tf.position : Vector3.zero;
+        }
 
-
-        public static event UnityAction PlayerReady;
+        public void OnAfterDeserialize()
+        {
+            Debug.Log("Deser is happening");
+            if (tf is null)
+            {
+                Debug.Log("got no tf here");
+                return;
+            }
+            tf.position = playerPos;
+            tf.eulerAngles = playerAngles;
+        }
 
         private void OnCollisionStay(Collision collision)
         {
@@ -382,7 +424,7 @@ namespace GameExtensions
         //Start() runs once when the object is enabled, lots of early game setup goes here
         private void Start()
         {
-            if(Instance is not null) Destroy(this);
+            if (Instance is not null) Destroy(this);
             PInput = GetComponent<PlayerInput>(); //setting PlayerInput
             //PlayerInput setup inside
 
@@ -398,6 +440,8 @@ namespace GameExtensions
             PInput.actions["Run"].performed += Run;
             PInput.actions["Run"].canceled += Run;
             PInput.actions["Show Objective"].performed += ShowObjective;
+            PInput.actions["Save"].canceled += SaveGame;
+            PInput.actions["Load"].canceled += LoadGame;
             PInput.SwitchCurrentActionMap("Player");
 
             #endregion
@@ -413,7 +457,7 @@ namespace GameExtensions
             rb.constraints = (RigidbodyConstraints) Constraints;
 
             #endregion
-            
+
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = GameObject.Find("player").GetComponent<Player>(); //setting Instance
@@ -423,12 +467,20 @@ namespace GameExtensions
             if (vCam != null) vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
             PlayerPrefs.SetInt("PlayerXp", 12); //setting XP (for dev purposes)
             PlayerPrefs.SetInt("PlayerLvl", 1);
-            Xp = PlayerPrefs.GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
+            Xp = PlayerPrefs
+                .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
+            var isa = this as ISaveable;
+            isa.AddToList();
             PlayerReady?.Invoke();
         }
 
-       
+        public void Refill()
+        {
+            gameObject.SetActive(true);
+            var ins = Instance;
+            ins.Hp = 100;
+        }
     }
 }

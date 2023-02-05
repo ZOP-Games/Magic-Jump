@@ -1,25 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace GameExtensions
 {
     public static class SaveManager
     {
+        public static List<ISaveable> Savebles { get; } = new();
 
+        public static bool SaveExists => new DirectoryInfo(SavePath).EnumerateFiles().Any(f => f.Extension == Extension);
         private static readonly string SavePath = Application.persistentDataPath + "/Saves/";
         private const string SaveName = "Savegame";
         private const string Extension = ".mjsd";
 
-        public static void SaveToFile(string data,byte id)
+        public static void SaveToFile(string data, byte id)
         {
+            if (!Directory.Exists(SavePath)) Directory.CreateDirectory(SavePath);
+            Debug.Log("there is directory");
             var stream = new FileStream(string.Concat(SavePath,SaveName,id,Extension), FileMode.Create);
-            var writer = new BinaryWriter(stream);
+            Debug.Log("there is stream");
+            var writer = new StreamWriter(stream);
+            Debug.Log("there is StreamWriter"); 
             writer.Write(data);
+            Debug.Log("it's written");
             writer.Flush();
+            Debug.Log("it's in the file");
             writer.Close();
+            stream.Close();
+            Debug.Log("saved file to: " + string.Concat(SavePath,SaveName,id,Extension));
         }
 
         public static string ReadFromFile(byte id)
@@ -32,11 +41,34 @@ namespace GameExtensions
                 throw new FileNotFoundException();
             }
             var stream = new FileStream(saveFile, FileMode.Open);
-            var sr = new BinaryReader(stream);
-            var readData = sr.ReadString();
+            var sr = new StreamReader(stream);
+            var readData = sr.ReadToEnd();
             sr.Close();
             return readData;
         }
 
+        public static void SaveAll()
+        {
+            Debug.Log("saving " + Savebles.Count + " objects");
+            foreach (var saveable in Savebles)
+            {
+                Debug.Log("saving " + nameof(saveable));
+                saveable.Save();
+            }
+        }
+
+        public static void LoadAll()
+        {
+            if (Player.Instance is not null && Player.Instance.Hp is 0)
+            {
+                Player.Instance.Refill();
+                UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            }
+            foreach (var saveable in Savebles)
+            {
+                saveable.Load(ReadFromFile(saveable.Id));
+            }
+            Debug.Log("save has loaded");
+        }
     }
 }        

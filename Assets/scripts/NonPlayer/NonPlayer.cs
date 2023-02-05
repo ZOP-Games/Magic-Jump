@@ -42,7 +42,7 @@ namespace GameExtensions.Nonplayer
 
         private static void CheckForInteraction()
         {
-            var nonPlayer = Player.Instance.Get<NonPlayer>().FirstOrDefault();
+            var nonPlayer = Player.Instance.GetNearby<NonPlayer>().FirstOrDefault();
             // ReSharper disable once UseNullPropagation
             if (nonPlayer is null) return;
             nonPlayer.Interact();
