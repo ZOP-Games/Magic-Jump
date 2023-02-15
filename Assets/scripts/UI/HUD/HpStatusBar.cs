@@ -11,7 +11,7 @@ namespace GameExtensions.UI.HUD
     public class HpStatusBar : MonoBehaviour
     {
         // Start is called before the first frame update
-        private Image bar;
+        [SerializeField]private Image bar;
         private Player player;
         [SerializeField]private TextMeshProUGUI hpNumber;
         
@@ -25,7 +25,7 @@ namespace GameExtensions.UI.HUD
 
         private void Start()
         {
-            bar = transform.GetChild(1).GetComponent<Image>();
+            bar.color = Color.green;
             Player.PlayerReady += () =>
             {
                 player = Player.Instance;

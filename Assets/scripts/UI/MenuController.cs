@@ -50,9 +50,11 @@ namespace GameExtensions.UI
                 player.AddInputAction("Change", OpenSpell);
                 player.AddInputAction("Pause", OpenPause);
                 player.AddInputAction("Exit", CloseActive);
-                pause = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Pause")?.GetComponent<MenuScreen>();
-                pause!.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
-                spells = FindObjectsOfType<Transform>(true).FirstOrDefault(o => o.name == "Spell Menu")?.GetComponent<MenuScreen>();
+                pause = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(p => p.CompareTag("Pause"));
+                spells = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(o => o.CompareTag("Spell menu"));
+                Debug.Assert(pause is not null);
+                Debug.Assert(spells is not null);
+                pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
             };
         }
     }

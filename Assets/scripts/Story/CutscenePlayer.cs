@@ -72,7 +72,7 @@ namespace GameExtensions.Story
             Player.PlayerReady += () =>
             {
                 player = Player.Instance;
-                player.AddInputAction("Skip",Skip,Player.ActionType.Started);
+                player.AddInputAction("Skip",Skip,IInputHandler.ActionType.Started);
                 pInput = player.PInput;
                 var trigger = GetComponentInChildren<SphereCollider>();
                 triggerRadius = trigger.radius;

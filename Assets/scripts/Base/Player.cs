@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-// ReSharper disable MergeConditionalExpression
 
 namespace GameExtensions 
 {
@@ -23,6 +22,11 @@ namespace GameExtensions
         /// The main <see cref="Player"></see> Instance.
         /// </summary>
         public static Player Instance { get; private set; }
+
+        /// <summary>
+        /// id of the moveSpeed parameter, for controlling animation speed from script
+        /// </summary>
+        private static int MoveSpeedId => Animator.StringToHash("moveSpeed");
 
         //public references to some objects in the scene
         /// <summary>
@@ -61,11 +65,6 @@ namespace GameExtensions
         /// Used for checking if the player is running or not
         /// </summary>
         private bool running;
-
-        /// <summary>
-        /// id of the moveSpeed parameter, for controlling animation speed from script
-        /// </summary>
-        private static int MoveSpeedId => Animator.StringToHash("moveSpeed");
 
         /// <summary>
         /// the player's <see cref="Transform"/>.
@@ -107,6 +106,8 @@ namespace GameExtensions
         /// </summary>
         /// <remarks>Use it if you need the Player at the start of the game.</remarks>
         public static event UnityAction PlayerReady;
+
+        public event UnityAction PlayerDied;
 
         private byte id;
         //some constants to make code readable + adjustable
@@ -193,8 +194,8 @@ namespace GameExtensions
         {
             if (!context.performed || !grounded) return;
             rb.AddForce(0, JumpForce, 0); //jump
-            //Debug.Log("Jumping, velocity: " + rb.velocity.y); 
-            TakeDamage(100);
+            //Debug.Log("Jumping, velocity: " + rb.velocity.y);
+            Die();
         }
 
         /// <summary>
@@ -296,8 +297,8 @@ namespace GameExtensions
         public override void Die()
         {
             Debug.Log("player died :(");
-            gameObject.SetActive(false);
-            SaveManager.LoadAll();
+            enabled = false;
+            PlayerDied?.Invoke();
         }
 
         /// <summary>
@@ -343,23 +344,23 @@ namespace GameExtensions
         /// <param name="actionName">The name of the <see cref="InputAction"/>.</param>
         /// <param name="action">The action to be invoked.</param>
         /// <param name="type">When you want to listen to the event.</param>
-        public void AddInputAction(string actionName, UnityAction action, ActionType type = ActionType.Performed)
+        public void AddInputAction(string actionName, UnityAction action, IInputHandler.ActionType type = IInputHandler.ActionType.Performed)
         {
             switch (type)
             {
-                case ActionType.Started : 
+                case IInputHandler.ActionType.Started : 
                     PInput.actions[actionName].started += context =>
                     {
                         if (context.started) action.Invoke();
                     };
                     break;
-                case ActionType.Performed:
+                case IInputHandler.ActionType.Performed:
                     PInput.actions[actionName].performed += context =>
                     {
                         if (context.performed) action.Invoke();
                     };
                     break;
-                case ActionType.Canceled:
+                case IInputHandler.ActionType.Canceled:
                     PInput.actions[actionName].canceled += context =>
                     {
                         if (context.canceled) action.Invoke();
@@ -368,15 +369,6 @@ namespace GameExtensions
                 default: Debug.LogError("bad ActionType found");
                     break;
             }
-        }
-        /// <summary>
-        /// Defines which event the added action will add to.
-        /// </summary>
-        public enum ActionType
-        {
-            Started,
-            Performed,
-            Canceled
         }
 
         #endregion
@@ -397,6 +389,13 @@ namespace GameExtensions
             }
             tf.position = playerPos;
             tf.eulerAngles = playerAngles;
+        }
+
+        public void Refill()
+        {
+            enabled = true;
+            var ins = Instance;
+            ins.Hp = 100;
         }
 
         private void OnCollisionStay(Collision collision)
@@ -476,11 +475,6 @@ namespace GameExtensions
             PlayerReady?.Invoke();
         }
 
-        public void Refill()
-        {
-            gameObject.SetActive(true);
-            var ins = Instance;
-            ins.Hp = 100;
-        }
+        
     }
 }

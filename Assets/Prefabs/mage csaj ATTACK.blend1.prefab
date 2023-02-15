@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 5517206991543949192}
   - component: {fileID: 3637714197537744449}
   - component: {fileID: 4144926518508765163}
+  - component: {fileID: 1256836915203627837}
   m_Layer: 0
   m_Name: mage csaj ATTACK.blend1
   m_TagString: Untagged
@@ -447,7 +448,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f6cd43102b936b4bb0374a7f6cc217f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Hp>k__BackingField: 100
+  <AtkPower>k__BackingField: 10
+  <Defense>k__BackingField: 10
   levelUpText: {fileID: 0}
+  playerPos: {x: 0, y: 0, z: 0}
+  playerAngles: {x: 0, y: 0, z: 0}
+  <Xp>k__BackingField: 0
+  <Lvl>k__BackingField: 0
 --- !u!114 &5517206991543949192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,6 +584,18 @@ CapsuleCollider:
   m_Height: 2.5
   m_Direction: 1
   m_Center: {x: 0, y: 1.2, z: 0}
+--- !u!114 &1256836915203627837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336797001405887970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d85bf2b5bbeb40c4e825d04c66bcadc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &352997538967256116
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,15 +17,10 @@ namespace GameExtensions
         public static void SaveToFile(string data, byte id)
         {
             if (!Directory.Exists(SavePath)) Directory.CreateDirectory(SavePath);
-            Debug.Log("there is directory");
             var stream = new FileStream(string.Concat(SavePath,SaveName,id,Extension), FileMode.Create);
-            Debug.Log("there is stream");
             var writer = new StreamWriter(stream);
-            Debug.Log("there is StreamWriter"); 
             writer.Write(data);
-            Debug.Log("it's written");
             writer.Flush();
-            Debug.Log("it's in the file");
             writer.Close();
             stream.Close();
             Debug.Log("saved file to: " + string.Concat(SavePath,SaveName,id,Extension));
@@ -59,15 +54,16 @@ namespace GameExtensions
 
         public static void LoadAll()
         {
-            if (Player.Instance is not null && Player.Instance.Hp is 0)
+            if (!Player.Instance.isActiveAndEnabled)
             {
                 Player.Instance.Refill();
-                UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+                //UnityEngine.SceneManagement.SceneManager.LoadScene(1);
             }
             foreach (var saveable in Savebles)
             {
                 saveable.Load(ReadFromFile(saveable.Id));
             }
+
             Debug.Log("save has loaded");
         }
     }
