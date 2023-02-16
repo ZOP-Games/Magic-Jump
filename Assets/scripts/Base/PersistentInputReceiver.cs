@@ -1,3 +1,4 @@
+using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -35,7 +36,7 @@ namespace GameExtensions
                     };
                     break;
                 default:
-                    Debug.LogError("bad ActionType found");
+                    DebugConsole.Log("bad ActionType found",Color.red);
                     break;
             }
         }

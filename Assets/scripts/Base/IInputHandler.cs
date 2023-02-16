@@ -40,7 +40,7 @@ namespace GameExtensions
                     };
                     break;
                 default:
-                    Debug.LogError("bad ActionType found");
+                    UnityEngine.Debug.LogError("bad ActionType found");
                     break;
             }
         }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -47,11 +48,11 @@ namespace GameExtensions
         public void TakeDamage(int amount)
         {
             Hp -= amount - Defense / 100;
-            Debug.Log(OwnName + " Took " + amount + " damage, current HP: " + Hp); 
+            Debug.DebugConsole.LogFor(OwnName + " Took " + amount + " damage, current HP: " + Hp,1); 
             HealthChanged?.Invoke();
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
-            Debug.Log("Entity (" + OwnName + ") died!");
+            DebugConsole.LogFor("Entity (" + OwnName + ") died!",3);
         }
 
         // ReSharper disable once VirtualMemberNeverOverridden.Global
@@ -62,7 +63,7 @@ namespace GameExtensions
             var collidersList = GetNearbyEntities();
             collidersList.ForEach(c =>
             {
-                Debug.Log(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c));
+                Debug.DebugConsole.LogFor(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c),0.5f);
                 c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
             });
         }

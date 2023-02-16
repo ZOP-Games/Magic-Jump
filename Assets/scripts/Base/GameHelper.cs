@@ -75,7 +75,7 @@ namespace GameExtensions
         //exit action, useful as we exit a lot
         public static void Quit()
         {
-            Debug.Log("exit pressed");
+            UnityEngine.Debug.Log("exit pressed");
             Application.Quit();
         }
     }

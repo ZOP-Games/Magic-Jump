@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Runtime.Serialization;
+using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 
@@ -24,7 +25,7 @@ namespace GameExtensions
             if(SaveManager.Savebles.Any(s => s.GetType() == GetType())) return;
             Id = (byte)SaveManager.Savebles.Count;
             SaveManager.Savebles.Add(this);
-            Debug.Log("Added self to saveable object list: #" + Id);
+            DebugConsole.LogFor("Added self to saveable object list: #" + Id,0.5f);
         }
     }
 }

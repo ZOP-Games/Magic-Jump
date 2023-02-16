@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using Cinemachine;
+using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -217,7 +218,7 @@ namespace GameExtensions
             //we don't know what to do with this yet :/
             if (context.performed)
             {
-                Debug.Log("Heavy Attack");
+                DebugConsole.LogFor("Heavy Attack",3);
             }
         }
 
@@ -264,8 +265,8 @@ namespace GameExtensions
             //again, not sure if we need this but it's here anyway
             if (!context.performed) return;
             //vCam.LookAt = Objective.transform; it's commented out because there is no objective yet
-            Debug.Log("Show Objective");
-            Invoke(nameof(DoneLooking), LookTimeout); //after 3 seconds, return to normal camera view
+            DebugConsole.LogFor("Show Objective",LookTimeout);
+            Invoke(nameof(DoneLooking), LookTimeout); //after <LookTimeout> seconds, return to normal camera view
         }
 
         public void SaveGame(InputAction.CallbackContext context)
@@ -286,7 +287,7 @@ namespace GameExtensions
         /// <remarks>It's used for calling it in Invoke().</remarks>
         private void DoneLooking()
         {
-            Debug.Log("Camera looks back at player");
+            DebugConsole.LogFor("Camera looks back at player",1);
             //vCam.LookAt = tf;
         }
 
@@ -296,7 +297,7 @@ namespace GameExtensions
         /// <remarks>[overriden from <see cref="Entity.Die"/>]</remarks>
         public override void Die()
         {
-            Debug.Log("player died :(");
+            DebugConsole.Log("player died :(",52);
             enabled = false;
             PlayerDied?.Invoke();
         }
@@ -366,7 +367,7 @@ namespace GameExtensions
                         if (context.canceled) action.Invoke();
                     };
                     break;
-                default: Debug.LogError("bad ActionType found");
+                default: DebugConsole.Log("bad ActionType found",Color.red);
                     break;
             }
         }
@@ -381,10 +382,10 @@ namespace GameExtensions
 
         public void OnAfterDeserialize()
         {
-            Debug.Log("Deser is happening");
+            DebugConsole.Log("Deser is happening");
             if (tf is null)
             {
-                Debug.Log("got no tf here");
+                DebugConsole.("got no tf here");
                 return;
             }
             tf.position = playerPos;

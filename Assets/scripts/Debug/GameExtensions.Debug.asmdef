@@ -2,7 +2,6 @@
     "name": "GameExtensions.Debug",
     "rootNamespace": "",
     "references": [
-        "GUID:3f945c094a7aed545a4e13467b341380",
         "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
