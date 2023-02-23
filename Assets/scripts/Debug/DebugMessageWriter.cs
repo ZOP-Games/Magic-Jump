@@ -1,5 +1,6 @@
 using System.Collections;
-using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,29 +10,59 @@ namespace GameExtensions.Debug
     {
         internal static DebugMessageWriter Instance { get; private set; }
         private TextMeshProUGUI debugText;
+        private readonly Queue<string> textBuffer = new();
+        private const byte MaxLogs = 5;
 
-        internal IEnumerator WriteText(string text, Color fontColor, byte fontSize,float seconds)
+        internal void WriteLine(string text, Color fontColor, byte fontSize)
         {
             debugText.enabled = true;
             debugText.color = fontColor;
             debugText.fontSize = fontSize;
-            debugText.SetText(text);
-            yield return new WaitForSeconds(seconds);
-            ClearText();
-        }
-
-        internal void WriteTextPermanent(string text, Color fontColor, byte fontSize)
-        {
-            debugText.enabled = true;
-            debugText.color = fontColor;
-            debugText.fontSize = fontSize;
-            debugText.SetText(text);
+            textBuffer.Enqueue(text);
+            if(textBuffer.Count > MaxLogs) textBuffer.Dequeue();
+            var allText = textBuffer.Aggregate((s,next) => s+'\n'+next);
+            debugText.SetText(allText);
         }
 
         internal void ClearText()
         {
-            debugText.enabled = false;
+            debugText.SetText("");
+            textBuffer.Clear();
         }
+
+        #region Styling
+
+        internal void AddStyle(TextStyle style)
+        {
+            var format = style switch
+            {
+                TextStyle.Bold => FontStyles.Bold,
+                TextStyle.Italic => FontStyles.Italic,
+                TextStyle.Underline => FontStyles.Underline,
+                TextStyle.Strikethrough => FontStyles.Strikethrough,
+                TextStyle.Highlight => FontStyles.Highlight,
+                _ => FontStyles.Normal
+            };
+            debugText.fontStyle |= format;
+        }
+
+        internal void ClearStyles()
+        {
+            debugText.fontStyle = FontStyles.Normal;
+        }
+
+        internal enum TextStyle
+        {
+            None,
+            Bold,
+            Italic,
+            Underline,
+            Strikethrough,
+            Highlight
+        }
+        #endregion
+        
+
         // Start is called before the first frame update
         private void Start()
         {

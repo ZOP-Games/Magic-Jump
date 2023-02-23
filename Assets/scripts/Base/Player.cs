@@ -35,11 +35,6 @@ namespace GameExtensions
         /// </summary>
         [field:NonSerialized]public PlayerInput PInput { get; private set; }
 
-        /// <summary>
-        /// The "level up!" text object.
-        /// </summary>
-        [FormerlySerializedAs("LevelUpText")] [SerializeField] private TextMeshProUGUI levelUpText;
-
         //setting Entity properties, for more info -> see Entity
         protected override int AttackingPmHash => Animator.StringToHash("attacking");
         protected override int MovingPmHash => Animator.StringToHash("moving");
@@ -70,7 +65,7 @@ namespace GameExtensions
         /// <summary>
         /// the player's <see cref="Transform"/>.
         /// </summary>
-        private Transform tf;
+        [NonSerialized]private Transform tf;
 
         [SerializeField, HideInInspector] private Vector3 playerPos;
         [SerializeField, HideInInspector] private Vector3 playerAngles;
@@ -218,7 +213,7 @@ namespace GameExtensions
             //we don't know what to do with this yet :/
             if (context.performed)
             {
-                DebugConsole.LogFor("Heavy Attack",3);
+                DebugConsole.Log("Heavy Attack",3);
             }
         }
 
@@ -265,7 +260,7 @@ namespace GameExtensions
             //again, not sure if we need this but it's here anyway
             if (!context.performed) return;
             //vCam.LookAt = Objective.transform; it's commented out because there is no objective yet
-            DebugConsole.LogFor("Show Objective",LookTimeout);
+            DebugConsole.Log("Show Objective",LookTimeout);
             Invoke(nameof(DoneLooking), LookTimeout); //after <LookTimeout> seconds, return to normal camera view
         }
 
@@ -287,7 +282,7 @@ namespace GameExtensions
         /// <remarks>It's used for calling it in Invoke().</remarks>
         private void DoneLooking()
         {
-            DebugConsole.LogFor("Camera looks back at player",1);
+            DebugConsole.Log("Camera looks back at player",1);
             //vCam.LookAt = tf;
         }
 
@@ -297,7 +292,7 @@ namespace GameExtensions
         /// <remarks>[overriden from <see cref="Entity.Die"/>]</remarks>
         public override void Die()
         {
-            DebugConsole.Log("player died :(",52);
+            DebugConsole.LogError("player died :(");
             enabled = false;
             PlayerDied?.Invoke();
         }
@@ -332,9 +327,7 @@ namespace GameExtensions
             if (Xp < XpThreshold) return;
             Lvl++;
             XpThreshold = Xp + Mathf.RoundToInt(XpThreshold * ThresholdMultiplier);
-            levelUpText.SetText(levelUpText.text.Remove(14, levelUpText.text.Length - 15));
-            levelUpText.text += Lvl;
-            StartCoroutine(levelUpText.gameObject.ActivateFor(3));
+            DebugConsole.Log("leveled up! Level" + Lvl,Color.green);
         }
 
         #region InputActionAdder
@@ -383,11 +376,7 @@ namespace GameExtensions
         public void OnAfterDeserialize()
         {
             DebugConsole.Log("Deser is happening");
-            if (tf is null)
-            {
-                DebugConsole.("got no tf here");
-                return;
-            }
+            if (tf is null) return;
             tf.position = playerPos;
             tf.eulerAngles = playerAngles;
         }

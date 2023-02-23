@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions
@@ -23,7 +24,7 @@ namespace GameExtensions
             writer.Flush();
             writer.Close();
             stream.Close();
-            Debug.Log("saved file to: " + string.Concat(SavePath,SaveName,id,Extension));
+            DebugConsole.Log("saved file to: " + string.Concat(SavePath,SaveName,id,Extension),24);
         }
 
         public static string ReadFromFile(byte id)
@@ -31,8 +32,8 @@ namespace GameExtensions
             var saveFile = string.Concat(SavePath, SaveName, id, Extension);
             if (!File.Exists(saveFile))
             {
-                Debug.LogError("The specified save file was not found. Make sure the current savePath (" + saveFile +
-                                 ") is correct.");
+                DebugConsole.Log("The specified save file was not found. Make sure the current savePath (" + saveFile +
+                                 ") is correct.",Color.red);
                 throw new FileNotFoundException();
             }
             var stream = new FileStream(saveFile, FileMode.Open);
@@ -44,10 +45,8 @@ namespace GameExtensions
 
         public static void SaveAll()
         {
-            Debug.Log("saving " + Savebles.Count + " objects");
             foreach (var saveable in Savebles)
             {
-                Debug.Log("saving " + nameof(saveable));
                 saveable.Save();
             }
         }
@@ -64,7 +63,7 @@ namespace GameExtensions
                 saveable.Load(ReadFromFile(saveable.Id));
             }
 
-            Debug.Log("save has loaded");
+            DebugConsole.Log("save has loaded");
         }
     }
 }        

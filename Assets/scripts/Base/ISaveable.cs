@@ -25,7 +25,7 @@ namespace GameExtensions
             if(SaveManager.Savebles.Any(s => s.GetType() == GetType())) return;
             Id = (byte)SaveManager.Savebles.Count;
             SaveManager.Savebles.Add(this);
-            DebugConsole.LogFor("Added self to saveable object list: #" + Id,0.5f);
+            DebugConsole.Log("Added self to saveable object list: #" + Id);
         }
     }
 }

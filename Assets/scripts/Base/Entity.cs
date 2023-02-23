@@ -48,11 +48,9 @@ namespace GameExtensions
         public void TakeDamage(int amount)
         {
             Hp -= amount - Defense / 100;
-            Debug.DebugConsole.LogFor(OwnName + " Took " + amount + " damage, current HP: " + Hp,1); 
             HealthChanged?.Invoke();
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
-            DebugConsole.LogFor("Entity (" + OwnName + ") died!",3);
         }
 
         // ReSharper disable once VirtualMemberNeverOverridden.Global
@@ -63,7 +61,6 @@ namespace GameExtensions
             var collidersList = GetNearbyEntities();
             collidersList.ForEach(c =>
             {
-                Debug.DebugConsole.LogFor(name + " Hit collider! name: " + c.name + ", index: " + collidersList.IndexOf(c),0.5f);
                 c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
             });
         }
