@@ -43,7 +43,7 @@ namespace GameExtensions.Debug
         public static void LogError(string text)
         {
             Writer.ClearText();
-            Log(text,Color.red,30);
+            Log(text,Color.red,ErrorFontSize);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Bold);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Underline);
         }
