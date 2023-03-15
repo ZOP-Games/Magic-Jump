@@ -14,6 +14,11 @@ namespace GameExtensions.UI.Menus
         [SerializeField]private Button continueButton;
         [SerializeField]private Button newGameButton;
         // this has all the things for the menu like button events, menu mechanics and more...
+
+        public override void Close()
+        {
+        }
+
         public void NewGame()
         {
             //FadeBlack() so the transition between scenes won't be visible to the player;

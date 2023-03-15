@@ -3,6 +3,10 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
+using GameExtensions.Debug;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
@@ -15,11 +19,12 @@ namespace GameExtensions.UI
         [CanBeNull] public MenuScreen ActiveScreen { get; set; }
         private MenuScreen pause;
         private MenuScreen spells;
+        [SerializeField] private InputActionAsset actions;
         public static MenuController Controller {
             get
             {
                 var controller = FindObjectsOfType<MenuController>().FirstOrDefault();
-                if (controller is null) Debug.LogError("u need a menuController u idoit");
+                if (controller is null) DebugConsole.LogError("u need a menuController u idoit");
                 return controller;
             }
         }
@@ -38,12 +43,12 @@ namespace GameExtensions.UI
 
         public void CloseActive()
         {
-            if (ActiveScreen is not null && Player.Instance.PInput.currentActionMap.name != "Player") ActiveScreen.Close();
+            if (ActiveScreen is not null) ActiveScreen.Close();
         }
+
 
         public void Start()
         {
-
             Player.PlayerReady += () =>
             {
                 var player = Player.Instance;
@@ -52,11 +57,14 @@ namespace GameExtensions.UI
                 player.AddInputAction("Exit", CloseActive);
                 pause = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(p => p.CompareTag("Pause"));
                 spells = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(o => o.CompareTag("Spell menu"));
-                Debug.Assert(pause is not null);
-                Debug.Assert(spells is not null);
+                UnityEngine.Debug.Assert(pause is not null);
+                UnityEngine.Debug.Assert(spells is not null);
                 pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
             };
+            actions["Exit"].canceled += _ => CloseActive();
         }
+
+        
     }
 }
 

@@ -1,14 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameExtensions.Debug
 {
     public static class DebugConsole
     {
         private const byte FontSize = 20;
-        private const byte ErrorFontSize = 36;
+        private const byte ErrorFontSize = 36; 
         private static readonly Color FontColor = Color.black;
         private static DebugMessageWriter Writer
         {
@@ -21,7 +20,11 @@ namespace GameExtensions.Debug
 
         public static void Log(string text, Color color, byte fontSize)
         {
+            if(color == FontColor) color = SceneManager.GetActiveScene().buildIndex is 0 ? Color.white : FontColor;
             Writer.ClearStyles();
+            #if UNITY_EDITOR 
+                UnityEngine.Debug.Log(text);
+            #endif
             Writer.WriteLine(text,color,fontSize);
         }
 

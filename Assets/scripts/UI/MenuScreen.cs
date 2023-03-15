@@ -1,37 +1,32 @@
-using System;
 using System.Collections.Generic;
+using GameExtensions.Debug;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 // ReSharper disable UseNullPropagation
 namespace GameExtensions.UI
 {
     [RequireComponent(typeof(RectTransform))]
-    public abstract class MenuScreen : MonoBehaviour
+    public abstract class MenuScreen : UIComponent
     {
-        protected GameObject GObj => gameObject;
-        protected static MenuController Controller => MenuController.Controller;
         [CanBeNull] protected virtual MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
-        protected static EventSystem ES => EventSystem.current;
-        protected static PlayerInput PInput => PlayerInput.GetPlayerByIndex(0);
 
         public virtual void Open()
         {
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
-            if(Parent is null) PInput.SwitchCurrentActionMap("UI");
+            if(Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("UI");
             var firstButton = GetComponentInChildren<Button>();
             if(firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
+            else DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",Color.yellow);
         }
         public virtual void Close()
         {
             Controller.ActiveScreen = Parent;
             if(Parent is not null) Parent.Open();
             GObj.SetActive(false);
-            if(Parent is null) PInput.SwitchCurrentActionMap("Player");
+            if(Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("Player");
         }
     }
 }

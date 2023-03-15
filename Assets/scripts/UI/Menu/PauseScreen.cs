@@ -1,15 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameExtensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace GameExtensions.UI.Menus
 {
     public class PauseScreen : MenuScreen
     {
-        private TextMeshProUGUI XpText => GetComponentsInChildren<TextMeshProUGUI>().Last();
+        [SerializeField]private TextMeshProUGUI xpText;
         public void Quit()
         {
             GameHelper.Quit();
@@ -20,19 +22,21 @@ namespace GameExtensions.UI.Menus
             base.Close();
             Time.timeScale = 1;
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
-            PInput.SwitchCurrentActionMap("Player");
+            PInput!.SwitchCurrentActionMap("Player");
         
         }
 
         public override void Open()
         {
+            if(PInput is null) Debug.LogError("There is no PlayerInput provided to PauseScreen.");
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
-            PInput.SwitchCurrentActionMap("UI");
+            PInput!.SwitchCurrentActionMap("UI");
             Time.timeScale = 0;
             var xpInfo = MenuController.Controller.XpInfo;
-            XpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}",xpInfo.Item3,xpInfo.Item1,xpInfo.Item2-xpInfo.Item1);
+            xpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}",xpInfo.Item3,xpInfo.Item1,xpInfo.Item2-xpInfo.Item1);
             base.Open();
         }
+
 
         public void Save()
         {

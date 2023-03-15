@@ -62,11 +62,12 @@ namespace GameExtensions.Nonplayer
 
         public override void Open()
         {
+            if(PInput is null) Debug.LogError("There is no PlayerInput provided to PauseScreen.");
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
             owner = GetComponentInParent<IInteractable>();
             title = owner.OwnName;
-            if(Parent is null && PInput.currentActionMap.name != "UI") PInput.SwitchCurrentActionMap("UI");
+            if(Parent is null && PInput!.currentActionMap.name != "UI") PInput.SwitchCurrentActionMap("UI");
             TitleBox.SetText(title);
             TextBox.SetText(text);
         }

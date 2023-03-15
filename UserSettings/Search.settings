@@ -1,6 +1,6 @@
 trackSelection = true
 fetchPreview = true
-wantsMore = false
+defaultFlags = 0
 keepOpen = false
 queryFolder = "Assets"
 onBoardingDoNotAskAgain = true
@@ -10,6 +10,9 @@ scopes = {
 	"last_search.9E40E7BB" = "GUIViewHDRRT t:RenderTexture"
 	"OpenInspectorPreview.9E40E7BB" = "0"
 	"currentGroup.9E40E7BB" = "asset"
+	"last_search.DD5CDD96" = "t:PlayerInput"
+	"OpenInspectorPreview.DD5CDD96" = "0"
+	"currentGroup.DD5CDD96" = "scene"
 }
 providers = {
 	adb = {
@@ -53,7 +56,11 @@ providers = {
 		defaultAction = null
 	}
 }
+objectSelectors = {
+}
 recentSearches = [
+	"t:"
+	"has:PlayerInput"
 ]
 searchItemFavorites = [
 ]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace GameExtensions.Debug
             if (Instance is null) Instance = this;
             else Destroy(this);
             debugText = GetComponent<TextMeshProUGUI>();
+            DontDestroyOnLoad(transform.parent.gameObject);
         }
     }
 }

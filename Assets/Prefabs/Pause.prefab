@@ -288,7 +288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4703012523741148738
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1447,6 +1447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da81f28da73ffe74198df1933a959cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xpText: {fileID: 9217257279935499751}
 --- !u!1 &5110455377460641963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,6 +1861,10 @@ PrefabInstance:
     - target: {fileID: 5576044541492401450, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
       propertyPath: m_Name
       value: Options screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5576044541492401450, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5576044541492401451, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
       propertyPath: m_Pivot.x
