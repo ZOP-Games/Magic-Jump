@@ -19,18 +19,16 @@ namespace GameExtensions.UI
 
         public void Activate()
         {
-            UnityEngine.Debug.Assert(background is not null);
             background.color = activeColor;
-            /*rTf.sizeDelta /= passiveSizePc;
-            group.BuildLayout();*/
+            rTf.sizeDelta /= passiveSizePc;
+            group.BuildLayout();
             menuLayout.SetActive(true);
         }
 
         public void Deactivate()
         {
             background.color = disabledColor;
-            /*rTf.sizeDelta *= passiveSizePc;
-            group.BuildLayout();*/
+            rTf.sizeDelta *= passiveSizePc;
             menuLayout.SetActive(false);
         }
 

@@ -59,7 +59,6 @@ namespace GameExtensions.UI
             };
             activeTab = tabs[0];
             activeTab.Activate();
-            BuildLayout();
         }
 
         internal void BuildLayout()
@@ -70,13 +69,16 @@ namespace GameExtensions.UI
                 return;
             }
             DebugConsole.Log("Building layout");
+            var totalX = 0f;
             for (var i = 0; i < tabs.Length; i++)
             {
                 DebugConsole.Log("setting position for: " + tabs[i].name);
                 var rtf = tabs[i].GetComponent<RectTransform>();
                 var pos = rtf.anchoredPosition;
-                var xDelta = rtf.sizeDelta.x;
-                pos.x = i*xDelta+xDelta / 2+(i+1)*TabPadding;   //todo:fix layout calculations w/ scaling
+                var delta = rtf.sizeDelta;
+                pos.x = totalX+delta.x / 2+(i+1)*TabPadding;
+                totalX += delta.x;
+                pos.y = delta.y / 2;
                 rtf.anchoredPosition = pos;
             }
         }
