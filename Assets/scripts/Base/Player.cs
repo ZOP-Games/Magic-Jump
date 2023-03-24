@@ -460,8 +460,8 @@ namespace GameExtensions
                 .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
-            var isa = this as ISaveable;
-            isa.AddToList();
+            var saveable = this as ISaveable;
+            saveable.AddToList();
             PlayerReady?.Invoke();
         }
 

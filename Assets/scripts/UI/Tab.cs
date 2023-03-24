@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameExtensions.UI
 {
-    [RequireComponent(typeof(Image),typeof(RectTransform))]
+    [RequireComponent(typeof(Image))]
     public class Tab : UIComponent, IPointerDownHandler
     {
         [HideInInspector]public byte id;
@@ -21,7 +21,7 @@ namespace GameExtensions.UI
         {
             background.color = activeColor;
             rTf.sizeDelta /= passiveSizePc;
-            group.BuildLayout();
+            group.RefreshLayout();
             menuLayout.SetActive(true);
         }
 

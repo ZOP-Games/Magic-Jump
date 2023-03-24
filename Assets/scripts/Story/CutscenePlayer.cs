@@ -8,7 +8,7 @@ namespace GameExtensions.Story
     public class CutscenePlayer : MonoBehaviour
     {
         [SerializeField]private GameObject skipText;
-        [SerializeField] private int cutsceneId;
+        //[SerializeField] private int cutsceneId; todo:implement story progression
         private VideoPlayer video;
         private GameObject background;
         private GameObject screen;

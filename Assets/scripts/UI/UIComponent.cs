@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace GameExtensions.UI
 {
+    [RequireComponent(typeof(RectTransform))]
     public abstract class UIComponent : MonoBehaviour
     {
         protected GameObject GObj => gameObject;

@@ -1,0 +1,17 @@
+{
+    "name": "GameExtensions.UI.Layouts",
+    "rootNamespace": "GameExtensions",
+    "references": [
+        "GUID:88a3b412107009c459367093fcb69d31",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

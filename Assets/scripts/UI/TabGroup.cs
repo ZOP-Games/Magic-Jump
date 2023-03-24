@@ -1,16 +1,15 @@
-﻿using GameExtensions.Debug;
-using UnityEditor;
+﻿using System.Linq;
+using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 
 namespace GameExtensions.UI
 {
-    public class TabGroup : UIComponent
+    public class TabGroup : RowContainer
     {
         private Tab[] tabs;
         private Tab activeTab;
         private byte activeTabIndex;
-        private const float TabPadding = 5;
 
         public void NextTab()
         {
@@ -35,17 +34,24 @@ namespace GameExtensions.UI
             activeTabIndex = id;
             activeTab = tabs[activeTabIndex];
             activeTab.Activate();
+            RefreshLayout();
+        }
+
+        internal void RefreshLayout()
+        {
             BuildLayout();
         }
 
         private void OnEnable()
         {
             tabs = GetComponentsInChildren<Tab>();
+            if(tabs.Length < 1) DebugConsole.Log("There are no elements to organise.",Color.yellow);
             for (var i = 0; i < tabs.Length; i++)
             {
                 tabs[i].id = (byte)i;
                 tabs[i].Deactivate();
             }
+            elements = tabs.Select(t => t.GetComponent<RectTransform>()).ToArray();
             UnityEngine.Debug.Assert(ES.currentInputModule is InputSystemUIInputModule,
                 "Current Input Module is not of type InputSystemUIInputModule.");
             var input = ES.currentInputModule as InputSystemUIInputModule;
@@ -61,26 +67,6 @@ namespace GameExtensions.UI
             activeTab.Activate();
         }
 
-        internal void BuildLayout()
-        {
-            if (tabs is null || tabs.Length < 1)
-            {
-                DebugConsole.LogError("The tab layout could not be built: There are no tabs to organize.");
-                return;
-            }
-            DebugConsole.Log("Building layout");
-            var totalX = 0f;
-            for (var i = 0; i < tabs.Length; i++)
-            {
-                DebugConsole.Log("setting position for: " + tabs[i].name);
-                var rtf = tabs[i].GetComponent<RectTransform>();
-                var pos = rtf.anchoredPosition;
-                var delta = rtf.sizeDelta;
-                pos.x = totalX+delta.x / 2+(i+1)*TabPadding;
-                totalX += delta.x;
-                pos.y = delta.y / 2;
-                rtf.anchoredPosition = pos;
-            }
-        }
+       
     }
 }
