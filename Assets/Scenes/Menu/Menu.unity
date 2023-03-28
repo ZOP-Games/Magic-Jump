@@ -513,17 +513,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1888155742}
     m_Modifications:
-    - target: {fileID: 422303611711383991, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1654386388865462955, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-      propertyPath: menuLayout
-      value: 
-      objectReference: {fileID: 1971595033}
-    - target: {fileID: 2836916230014419184, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
+    - target: {fileID: 2167227845201906714, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
+      propertyPath: padding
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5576044541492401450, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
       propertyPath: m_Name
@@ -598,10 +590,6 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5576044541492401451, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.000030518
-      objectReference: {fileID: 0}
-    - target: {fileID: 5576044541492401451, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -615,10 +603,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5576044541492401451, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7652336152622225317, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-      propertyPath: m_Navigation.m_Mode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1897,11 +1881,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946450786}
   m_CullTransparentMesh: 1
---- !u!1 &1971595033 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5173399062337847199, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-  m_PrefabInstance: {fileID: 651222790}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1997019345
 GameObject:
   m_ObjectHideFlags: 0

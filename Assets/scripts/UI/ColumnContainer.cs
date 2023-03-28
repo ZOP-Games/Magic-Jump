@@ -7,6 +7,7 @@ namespace GameExtensions.UI
 {
     public class ColumnContainer : Container
     {
+        private float width;
 
         protected override void BuildLayout()
         {
@@ -22,7 +23,7 @@ namespace GameExtensions.UI
                 var rtf = elements[i];
                 var pos = rtf.anchoredPosition;
                 var delta = rtf.sizeDelta;
-                pos.y = totalY-delta.y / 2-(i+1)*padding;
+                pos.y = width/4+totalY-delta.y / 2-(i+1)*padding;
                 totalY -= delta.y;
                 pos.x = delta.x / 2;
                 rtf.anchoredPosition = pos;
@@ -32,6 +33,7 @@ namespace GameExtensions.UI
         private void Start()
         {
             elements = GetComponentsInChildren<RectTransform>().Where(t => t.parent == transform).ToArray();
+            width = GetComponent<RectTransform>().sizeDelta.x;
             BuildLayout();
         }
     }

@@ -636,8 +636,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168871980}
-  m_LocalRotation: {x: 0.13424131, y: 0.00000001366842, z: -0.0000000018516264, w: 0.9909487}
-  m_LocalPosition: {x: 1.4339998, y: 5.1605253, z: -13.6395855}
+  m_LocalRotation: {x: 0.13424133, y: 0.000000008069236, z: -0.0000000010931192, w: 0.9909487}
+  m_LocalPosition: {x: 1.4339999, y: 5.1605253, z: -13.6395855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2035,11 +2035,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ffa3b975c4d78cf4aa3c2ecb140a981f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a750a1bbd49bab44a97fb343fa01f935, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 0
+  m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0

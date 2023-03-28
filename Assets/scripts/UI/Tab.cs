@@ -1,4 +1,4 @@
-﻿using GameExtensions.Debug;
+﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,37 +13,35 @@ namespace GameExtensions.UI
         [SerializeField] private Color disabledColor;
         [SerializeField] private GameObject menuLayout;
         [SerializeField] private float passiveSizePc;
-        private Image background;
+        private Vector2 activeSize;
+        private Vector2 passiveSize;
+        private Image Background => GetComponent<Image>();
         private RectTransform rTf;
         private TabGroup group;
 
         public void Activate()
         {
-            background.color = activeColor;
-            rTf.sizeDelta /= passiveSizePc;
+            Background.color = activeColor;
+            rTf.sizeDelta = activeSize;
             group.RefreshLayout();
             menuLayout.SetActive(true);
         }
 
         public void Deactivate()
         {
-            background.color = disabledColor;
-            rTf.sizeDelta *= passiveSizePc;
+            Background.color = disabledColor;
+            rTf.sizeDelta = passiveSize;
             menuLayout.SetActive(false);
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             group = transform.parent.GetComponent<TabGroup>();
             UnityEngine.Debug.Assert(group is not null, "Tab (" + name + ") is not part of a TabGroup. " +
                                                         "Make sure the Tab is a TabGroup's child!");
-            background = GetBackground();
             rTf = GetComponent<RectTransform>();
-        }
-
-        private Image GetBackground()
-        {
-            return GetComponent<Image>();
+            activeSize = rTf.sizeDelta;
+            passiveSize = activeSize * passiveSizePc;
         }
 
         public void OnPointerDown(PointerEventData eventData)

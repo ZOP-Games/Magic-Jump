@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using GameExtensions.UI;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
@@ -27,9 +26,9 @@ namespace GameExtensions
             };
         }
 
-       /* private void FixedUpdate()
+       private void FixedUpdate()
         {
             scroll.value += scrollDir;
-        }*/
+        }
     }
 }

@@ -175,7 +175,7 @@ namespace GameExtensions
                 mozog = true; //telling the code in FixedUpdate() that the player is moving
             }
 
-            //if the player lets go of the stick, stop moving + checks in case of stick drift
+            //if the player lets go of the stick, stop moving
             if (!context.canceled) return;
             mozog = false;
             anim.SetBool(MovingPmHash, false);

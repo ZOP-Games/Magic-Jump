@@ -59,7 +59,7 @@ namespace GameExtensions.UI
                 spells = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(o => o.CompareTag("Spell menu"));
                 UnityEngine.Debug.Assert(pause is not null);
                 UnityEngine.Debug.Assert(spells is not null);
-                pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
+                pause!.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
             };
             actions["Exit"].canceled += _ => CloseActive();
         }
