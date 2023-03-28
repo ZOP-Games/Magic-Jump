@@ -17,17 +17,26 @@ namespace GameExtensions.UI
                 return;
             }
             DebugConsole.Log("Building layout");
-            var totalY = 0f;
+            var totalY = (elements.Sum(r => r.sizeDelta.y)-(elements.Length+1)*padding)/2;
             for (var i = 0; i < elements.Length; i++)
             {
                 var rtf = elements[i];
                 var pos = rtf.anchoredPosition;
                 var delta = rtf.sizeDelta;
-                pos.y = width/4+totalY-delta.y / 2-(i+1)*padding;
+                pos.y = totalY - delta.y/2;
+                pos.y -= (i+1) * padding;
                 totalY -= delta.y;
-                pos.x = delta.x / 2;
+                pos.x = 0;
                 rtf.anchoredPosition = pos;
             }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            var pos = transform.position;
+            var endPos = new Vector3(pos.x + 50, pos.y, pos.z);
+            Gizmos.DrawLine(pos,endPos);
         }
 
         private void Start()

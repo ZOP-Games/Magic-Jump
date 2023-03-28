@@ -29,14 +29,6 @@ namespace GameExtensions.UI
             }
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-            var pos = transform.position;
-            var endPos = new Vector3(pos.x, pos.y + 50, pos.z);
-            Gizmos.DrawLine(pos,endPos);
-        }
-
         private void Start()
         {
             elements = GetComponentsInChildren<UIComponent>().Where(c =>  c.gameObject != gameObject)

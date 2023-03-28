@@ -513,10 +513,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1888155742}
     m_Modifications:
-    - target: {fileID: 2167227845201906714, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
-      propertyPath: padding
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 5576044541492401450, guid: 4482eef58ee0a7b4eb2e3e1c4a599a24, type: 3}
       propertyPath: m_Name
       value: Options screen
