@@ -30,7 +30,7 @@ namespace GameExtensions.UI.Layouts
         protected virtual void OnEnable()
         {
             DebugConsole.Log("setting selected obj", Color.blue);
-            ES.SetSelectedGameObject(firstObj);
+            ES.SetSelectedGameObject(firstObj); //todo: fix object selection
         }
 
         private void FixedUpdate()
