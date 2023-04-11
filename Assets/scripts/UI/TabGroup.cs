@@ -34,7 +34,7 @@ namespace GameExtensions.UI
             activeTabIndex = id;
             activeTab = tabs[activeTabIndex];
             activeTab.Activate();
-            RefreshLayout();
+            //RefreshLayout();
         }
 
         internal void RefreshLayout()

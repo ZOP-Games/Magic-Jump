@@ -10,8 +10,8 @@ scopes = {
 	"last_search.9E40E7BB" = "GUIViewHDRRT t:RenderTexture"
 	"OpenInspectorPreview.9E40E7BB" = "0"
 	"currentGroup.9E40E7BB" = "asset"
-	"last_search.DD5CDD96" = "t:PlayerInput"
-	"OpenInspectorPreview.DD5CDD96" = "0"
+	"last_search.DD5CDD96" = "t:"
+	"OpenInspectorPreview.DD5CDD96" = "1"
 	"currentGroup.DD5CDD96" = "scene"
 }
 providers = {
@@ -60,14 +60,14 @@ objectSelectors = {
 }
 recentSearches = [
 	"t:"
+	"is:Button"
 	"has:PlayerInput"
 ]
 searchItemFavorites = [
 ]
 savedSearchesSortOrder = 0
 showSavedSearchPanel = false
-expandedQueries = [
-]
+expandedQueries = [-1765347274 961552606]
 queryBuilder = false
 ignoredProperties = "id;name;classname;imagecontentshash"
 helperWidgetCurrentArea = "all"

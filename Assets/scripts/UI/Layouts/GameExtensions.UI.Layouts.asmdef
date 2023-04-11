@@ -3,7 +3,8 @@
     "rootNamespace": "GameExtensions",
     "references": [
         "GUID:88a3b412107009c459367093fcb69d31",
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:443bf07760aca8f4dbf53d16b2f2e119"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

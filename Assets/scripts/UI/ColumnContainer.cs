@@ -1,23 +1,21 @@
 ﻿using System.Linq;
 using GameExtensions.Debug;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace GameExtensions.UI
 {
     public class ColumnContainer : Container
     {
-        private float width;
 
         protected override void BuildLayout()
         {
             if (elements is null || elements.Length < 1)
             {
-                DebugConsole.LogError("The tab layout could not be built: There are no elements to organize.");
+                DebugConsole.LogError("The tab layout could not be built: There are no elements to organise.");
                 return;
             }
             DebugConsole.Log("Building layout");
-            var totalY = (elements.Sum(r => r.sizeDelta.y)-(elements.Length+1)*padding)/2;
+            var totalY = (elements.Sum(r => r.sizeDelta.y)+(elements.Length+1)*padding)/2;
             for (var i = 0; i < elements.Length; i++)
             {
                 var rtf = elements[i];
@@ -42,7 +40,6 @@ namespace GameExtensions.UI
         private void Start()
         {
             elements = GetComponentsInChildren<RectTransform>().Where(t => t.parent == transform).ToArray();
-            width = GetComponent<RectTransform>().sizeDelta.x;
             BuildLayout();
         }
     }

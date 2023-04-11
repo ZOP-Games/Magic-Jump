@@ -73,7 +73,7 @@
                     "type": "PassThrough",
                     "id": "a7cbf8b8-90e7-494e-8edc-30ea37d4a967",
                     "expectedControlType": "Vector2",
-                    "processors": "ScaleVector2(y=10)",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 }
@@ -315,7 +315,7 @@
                     "id": "b0604771-a088-49c9-ae5c-7bbf9bd97e2e",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "StickDeadzone",
+                    "processors": "StickDeadzone,ScaleVector2(y=5)",
                     "groups": "Controller",
                     "action": "Scroll",
                     "isComposite": false,
@@ -326,7 +326,7 @@
                     "id": "e58d04ee-15ac-43b0-bbdb-472946019b99",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(y=10)",
                     "groups": "Keyboard",
                     "action": "Scroll",
                     "isComposite": false,
