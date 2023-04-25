@@ -1077,13 +1077,26 @@ MonoBehaviour:
   m_FillRect: {fileID: 55629424558437889}
   m_HandleRect: {fileID: 5145481162974040074}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7612443574556579932}
+        m_TargetAssemblyTypeName: GameExtensions.UI.Layouts.AudioSettingsLayout,
+          GameExtensions.UI.Layouts
+        m_MethodName: ChangeSpeechVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &697915291589632283
 GameObject:
   m_ObjectHideFlags: 0
@@ -11434,13 +11447,26 @@ MonoBehaviour:
   m_FillRect: {fileID: 2533356113547239690}
   m_HandleRect: {fileID: 722346745658132011}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7612443574556579932}
+        m_TargetAssemblyTypeName: GameExtensions.UI.Layouts.AudioSettingsLayout,
+          GameExtensions.UI.Layouts
+        m_MethodName: ChangeMasterVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5507675215297076828
 GameObject:
   m_ObjectHideFlags: 0
@@ -13292,13 +13318,26 @@ MonoBehaviour:
   m_FillRect: {fileID: 5504755522461925182}
   m_HandleRect: {fileID: 3409643521060344404}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7612443574556579932}
+        m_TargetAssemblyTypeName: GameExtensions.UI.Layouts.AudioSettingsLayout,
+          GameExtensions.UI.Layouts
+        m_MethodName: ChangeSfxVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6177761151119671051
 GameObject:
   m_ObjectHideFlags: 0
@@ -16287,13 +16326,26 @@ MonoBehaviour:
   m_FillRect: {fileID: 9040263867258026034}
   m_HandleRect: {fileID: 1931829762817819793}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7612443574556579932}
+        m_TargetAssemblyTypeName: GameExtensions.UI.Layouts.AudioSettingsLayout,
+          GameExtensions.UI.Layouts
+        m_MethodName: ChangeBackgroundVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7176612875883301492
 GameObject:
   m_ObjectHideFlags: 0
@@ -20445,12 +20497,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 5163475091985309164}
     m_Modifications:
     - target: {fileID: 872217350349728704, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: dca09f45f58dcfa4e84059397258d555, type: 2}
+    - target: {fileID: 872217350349728704, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: firstObj
       value: 
       objectReference: {fileID: 5495063793706767054}
+    - target: {fileID: 872217350349728704, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+      propertyPath: masterMixer
+      value: 
+      objectReference: {fileID: 24100000, guid: dca09f45f58dcfa4e84059397258d555, type: 2}
     - target: {fileID: 1686659907981013082, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_VerticalScrollbarVisibility
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1686659907981013082, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1686659907981013082, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1686659907981013082, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1971689218008102010, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_Pivot.x
@@ -20596,6 +20668,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9217929398104646242, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
   m_PrefabInstance: {fileID: 7331411687785984924}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7612443574556579932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 872217350349728704, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+  m_PrefabInstance: {fileID: 7331411687785984924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820013503502273409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef62e7656d10634187b3ca9f963a4af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &9143064753897621478 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1971689218008102010, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
