@@ -28,5 +28,38 @@ namespace GameExtensions.UI
             GObj.SetActive(false);
             if(Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("Player");
         }
+
+        public static void RemapNavigation(Selectable target,Selectable obj,NavigationDirection dir)
+        {
+            var nav = target.navigation;
+            switch (dir)
+            {
+                case NavigationDirection.Up:
+                    nav.selectOnUp = obj;
+                    break;
+                case NavigationDirection.Down:
+                    nav.selectOnDown = obj;
+                    break;
+                case NavigationDirection.Left:
+                    nav.selectOnLeft = obj;
+                    break;
+                case NavigationDirection.Right:
+                    nav.selectOnRight = obj;
+                    break;
+                default:
+                    DebugConsole.LogError("Unknown navigation direction");
+                    break;
+            }
+
+            target.navigation = nav;
+        }
+
+        public enum NavigationDirection
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        }
     }
 }
