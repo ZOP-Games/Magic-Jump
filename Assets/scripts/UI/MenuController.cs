@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using GameExtensions.Debug;
 using JetBrains.Annotations;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-using GameExtensions.Debug;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
 
 // ReSharper disable UseNullPropagation //needed for working null checks
 
@@ -20,16 +17,9 @@ namespace GameExtensions.UI
         private MenuScreen pause;
         private MenuScreen spells;
         [SerializeField] private InputActionAsset actions;
-        public static MenuController Controller {
-            get
-            {
-                var controller = FindObjectsOfType<MenuController>().FirstOrDefault();
-                if (controller is null) DebugConsole.LogError("u need a menuController u idoit");
-                return controller;
-            }
-        }
+        public static MenuController Controller { get; private set; }
 
-        public void OpenPause()
+            public void OpenPause()
         {
             var player = Player.Instance;
             XpInfo = (player.Xp, player.XpThreshold, player.Lvl);
@@ -49,6 +39,9 @@ namespace GameExtensions.UI
 
         public void Start()
         {
+            if(Controller is not null) Destroy(this);
+            Controller = this;
+            DontDestroyOnLoad(gameObject);
             Player.PlayerReady += () =>
             {
                 var player = Player.Instance;

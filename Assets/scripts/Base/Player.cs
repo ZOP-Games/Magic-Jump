@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Cinemachine;
 using GameExtensions.Debug;
@@ -9,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+// ReSharper disable MergeConditionalExpression
 
 namespace GameExtensions 
 {
@@ -367,6 +369,7 @@ namespace GameExtensions
 
         #endregion
 
+
         public void OnBeforeSerialize()
         {
             playerAngles = tf is not null ? tf.eulerAngles : Vector3.zero;
@@ -449,7 +452,8 @@ namespace GameExtensions
 
             anim = GetComponent<Animator>();
             tf = transform;
-            Instance = GameObject.Find("player").GetComponent<Player>(); //setting Instance
+            //Instance = GameObject.Find("player").GetComponent<Player>(); //setting Instance
+            Instance = this;
             vCam = CinemachineCore.Instance
                     .GetVirtualCamera(0) as
                 CinemachineVirtualCamera; //getting virtual camera and setting damping to default value

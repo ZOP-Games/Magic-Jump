@@ -1,45 +1,47 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
+using GameExtensions.Debug;
 
-namespace GameExtensions.UI.Layouts
+namespace GameExtensions.Settings
 {
-    public class AudioSettingsLayout : ScreenLayout
+    public class AudioSettings : MonoBehaviour
     {
-       [SerializeField]private AudioMixer masterMixer;
-
-        private new void OnEnable()
+        public static AudioSettings Instance
         {
-            base.OnEnable();
+            get
+            {
+                var controller = FindObjectOfType<AudioSettings>();
+                if (controller is null) DebugConsole.Log("No Audio Settings detected, no audio adjustments will be possible.");
+                return controller;
+            }
         }
-
-        private new void Start()
-        {
-            base.Start();
-        }
+        [SerializeField] private AudioMixer masterMixer;
 
         public void ChangeMasterVolume(float amount)
         {
             masterMixer.SetFloat("MasterVolume", amount);
         }
-        
+
         public void ChangeBackgroundVolume(float amount)
         {
             masterMixer.SetFloat("BgVolume", amount);
         }
-        
+
         public void ChangeSfxVolume(float amount)
         {
             masterMixer.SetFloat("SFXVolume", amount);
         }
-        
+
         public void ChangeSpeechVolume(float amount)
         {
             masterMixer.SetFloat("SpeechVolume", amount);
+        }
+
+        private void Start()
+        {
+            if(Instance is not null) Destroy(this);
         }
     }
 }

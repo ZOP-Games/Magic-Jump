@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
-namespace GameExtensions.UI.Layouts
+namespace GameExtensions.UI
 {
-    public abstract class ScreenLayout : UIComponent
+    public class ScreenLayout : UIComponent
     {
         [SerializeField] private GameObject firstObj;
-        protected Selectable[] options;
 
-        protected virtual void OnEnable()
+        protected void OnEnable()
         {
             var menu = Controller.ActiveScreen;
             if (menu is null) return;
@@ -21,11 +20,10 @@ namespace GameExtensions.UI.Layouts
             ES.SetSelectedGameObject(firstObj); //todo: fix object selection
         }
 
-        protected virtual void Start()
+        protected void Start()
         {
             UnityEngine.Debug.Assert(ES.currentInputModule is InputSystemUIInputModule,
                 "Current Input Module is not of type InputSystemUIInputModule.");
-            options = GetComponentsInChildren<Selectable>().Where(s => s is not Scrollbar).ToArray();
         }
     }
 }

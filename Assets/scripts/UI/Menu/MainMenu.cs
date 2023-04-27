@@ -46,7 +46,6 @@ namespace GameExtensions.UI.Menus
             //PlayerPrefs.DeleteAll();
             //Open();
             ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
-            DontDestroyOnLoad(Controller.gameObject);
             if (!SaveManager.SaveExists) continueButton.interactable = false;
         }
     }
