@@ -302,7 +302,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1971689218008102010}
   - component: {fileID: 1686659907981013082}
-  - component: {fileID: 872217350349728704}
   - component: {fileID: 6298052696163398395}
   m_Layer: 5
   m_Name: Settings Layout
@@ -363,19 +362,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &872217350349728704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989154815674923037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eef62e7656d10634187b3ca9f963a4af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstObj: {fileID: 0}
 --- !u!114 &6298052696163398395
 MonoBehaviour:
   m_ObjectHideFlags: 0

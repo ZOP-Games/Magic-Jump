@@ -17,26 +17,49 @@ namespace GameExtensions.Settings
                 return controller;
             }
         }
-        [SerializeField] private AudioMixer masterMixer;
+
+        public bool EnableSubtitles { get; set; } = true;
+        public AudioSpeakerMode SpeakerMode { get; private set; }
+        public float MasterVolume { get; set; } = 0;
+
+        public float BgVolume { get; set; } = 0;
+
+        public float SpeechVolume { get; set; } = 0;
+
+        public float SfxVolume { get; set; } = 0;
+
+        [SerializeField]private AudioMixer masterMixer;
+        
 
         public void ChangeMasterVolume(float amount)
         {
-            masterMixer.SetFloat("MasterVolume", amount);
+            MasterVolume += amount;
+            masterMixer.SetFloat("MasterVolume", MasterVolume);
         }
 
         public void ChangeBackgroundVolume(float amount)
         {
-            masterMixer.SetFloat("BgVolume", amount);
+            BgVolume += amount; 
+            masterMixer.SetFloat("BgVolume", BgVolume);
         }
 
         public void ChangeSfxVolume(float amount)
         {
-            masterMixer.SetFloat("SFXVolume", amount);
+            SfxVolume += amount; 
+            masterMixer.SetFloat("SFXVolume", SfxVolume);
         }
 
         public void ChangeSpeechVolume(float amount)
         {
-            masterMixer.SetFloat("SpeechVolume", amount);
+            SpeechVolume += amount;
+            masterMixer.SetFloat("SpeechVolume", SpeechVolume);
+        }
+
+        public void ChangeSpeakerMode(int modeNumber)
+        {
+            if(modeNumber > 7) DebugConsole.Log("The specified speaker mode does not exist.");
+            SpeakerMode = (AudioSpeakerMode)modeNumber;
+            UnityEngine.AudioSettings.speakerMode = SpeakerMode;
         }
 
         private void Start()
