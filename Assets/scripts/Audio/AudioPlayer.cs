@@ -7,15 +7,30 @@ namespace GameExtensions.Audio
 {
     public class AudioPlayer : MonoBehaviour
     {
+        private AudioSource[] sauces;
+        public void PlayAll()
+        {
+            foreach (var sauce in sauces) sauce.Play();
+        }
+
+        public void PauseAll()
+        {
+            foreach (var sauce in sauces) sauce.Pause();
+        }
+        
+        public void StopAll()
+        {
+            foreach (var sauce in sauces) sauce.Stop();
+        }
         // Start is called before the first frame update
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
+            sauces = GetComponents<AudioSource>();
             SceneManager.activeSceneChanged += (_, _) =>
             {
-                var source = GetComponent<AudioSource>();
-                source.Stop();
-                source.Play();
+                StopAll();
+                PlayAll();
             };
         }
     }

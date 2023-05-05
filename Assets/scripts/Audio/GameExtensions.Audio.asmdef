@@ -1,7 +1,9 @@
 {
     "name": "GameExtensions.Audio",
     "rootNamespace": "GameExtensions",
-    "references": [],
+    "references": [
+        "GUID:443bf07760aca8f4dbf53d16b2f2e119"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

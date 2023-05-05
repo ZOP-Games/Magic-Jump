@@ -636,8 +636,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168871980}
-  m_LocalRotation: {x: 0.13424133, y: 0.000000008069236, z: -0.0000000010931192, w: 0.9909487}
-  m_LocalPosition: {x: 1.4339999, y: 5.1605253, z: -13.6395855}
+  m_LocalRotation: {x: 0.13424131, y: 0.00000001366842, z: -0.0000000018516264, w: 0.9909487}
+  m_LocalPosition: {x: 1.4339998, y: 5.1605253, z: -13.6395855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4684,6 +4684,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 689097455}
     m_Modifications:
+    - target: {fileID: 4703012524630101637, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 131.5928
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703012524630101637, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 111.8538
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703012524630101637, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -480
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703012524630101637, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -270
+      objectReference: {fileID: 0}
     - target: {fileID: 4703012525056974995, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -4788,8 +4804,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause
       objectReference: {fileID: 0}
-    - target: {fileID: 4703012525571810107, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 6855635155892793380, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6855635155892793380, guid: 72ab1bc5c06e4f94982c2cb1e7e5bebe, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
