@@ -22,6 +22,11 @@ namespace GameExtensions.Audio
         {
             foreach (var sauce in sauces) sauce.Stop();
         }
+        
+        public void ResumeAll()
+        {
+            foreach (var sauce in sauces) sauce.UnPause();
+        }
         // Start is called before the first frame update
         private void Start()
         {

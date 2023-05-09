@@ -17,7 +17,7 @@ namespace GameExtensions.UI
             MenuScreen.RemapNavigation(menu.GetComponentInChildren<Button>(),
                 GetComponentsInChildren<Selectable>().LastOrDefault(s => s is not Scrollbar),
                 MenuScreen.NavigationDirection.Up);
-            ES.SetSelectedGameObject(firstObj); //todo: fix object selection
+            ES.SetSelectedGameObject(firstObj);
         }
 
         protected void Start()

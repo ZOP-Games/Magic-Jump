@@ -51,7 +51,8 @@ namespace GameExtensions.Audio
 
         public void ChangeSpeakerMode(int modeNumber)
         {
-            if (++modeNumber > 7)
+            modeNumber++;
+            if (modeNumber > 7)
             {
                 DebugConsole.Log("The specified speaker mode does not exist.");
                 return;
@@ -61,7 +62,7 @@ namespace GameExtensions.Audio
 
         private void ApplySpeakerMode(AudioSpeakerMode speakerMode)
         {
-            player.PauseAll();
+            //player.PauseAll();
             SpeakerMode = speakerMode;
             conf.speakerMode = SpeakerMode;
             var worked = UnityEngine.AudioSettings.Reset(conf);
