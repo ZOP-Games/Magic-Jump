@@ -5100,7 +5100,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4810458352181629024}
+        m_TargetAssemblyTypeName: VideoSettings, GameExtensions.Settings
+        m_MethodName: ToggleVSync
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &2385333918465590323
 GameObject:
@@ -21357,7 +21369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ac919634c75e549956b674189179c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstObj: {fileID: 1440963532418411441}
+  firstObj: {fileID: 1242342909694166717}
 --- !u!1001 &2042517419536860871
 PrefabInstance:
   m_ObjectHideFlags: 0

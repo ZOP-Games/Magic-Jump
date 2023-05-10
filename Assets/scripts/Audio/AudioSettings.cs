@@ -77,7 +77,6 @@ namespace GameExtensions.Audio
             Instance = this;
             player = FindObjectOfType<AudioPlayer>();
             conf = UnityEngine.AudioSettings.GetConfiguration();
-            ApplySpeakerMode(UnityEngine.AudioSettings.driverCapabilities);
         }
 
         private void OnDestroy()
