@@ -13,6 +13,9 @@ scopes = {
 	"last_search.DD5CDD96" = "t:AudioSettings"
 	"OpenInspectorPreview.DD5CDD96" = "1"
 	"currentGroup.DD5CDD96" = "asset"
+	"last_search.DA949528" = ""
+	"OpenInspectorPreview.DA949528" = "0"
+	"currentGroup.DA949528" = "scene"
 }
 providers = {
 	adb = {

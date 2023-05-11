@@ -12,10 +12,11 @@ public class VideoSettings : MonoBehaviour
     public Resolution CurrentResolution { get; private set; }
     public int CurrentRefreshRate { get; private set; } 
     public bool IsVSyncEnabled { get; private set; }
-    private Resolution[] resolutions;
+    private List<(int width,int height)> resolutions;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown refreshDropdown;
     private readonly Color debugColor = new (0,0.91f,0.8f);
+    private readonly List<string> refreshRates = new (){"60","120","144"};
 
     public void ChangeFullscreenMode(int modeNumber)
     {
@@ -34,19 +35,23 @@ public class VideoSettings : MonoBehaviour
 
     public void ChangeResolution(int resNumber)
     {
-        var resString = resolutionDropdown.options[resNumber].text.Split(" x ");
-        CurrentResolution = resolutions.FirstOrDefault(r => r.width == int.Parse(resString[0]) &&
-                                                   r.height == int.Parse(resString[1]) && 
-                                                   r.refreshRate == CurrentRefreshRate);
+        var newRes = resolutions.ElementAt(resNumber);
+        if(CurrentResolution.width == newRes.width) return;
+        CurrentResolution = new Resolution
+        {
+            width = newRes.width,
+            height = newRes.height,
+            refreshRate = CurrentRefreshRate
+        };
+        DebugConsole.Log("Setting resolution to " + newRes.width+ "x" + newRes.height + ", it is no. " + resolutions.ToList().IndexOf(newRes),debugColor);
         Screen.SetResolution(CurrentResolution.width,CurrentResolution.height,ScreenMode,CurrentRefreshRate);
-        Debug.Assert(Screen.currentResolution.width != 1080);
-        var newRes = Screen.currentResolution;
-        DebugConsole.Log("Set resolution to " + newRes.width+ "x" + newRes.height,debugColor);
     }
 
     public void ChangeRefreshRate(int rateNumber)
     {
-        CurrentRefreshRate = int.Parse(refreshDropdown.options[rateNumber].text);
+        var newRate = int.Parse(refreshRates[rateNumber]);
+        if(CurrentRefreshRate == newRate) return;
+        CurrentRefreshRate = newRate;
         Application.targetFrameRate = CurrentRefreshRate;
         DebugConsole.Log("Set refresh rate to " + Application.targetFrameRate,debugColor);
     }
@@ -60,8 +65,13 @@ public class VideoSettings : MonoBehaviour
 
     private void Start()
     {
-        resolutions = Screen.resolutions;
-        resolutionDropdown.AddOptions(resolutions.Select(r => r.height + " x " + r.width).Distinct().ToList());
-        refreshDropdown.AddOptions(new List<string>{"60","120","144"});
+        resolutions = Screen.resolutions.GroupBy(r => (r.width,r.height)).Select(r => r.Key).ToList();
+        resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
+        refreshDropdown.AddOptions(refreshRates);
+        var displayInfo = Screen.currentResolution;
+        CurrentResolution = displayInfo;
+        CurrentRefreshRate = displayInfo.refreshRate;
+        resolutionDropdown.value = resolutions.ToList().IndexOf((CurrentResolution.width,CurrentResolution.height));
+        refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
     }
 }
