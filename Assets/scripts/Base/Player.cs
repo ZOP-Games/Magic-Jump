@@ -193,7 +193,6 @@ namespace GameExtensions
             if (!context.performed || !grounded) return;
             rb.AddForce(0, JumpForce, 0); //jump
             //Debug.Log("Jumping, velocity: " + rb.velocity.y);
-            Die();
         }
 
         /// <summary>
@@ -378,7 +377,6 @@ namespace GameExtensions
 
         public void OnAfterDeserialize()
         {
-            DebugConsole.Log("Deser is happening");
             if (tf is null) return;
             tf.position = playerPos;
             tf.eulerAngles = playerAngles;

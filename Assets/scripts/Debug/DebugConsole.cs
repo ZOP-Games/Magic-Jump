@@ -6,6 +6,11 @@ namespace GameExtensions.Debug
 {
     public static class DebugConsole
     {
+        public static Color TestColor => new(0, 0.91f, 0.8f);
+        public static Color WarningColor => Color.yellow;
+        public static Color ErrorColor => Color.red;
+        public static Color SuccessColor => Color.green;
+        public static Color MissingColor => Color.magenta;
         private const byte FontSize = 20;
         private const byte ErrorFontSize = 36; 
         private static readonly Color FontColor = Color.black;

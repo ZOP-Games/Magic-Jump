@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using GameExtensions.Debug;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using TMPro;
+using UnityEngine.UI;
 
 public class VideoSettings : MonoBehaviour
 {
@@ -12,18 +15,33 @@ public class VideoSettings : MonoBehaviour
     public Resolution CurrentResolution { get; private set; }
     public int CurrentRefreshRate { get; private set; } 
     public bool IsVSyncEnabled { get; private set; }
+    public AntialiasingMode AntiAliasing { get; private set; }
+    public bool IsUsingAnisoFiltering { get; private set; }
+    //todo: world quality
+    public byte ModelQuality { get; private set; }
     private List<(int width,int height)> resolutions;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown refreshDropdown;
-    private readonly Color debugColor = new (0,0.91f,0.8f);
+    [SerializeField] private Toggle vSyncToggle;
+    [SerializeField] private TMP_Dropdown aaDropdown;
+    [SerializeField] private TMP_Dropdown worldDropdown;
+    [SerializeField] private TMP_Dropdown modelDropdown;
+    [SerializeField] private Toggle filterToggle;
+    private UniversalAdditionalCameraData cameraData;
     private readonly List<string> refreshRates = new (){"60","120","144"};
+
+    private readonly (float bias, int max) lowLODSettings = (0.75f, 2);
+    private readonly (float bias, int max) mediumLODSettings = (1, 2);
+    private readonly (float bias, int max) highLODSettings = (1, 1);
+    private readonly (float bias, int max) ultraLODSettings = (2, 0);
+
 
     public void ChangeFullscreenMode(int modeNumber)
     {
         switch (modeNumber)
         {
             case > 2 or < 0:
-                DebugConsole.Log("The specified fullscreen mode does not exist.",Color.yellow);
+                DebugConsole.Log("The specified fullscreen mode does not exist.",DebugConsole.TestColor);
                 return;
             case > 1:
                 modeNumber = 3;
@@ -35,15 +53,14 @@ public class VideoSettings : MonoBehaviour
 
     public void ChangeResolution(int resNumber)
     {
-        var newRes = resolutions.ElementAt(resNumber);
-        if(CurrentResolution.width == newRes.width) return;
+        var (width, height) = resolutions.ElementAt(resNumber);
+        if(CurrentResolution.width == width) return;
         CurrentResolution = new Resolution
         {
-            width = newRes.width,
-            height = newRes.height,
+            width = width,
+            height = height,
             refreshRate = CurrentRefreshRate
         };
-        DebugConsole.Log("Setting resolution to " + newRes.width+ "x" + newRes.height + ", it is no. " + resolutions.ToList().IndexOf(newRes),debugColor);
         Screen.SetResolution(CurrentResolution.width,CurrentResolution.height,ScreenMode,CurrentRefreshRate);
     }
 
@@ -53,25 +70,71 @@ public class VideoSettings : MonoBehaviour
         if(CurrentRefreshRate == newRate) return;
         CurrentRefreshRate = newRate;
         Application.targetFrameRate = CurrentRefreshRate;
-        DebugConsole.Log("Set refresh rate to " + Application.targetFrameRate,debugColor);
     }
 
     public void ToggleVSync(bool newValue)
     {
         IsVSyncEnabled = newValue;
         QualitySettings.vSyncCount = IsVSyncEnabled ? 1 : 0;
-        DebugConsole.Log("Set VSync to " + (QualitySettings.vSyncCount == 1 ? "ON" : "OFF"),debugColor);
+    }
+
+    public void ChangeAntiAliasing(int setting)
+    {
+        AntiAliasing = (AntialiasingMode) Mathf.Clamp(setting,0,2);
+        cameraData.antialiasing = AntiAliasing;
+        cameraData.antialiasingQuality = AntialiasingQuality.High;
+    }
+
+    public void ChangeWorldQuality(int level)
+    {
+        DebugConsole.Log("This feature is not implemented yet. :(",DebugConsole.TestColor);
+        throw new NotImplementedException();
+    }
+
+    public void ChangeModelQuality(int level)
+    {
+        ModelQuality = (byte)Mathf.Clamp(level, 0, 3);
+        switch (ModelQuality)
+        {
+            case 0:
+                QualitySettings.SetLODSettings(lowLODSettings.bias,lowLODSettings.max);
+                break;
+            case 1:
+                QualitySettings.SetLODSettings(mediumLODSettings.bias,mediumLODSettings.max);
+                break;
+            case 2:
+                QualitySettings.SetLODSettings(highLODSettings.bias,highLODSettings.max);
+                break;
+            case 3:
+                QualitySettings.SetLODSettings(ultraLODSettings.bias,ultraLODSettings.max);
+                break;
+
+        }
+    }
+
+    public void ChangeTextureFiltering(bool newValue)
+    {
+        IsUsingAnisoFiltering = newValue;
+        QualitySettings.anisotropicFiltering =
+            IsUsingAnisoFiltering ? AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
     }
 
     private void Start()
     {
+        cameraData = FindObjectOfType<Camera>().GetComponent<UniversalAdditionalCameraData>();
         resolutions = Screen.resolutions.GroupBy(r => (r.width,r.height)).Select(r => r.Key).ToList();
         resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
         refreshDropdown.AddOptions(refreshRates);
         var displayInfo = Screen.currentResolution;
         CurrentResolution = displayInfo;
         CurrentRefreshRate = displayInfo.refreshRate;
+        IsVSyncEnabled = QualitySettings.vSyncCount == 1;
+        AntiAliasing = cameraData.antialiasing;
+        IsUsingAnisoFiltering = QualitySettings.anisotropicFiltering == AnisotropicFiltering.ForceEnable;
         resolutionDropdown.value = resolutions.ToList().IndexOf((CurrentResolution.width,CurrentResolution.height));
         refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
+        vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
+        aaDropdown.value = (int)AntiAliasing;   //todo: apply settings to all cameras
+        filterToggle.SetIsOnWithoutNotify(IsUsingAnisoFiltering);
     }
 }

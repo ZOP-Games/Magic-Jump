@@ -27,7 +27,7 @@ namespace GameExtensions.UI
         {
             if (id >= tabs.Length)
             {
-                DebugConsole.LogError("Can't select active tab because the ID provided is invalid.");
+                DebugConsole.LogError($"Can't select active tab because the ID provided ({id}) is invalid.");
                 return;
             }
             activeTab.Deactivate();
