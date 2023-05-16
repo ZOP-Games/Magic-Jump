@@ -12,8 +12,10 @@ namespace GameExtensions.Enemies
     public class Kwork : EnemyBase
     {
         //class for the Kwork enemy, it's a basic implementation of EnemyBase
-        protected override int AttackingPmHash => Animator.StringToHash("Attack");
-        protected override int MovingPmHash => Animator.StringToHash("Running");
+        protected override int AttackingPmHash => Animator.StringToHash("attack");
+        protected override int MovingPmHash => Animator.StringToHash("moving");
+        protected override int RunningPmHash => Animator.StringToHash("running");
+        protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.zero;
         protected override int AtkSphereRadius => 3;
         protected override Vector3 ForwardDirection => Vector3.forward;

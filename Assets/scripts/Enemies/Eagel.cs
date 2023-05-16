@@ -16,6 +16,8 @@ namespace GameExtensions.Enemies
         //setting Entity properties, for more info -> see Entity
         protected override int AttackingPmHash => Animator.StringToHash("attacking");
         protected override int MovingPmHash => Animator.StringToHash("moving");
+        protected override int RunningPmHash => Animator.StringToHash("running");
+        protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.zero;
         protected override int AtkSphereRadius => 6;
         protected override Vector3 ForwardDirection => Vector3.right;

@@ -11,20 +11,25 @@ namespace GameExtensions.Debug
         public static Color ErrorColor => Color.red;
         public static Color SuccessColor => Color.green;
         public static Color MissingColor => Color.magenta;
+        private static bool IsWriterAvalaible => Writer is not null;
+        private static bool _writtenError;
         private const byte FontSize = 20;
         private const byte ErrorFontSize = 36; 
         private static readonly Color FontColor = Color.black;
-        private static DebugMessageWriter Writer
-        {
-            get
-            {
-                UnityEngine.Debug.Assert(DebugMessageWriter.Instance is not null);
-                return DebugMessageWriter.Instance;
-            }
-        }
+        private static DebugMessageWriter Writer => DebugMessageWriter.Instance;
 
         public static void Log(string text, Color color, byte fontSize)
         {
+            if (!IsWriterAvalaible && !_writtenError)
+            {
+                UnityEngine.Debug.LogWarning(
+                    "The message writer is not available. Debug console messages will be written to Unity console only");
+                _writtenError = true;
+            }
+            if(!IsWriterAvalaible){
+                UnityEngine.Debug.Log(text);
+                return;
+            }
             if(color == FontColor) color = SceneManager.GetActiveScene().buildIndex is 0 ? Color.white : FontColor;
             Writer.ClearStyles();
             #if UNITY_EDITOR 

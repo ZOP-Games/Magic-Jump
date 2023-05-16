@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class VideoSettings : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public class VideoSettings : MonoBehaviour
     public bool IsUsingAnisoFiltering { get; private set; }
     //todo: world quality
     public byte ModelQuality { get; private set; }
+
     private List<(int width,int height)> resolutions;
+    private UniversalAdditionalCameraData cameraData;
+
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown refreshDropdown;
     [SerializeField] private Toggle vSyncToggle;
@@ -27,9 +31,8 @@ public class VideoSettings : MonoBehaviour
     [SerializeField] private TMP_Dropdown worldDropdown;
     [SerializeField] private TMP_Dropdown modelDropdown;
     [SerializeField] private Toggle filterToggle;
-    private UniversalAdditionalCameraData cameraData;
-    private readonly List<string> refreshRates = new (){"60","120","144"};
 
+    private readonly List<string> refreshRates = new (){"60","120","144"};
     private readonly (float bias, int max) lowLODSettings = (0.75f, 2);
     private readonly (float bias, int max) mediumLODSettings = (1, 2);
     private readonly (float bias, int max) highLODSettings = (1, 1);
@@ -41,7 +44,7 @@ public class VideoSettings : MonoBehaviour
         switch (modeNumber)
         {
             case > 2 or < 0:
-                DebugConsole.Log("The specified fullscreen mode does not exist.",DebugConsole.TestColor);
+                DebugConsole.Log("The specified fullscreen mode does not exist.",DebugConsole.WarningColor);
                 return;
             case > 1:
                 modeNumber = 3;
@@ -119,9 +122,20 @@ public class VideoSettings : MonoBehaviour
             IsUsingAnisoFiltering ? AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
     }
 
+    public void ChangeVfxQuality()
+    {
+        DebugConsole.Log("This feature is not implemented yet. :(",DebugConsole.TestColor);
+        throw new NotImplementedException();
+    }
+
     private void Start()
     {
-        cameraData = FindObjectOfType<Camera>().GetComponent<UniversalAdditionalCameraData>();
+        cameraData = FindObjectOfType<UniversalAdditionalCameraData>();
+        if (cameraData is null)
+        {
+            DebugConsole.LogError("Universal Additional Camera Data cannot be found.");
+            return;
+        }
         resolutions = Screen.resolutions.GroupBy(r => (r.width,r.height)).Select(r => r.Key).ToList();
         resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
         refreshDropdown.AddOptions(refreshRates);
@@ -134,7 +148,17 @@ public class VideoSettings : MonoBehaviour
         resolutionDropdown.value = resolutions.ToList().IndexOf((CurrentResolution.width,CurrentResolution.height));
         refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
         vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
-        aaDropdown.value = (int)AntiAliasing;   //todo: apply settings to all cameras
+        aaDropdown.value = (int)AntiAliasing;
+        UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
+        {
+            var cd = FindObjectOfType<UniversalAdditionalCameraData>();
+            if (cd is null)
+            {
+                DebugConsole.Log("Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.",DebugConsole.WarningColor);
+                return;
+            }
+            cd.antialiasing = AntiAliasing;
+        };
         filterToggle.SetIsOnWithoutNotify(IsUsingAnisoFiltering);
     }
 }

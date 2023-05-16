@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Cinemachine;
 using GameExtensions.Debug;
@@ -9,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 // ReSharper disable MergeConditionalExpression
 
 namespace GameExtensions 
@@ -40,7 +38,9 @@ namespace GameExtensions
         //setting Entity properties, for more info -> see Entity
         protected override int AttackingPmHash => Animator.StringToHash("attacking");
         protected override int MovingPmHash => Animator.StringToHash("moving");
-        protected override Vector3 AtkSpherePos => new(0, 1, 0.5f);
+        protected override int RunningPmHash => Animator.StringToHash("running");
+        protected override int DamagePmHash => Animator.StringToHash("damage");
+        protected override Vector3 AtkSpherePos => new(0, 1.5f, 0.5f);
         protected override int AtkSphereRadius => 1;
 
 
@@ -172,7 +172,6 @@ namespace GameExtensions
             if (context.performed)
             {
                 mPos = context.ReadValue<Vector2>(); //storing input data
-                anim.SetBool(MovingPmHash, true); //playing the move animation
                 anim.SetFloat(MoveSpeedId, 1); //setting aniation playback speed to 1
                 mozog = true; //telling the code in FixedUpdate() that the player is moving
             }
@@ -242,12 +241,14 @@ namespace GameExtensions
                 //tell the code in FixedUpdate() we're running
                 running = true;
                 anim.SetFloat(MoveSpeedId, 2); //set "running" animation (speeding up walk animation)
+                anim.SetBool(RunningPmHash,true);
                 vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = RunDamping;
             }
 
             if (!context.canceled) return;
             running = false;
             anim.SetFloat(MoveSpeedId, 1);
+            anim.SetBool(RunningPmHash,false);
             vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_ZDamping = WalkDamping;
         }
 
@@ -450,7 +451,6 @@ namespace GameExtensions
 
             anim = GetComponent<Animator>();
             tf = transform;
-            //Instance = GameObject.Find("player").GetComponent<Player>(); //setting Instance
             Instance = this;
             vCam = CinemachineCore.Instance
                     .GetVirtualCamera(0) as

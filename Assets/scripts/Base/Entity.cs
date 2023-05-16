@@ -27,6 +27,8 @@ namespace GameExtensions
         //hashes of animator state names, use these for state checks
         protected abstract int AttackingPmHash { get; }
         protected abstract int MovingPmHash { get; }
+        protected abstract int RunningPmHash { get; }
+        protected abstract int DamagePmHash { get; }
         protected abstract Vector3 AtkSpherePos { get; } //position of the Enitity's hitbox
         protected abstract int AtkSphereRadius { get; } //the radius of the hitbox sphere
 
@@ -47,6 +49,7 @@ namespace GameExtensions
         //damage logic, the dealt damage is substracted from Enitity's HP
         public void TakeDamage(int amount)
         {
+            anim.SetTrigger(DamagePmHash);
             Hp -= amount - Defense / 100;
             HealthChanged?.Invoke();
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
@@ -100,6 +103,8 @@ namespace GameExtensions
         {
             //Debug.Log(maxSpeed);
             //speed cap
+            anim.SetBool(MovingPmHash,true);
+            if(maxSpeed > 5) anim.SetBool(RunningPmHash,true);
             if (Mathf.Abs(rb.velocity.x) < maxSpeed && Mathf.Abs(rb.velocity.z) < maxSpeed)
             {
                 rb.AddRelativeForce(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier);
@@ -120,7 +125,6 @@ namespace GameExtensions
 
                 rb.velocity = velocity;
             }
-
         }
 
         public virtual void Stun()

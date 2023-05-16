@@ -47,7 +47,6 @@ namespace GameExtensions.Enemies
             {
                 CancelInvoke(nameof(Attack));
                 isAttacking = false;
-                anim.SetBool(MovingPmHash,true);
                 Move(transform1.InverseTransformDirection(transform1.forward));
             }
             else if(!isAttacking)
@@ -61,6 +60,7 @@ namespace GameExtensions.Enemies
         {
             CancelInvoke(nameof(Attack));
             anim.SetBool(MovingPmHash,false);
+            anim.SetBool(RunningPmHash,false);
             CancelInvoke(nameof(Aim));
             rb.Sleep();
         }
