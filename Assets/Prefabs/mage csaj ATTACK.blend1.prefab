@@ -422,7 +422,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
   m_Controller: {fileID: 9100000, guid: 61208eb666e7f4f42b76a0e466fa7dfe, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -451,7 +451,6 @@ MonoBehaviour:
   <Hp>k__BackingField: 100
   <AtkPower>k__BackingField: 10
   <Defense>k__BackingField: 10
-  levelUpText: {fileID: 0}
   playerPos: {x: 0, y: 0, z: 0}
   playerAngles: {x: 0, y: 0, z: 0}
   <Xp>k__BackingField: 0

@@ -10,7 +10,10 @@ namespace GameExtensions.UI
     [RequireComponent(typeof(RectTransform))]
     public abstract class MenuScreen : UIComponent
     {
-        [CanBeNull] protected virtual MenuScreen Parent => transform.parent.GetComponent<MenuScreen>();
+        [CanBeNull]
+        protected virtual MenuScreen Parent => transform.parent.TryGetComponent<Canvas>(out _)
+            ? transform.parent.parent.GetComponent<MenuScreen>()
+            : transform.parent.GetComponent<MenuScreen>();
 
         public virtual void Open()
         {

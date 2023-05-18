@@ -7,37 +7,54 @@ using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
-using UnityEngine.VFX;
 
 public class VideoSettings : MonoBehaviour
 {
     public FullScreenMode ScreenMode { get; private set; }
     public Resolution CurrentResolution { get; private set; }
     public int CurrentRefreshRate { get; private set; } 
+    public bool IsSsaoEnabled { get; private set; }
     public bool IsVSyncEnabled { get; private set; }
     public AntialiasingMode AntiAliasing { get; private set; }
     public bool IsUsingAnisoFiltering { get; private set; }
     //todo: world quality
     public byte ModelQuality { get; private set; }
+    public byte ShadowQuality { get; private set; }
+    public float Brightness { get; private set; }
 
     private List<(int width,int height)> resolutions;
-    private UniversalAdditionalCameraData cameraData;
+    private UniversalAdditionalCameraData cameraData; 
+    [SerializeField] private UniversalRenderPipelineAsset urpAsset;
+    [SerializeField]private ScriptableRendererFeature ssao;
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown refreshDropdown;
+    [SerializeField] private Toggle ssaoToggle;
     [SerializeField] private Toggle vSyncToggle;
     [SerializeField] private TMP_Dropdown aaDropdown;
     [SerializeField] private TMP_Dropdown worldDropdown;
     [SerializeField] private TMP_Dropdown modelDropdown;
     [SerializeField] private Toggle filterToggle;
+    [SerializeField] private TMP_Dropdown shadowDropdown;
+    [SerializeField] private Slider brightnessSlider;
 
     private readonly List<string> refreshRates = new (){"60","120","144"};
-    private readonly (float bias, int max) lowLODSettings = (0.75f, 2);
-    private readonly (float bias, int max) mediumLODSettings = (1, 2);
-    private readonly (float bias, int max) highLODSettings = (1, 1);
-    private readonly (float bias, int max) ultraLODSettings = (2, 0);
-
+    // ReSharper disable once InconsistentNaming
+    private readonly (float bias, int max)[] LODSettings = {
+        (0.75f,1),  //low
+        (1,1),  //medium
+        (1,0),  //high
+        (2,0)   //ultra
+    };
+    private readonly LightingSetting[] lightingSettings =
+    {
+        new(0,50,4),    //low
+        new(2,50,4),    //medium
+        new(4,75,2),    //high
+        new(6,100,0)   //ultra
+    };
 
     public void ChangeFullscreenMode(int modeNumber)
     {
@@ -75,6 +92,12 @@ public class VideoSettings : MonoBehaviour
         Application.targetFrameRate = CurrentRefreshRate;
     }
 
+    public void ToggleSsao(bool newValue)
+    {
+        IsSsaoEnabled = newValue;
+        ssao.SetActive(IsSsaoEnabled);
+    }
+
     public void ToggleVSync(bool newValue)
     {
         IsVSyncEnabled = newValue;
@@ -90,29 +113,15 @@ public class VideoSettings : MonoBehaviour
 
     public void ChangeWorldQuality(int level)
     {
-        DebugConsole.Log("This feature is not implemented yet. :(",DebugConsole.TestColor);
+        DebugConsole.Log("This feature is not implemented yet. :(",DebugConsole.MissingColor);
         throw new NotImplementedException();
     }
 
     public void ChangeModelQuality(int level)
     {
         ModelQuality = (byte)Mathf.Clamp(level, 0, 3);
-        switch (ModelQuality)
-        {
-            case 0:
-                QualitySettings.SetLODSettings(lowLODSettings.bias,lowLODSettings.max);
-                break;
-            case 1:
-                QualitySettings.SetLODSettings(mediumLODSettings.bias,mediumLODSettings.max);
-                break;
-            case 2:
-                QualitySettings.SetLODSettings(highLODSettings.bias,highLODSettings.max);
-                break;
-            case 3:
-                QualitySettings.SetLODSettings(ultraLODSettings.bias,ultraLODSettings.max);
-                break;
-
-        }
+        var (bias, max) = LODSettings[level];
+        QualitySettings.SetLODSettings(bias,max);
     }
 
     public void ChangeTextureFiltering(bool newValue)
@@ -122,10 +131,25 @@ public class VideoSettings : MonoBehaviour
             IsUsingAnisoFiltering ? AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
     }
 
-    public void ChangeVfxQuality()
+    public void ChangeVfxQuality(int newValue)
     {
-        DebugConsole.Log("This feature is not implemented yet. :(",DebugConsole.TestColor);
+        DebugConsole.Log("This feature is not implemented yet. :(",DebugConsole.MissingColor);
         throw new NotImplementedException();
+    }
+
+    public void ChangeShadowQuality(int newValue)
+    {
+        ShadowQuality = (byte)newValue;
+        var selectedLevel = lightingSettings[ShadowQuality];
+        urpAsset.maxAdditionalLightsCount = selectedLevel.maxLightsCount;
+        urpAsset.shadowDistance = selectedLevel.shadowDistance;
+        if(selectedLevel.shadowCascades != 0) urpAsset.shadowCascadeCount = selectedLevel.shadowCascades;
+    }
+
+    public void ChangeBrightness(float newBrightness)
+    {
+        Brightness = Mathf.Clamp(newBrightness, 0, 1);
+        Screen.brightness = Brightness;
     }
 
     private void Start()
@@ -142,13 +166,20 @@ public class VideoSettings : MonoBehaviour
         var displayInfo = Screen.currentResolution;
         CurrentResolution = displayInfo;
         CurrentRefreshRate = displayInfo.refreshRate;
+        IsSsaoEnabled = ssao.isActive;
         IsVSyncEnabled = QualitySettings.vSyncCount == 1;
         AntiAliasing = cameraData.antialiasing;
         IsUsingAnisoFiltering = QualitySettings.anisotropicFiltering == AnisotropicFiltering.ForceEnable;
-        resolutionDropdown.value = resolutions.ToList().IndexOf((CurrentResolution.width,CurrentResolution.height));
+        ModelQuality = (byte)Array.IndexOf(LODSettings,
+            LODSettings.First(l => l == (QualitySettings.lodBias, QualitySettings.maximumLODLevel)));
+        ShadowQuality = (byte)(urpAsset.maxAdditionalLightsCount/2);
+        Brightness = Screen.brightness;
+        resolutionDropdown.value = resolutions.IndexOf((CurrentResolution.width,CurrentResolution.height));
         refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
+        ssaoToggle.SetIsOnWithoutNotify(IsSsaoEnabled);
         vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
         aaDropdown.value = (int)AntiAliasing;
+        #region aaCameraSetup
         UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
         {
             var cd = FindObjectOfType<UniversalAdditionalCameraData>();
@@ -159,6 +190,24 @@ public class VideoSettings : MonoBehaviour
             }
             cd.antialiasing = AntiAliasing;
         };
+        #endregion
+        modelDropdown.value = ModelQuality;
         filterToggle.SetIsOnWithoutNotify(IsUsingAnisoFiltering);
+        shadowDropdown.value = ShadowQuality;
+        brightnessSlider.value = Brightness;
+    }
+
+    private struct LightingSetting
+    {
+        public readonly int maxLightsCount;
+        public readonly int shadowDistance;
+        public readonly int shadowCascades;
+
+        public LightingSetting(int maxLightsCount, int shadowDistance, int shadowCascades)
+        {
+            this.maxLightsCount = maxLightsCount;
+            this.shadowDistance = shadowDistance;
+            this.shadowCascades = shadowCascades;
+        }
     }
 }

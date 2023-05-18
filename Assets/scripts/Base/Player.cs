@@ -408,7 +408,7 @@ namespace GameExtensions
             //movement logic
             var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
             tf.localEulerAngles += new Vector3(0, angle * Time.fixedDeltaTime, 0); //rotating the player
-            if (running) Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
+            if (running && mozog) Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
             else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
         }
 
