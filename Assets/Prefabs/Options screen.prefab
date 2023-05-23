@@ -20852,6 +20852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   urpAsset: {fileID: 11400000, guid: 6c974fda7835e7d4fb534cfc8f907926, type: 2}
   ssao: {fileID: -2897928632361979457, guid: fac075cb180a99f48923a78589f43a61, type: 2}
+  hubLightingSettings: {fileID: 4890085278179872738, guid: 87a8989fa70d34f43b5a65e879657d35, type: 2}
   resolutionDropdown: {fileID: 6154540405404245845}
   refreshDropdown: {fileID: 8063806239761792009}
   ssaoToggle: {fileID: 5880735144376063266}
