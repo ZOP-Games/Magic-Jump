@@ -44,7 +44,7 @@ public class VideoSettings : MonoBehaviour
     private readonly WorldQuality[] worldQualities =
     {
         new(200, 2, 512),   //low
-        new(600, 2, 512),   //medium
+        new(1000, 2, 512),   //medium
         new(2500, 1, 1024), //high
         new(5000, 0, 2048)  //ultra
     };
