@@ -50,7 +50,7 @@ namespace GameExtensions
         public void TakeDamage(int amount)
         {
             anim.SetTrigger(DamagePmHash);
-            Hp -= amount - Defense / 100;
+            Hp -= Mathf.Clamp(amount - Defense / 100,0,amount);
             HealthChanged?.Invoke();
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
@@ -74,8 +74,8 @@ namespace GameExtensions
             var colliders = new Collider[16]; //an array of colliders we store hit objects in
             Physics.OverlapSphereNonAlloc(atkPos, AtkSphereRadius,
                 colliders); //creating the hitbox sphere and colllecting colliders inside
-            var entities = colliders.Where(c => c is not null).Select(c => c.GetComponent<Entity>()).ToList();
-            entities.RemoveAll(c => c is null || c == this); //removing nulls and the attacking Entity itself
+            var entities = colliders.Where(c => c is not null).Select(c => c.GetComponent<Entity>())
+                .Where(c => c is not null && c != this && !c.CompareTag(tag)).ToList(); //removing nulls and the attacking Entity itself and Entities of the same type
             return entities;
         }
 

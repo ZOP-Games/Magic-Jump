@@ -19,7 +19,6 @@ namespace GameExtensions.Enemies
         but because of scaling it's quite inconsistent, try to experiment with values)*/
         protected int AtkRange { get; set; }
         protected TextMeshPro hpText;
-        protected abstract Vector3 ForwardDirection { get; }
         protected abstract float Height { get; }
         protected abstract byte XpReward { get; }
         protected abstract Transform PlayerTransform { get; set; }

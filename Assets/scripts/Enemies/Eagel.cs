@@ -20,7 +20,6 @@ namespace GameExtensions.Enemies
         protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.zero;
         protected override int AtkSphereRadius => 6;
-        protected override Vector3 ForwardDirection => Vector3.right;
         protected override float Height => 1.5f;
         protected override byte XpReward => 12;
         protected override Transform PlayerTransform { get; set; }

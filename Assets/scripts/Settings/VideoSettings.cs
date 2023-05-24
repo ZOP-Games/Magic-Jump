@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class VideoSettings : MonoBehaviour
@@ -26,6 +24,7 @@ public class VideoSettings : MonoBehaviour
 
     private List<(int width, int height)> resolutions;
     private UniversalAdditionalCameraData cameraData;
+    private Camera cam;
     [SerializeField] private UniversalRenderPipelineAsset urpAsset;
     [SerializeField] private ScriptableRendererFeature ssao;
 
@@ -40,16 +39,14 @@ public class VideoSettings : MonoBehaviour
     [SerializeField] private TMP_Dropdown shadowDropdown;
     [SerializeField] private Slider brightnessSlider;
 
-    private const byte FogStart = 29;
-    private const byte FogEnd = 103;
     private readonly List<string> refreshRates = new() { "60", "120", "144" };
 
     private readonly WorldQuality[] worldQualities =
     {
-        new(FogStart, FogEnd, 4, 512),
-        new(0, 0, 2, 512),
-        new(0, 0, 1, 1024),
-        new(0, 0, 0, 2048)
+        new(200, 2, 512),   //low
+        new(600, 2, 512),   //medium
+        new(2500, 1, 1024), //high
+        new(5000, 0, 2048)  //ultra
     };
     // ReSharper disable once InconsistentNaming
     private readonly (float bias, int max)[] LODSettings = {
@@ -124,10 +121,6 @@ public class VideoSettings : MonoBehaviour
     public void ChangeWorldQuality(int level)
     {
         var quality = worldQualities[level];
-        RenderSettings.fog = level == 0;
-        RenderSettings.fogMode = FogMode.Linear;
-        RenderSettings.fogStartDistance = quality.fogStart;
-        RenderSettings.fogEndDistance = quality.fogEnd;
         QualitySettings.masterTextureLimit = quality.maxTextureSize;
         QualitySettings.streamingMipmapsMemoryBudget = quality.textureMemoryBudget;
         DebugConsole.Log("changed world quality, new max texture size: " + quality.maxTextureSize, DebugConsole.TestColor);
@@ -176,6 +169,8 @@ public class VideoSettings : MonoBehaviour
             DebugConsole.LogError("Universal Additional Camera Data cannot be found.");
             return;
         }
+
+        cam = cameraData.GetComponent<Camera>();
         resolutions = Screen.resolutions.GroupBy(r => (r.width, r.height)).Select(r => r.Key).ToList();
         resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
         refreshDropdown.AddOptions(refreshRates);
@@ -186,7 +181,8 @@ public class VideoSettings : MonoBehaviour
         IsVSyncEnabled = QualitySettings.vSyncCount == 1;
         AntiAliasing = cameraData.antialiasing;
         IsUsingAnisoFiltering = QualitySettings.anisotropicFiltering == AnisotropicFiltering.ForceEnable;
-        WorldQualityLevel = (byte)(4 - QualitySettings.masterTextureLimit);
+        WorldQualityLevel = (byte) Array.IndexOf(worldQualities,
+            worldQualities.First(q => Mathf.Approximately(q.farClippingPlane, cam.farClipPlane)));
         ModelQualityLevel = (byte)Array.IndexOf(LODSettings,
             LODSettings.First(l => l == (QualitySettings.lodBias, QualitySettings.maximumLODLevel)));
         ShadowQuality = (byte)(urpAsset.maxAdditionalLightsCount / 2);
@@ -217,17 +213,15 @@ public class VideoSettings : MonoBehaviour
 
     private struct WorldQuality
     {
-        public readonly int fogStart;
-        public readonly int fogEnd;
+        public readonly int farClippingPlane;
         public readonly int maxTextureSize;
         public readonly int textureMemoryBudget;
 
-        public WorldQuality(int fogStart, int fogEnd, int maxTextureSize, int textureMemoryBudget)
+        public WorldQuality(int farClippingPlane, int maxTextureSize, int textureMemoryBudget)
         {
             this.maxTextureSize = maxTextureSize;
             this.textureMemoryBudget = textureMemoryBudget;
-            this.fogStart = fogStart;
-            this.fogEnd = fogEnd;
+            this.farClippingPlane = farClippingPlane;
         }
     }
 

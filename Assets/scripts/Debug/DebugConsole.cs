@@ -55,6 +55,11 @@ namespace GameExtensions.Debug
 
         public static void LogError(string text)
         {
+            if (!IsWriterAvalaible)
+            {
+                Log(text,Color.red,ErrorFontSize);
+                return;
+            }
             Writer.ClearText();
             Log(text,Color.red,ErrorFontSize);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Bold);

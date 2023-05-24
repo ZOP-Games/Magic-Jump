@@ -9,7 +9,12 @@ namespace GameExtensions.UI.HUD
         // Start is called before the first frame update
         private void Start()
         {
-            Player.PlayerReady += () => transform.parent = Player.Instance.transform;
+            Player.PlayerReady += () =>
+            {
+                var tf = transform;
+                tf.parent = Player.Instance.transform;
+                tf.localPosition = Vector3.zero;
+            };
         }
     
     }

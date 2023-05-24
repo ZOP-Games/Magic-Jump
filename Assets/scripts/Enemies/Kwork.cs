@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 namespace GameExtensions.Enemies
 {
     /// <summary>
@@ -18,7 +18,6 @@ namespace GameExtensions.Enemies
         protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.zero;
         protected override int AtkSphereRadius => 3;
-        protected override Vector3 ForwardDirection => Vector3.forward;
         protected override Transform PlayerTransform { get; set; }
         protected override float Height => 3;
         protected override byte XpReward => 12;
@@ -45,15 +44,23 @@ namespace GameExtensions.Enemies
         protected new void Start()
         {
             //setting the attack stat for the enemy and getting some components from the gameobject
+            base.Start();
             AtkRange = 4;
             AtkPower = 1;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             hpText = GetComponentInChildren<TextMeshPro>();
-            hpText.SetText("HP: 100");
+            if (hpText is null) Debug.LogWarning("Where yo HP text at for " + name + "???");
+            else
+            {
+                hpText.SetText("HP: 100");
+                HealthChanged += () => hpText.SetText("HP: " + Hp);
+            }
             Ctg = FindObjectOfType<CinemachineTargetGroup>();
+            if (GetComponentsInChildren<Collider>()
+                .All(c => !c.isTrigger))
+                Debug.LogError("The attack trigger on " + name + " missing u idoit");
             Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
-            HealthChanged += () => hpText.SetText("HP: " + Hp);
         }
     }
 }
