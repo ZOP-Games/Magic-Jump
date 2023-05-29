@@ -13,7 +13,7 @@ namespace GameExtensions.UI.HUD
             {
                 var tf = transform;
                 tf.parent = Player.Instance.transform;
-                tf.localPosition = Vector3.zero;
+                tf.localPosition = new Vector3(0, tf.localPosition.y, 0);
             };
         }
     

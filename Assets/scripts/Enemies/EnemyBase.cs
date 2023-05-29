@@ -4,6 +4,7 @@ using System.Collections;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace GameExtensions.Enemies
 {
@@ -41,16 +42,16 @@ namespace GameExtensions.Enemies
         {
             var transform1 = transform;
             var pos = PlayerTransform.position;
-            transform1.LookAt(new Vector3(pos.x,transform1.position.y,pos.z));
+            transform1.LookAt(new Vector3(pos.x, transform1.position.y, pos.z));
             if (Mathf.Abs(Vector3.Distance(transform1.position, pos)) > AtkRange)
             {
                 CancelInvoke(nameof(Attack));
                 isAttacking = false;
                 Move(transform1.InverseTransformDirection(transform1.forward));
             }
-            else if(!isAttacking)
+            else if (!isAttacking)
             {
-                InvokeRepeating(nameof(Attack),0,AtkRepeatRate);
+                InvokeRepeating(nameof(Attack), 0, AtkRepeatRate);
                 isAttacking = true;
             }
         }
@@ -58,8 +59,8 @@ namespace GameExtensions.Enemies
         protected void StopAiming()
         {
             CancelInvoke(nameof(Attack));
-            anim.SetBool(MovingPmHash,false);
-            anim.SetBool(RunningPmHash,false);
+            anim.SetBool(MovingPmHash, false);
+            anim.SetBool(RunningPmHash, false);
             CancelInvoke(nameof(Aim));
             rb.Sleep();
         }
@@ -78,6 +79,7 @@ namespace GameExtensions.Enemies
         {
             //putting tag on enemy, helps w/ identification
             tag = "Enemy";
+
         }
     }
 }
