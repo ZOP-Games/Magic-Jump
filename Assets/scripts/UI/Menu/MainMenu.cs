@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using GameExtensions;
+using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ namespace GameExtensions.UI.Menus
         }
         public void Continue()
         {
-            Debug.Log("continue clicked");
+            DebugConsole.Log("continue clicked");
             //checking for save file, showing error if there isn't one, greying out the button would be a better solution though
             if (!SaveManager.SaveExists) return;
             SceneManager.LoadScene(1);

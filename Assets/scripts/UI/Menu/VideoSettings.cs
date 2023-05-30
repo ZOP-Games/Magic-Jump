@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -12,6 +13,7 @@ public class VideoSettings : MonoBehaviour
 {
     public FullScreenMode ScreenMode { get; private set; }
     public Resolution CurrentResolution { get; private set; }
+    public float RenderScale { get; private set; }
     public int CurrentRefreshRate { get; private set; }
     public bool IsSsaoEnabled { get; private set; }
     public bool IsVSyncEnabled { get; private set; }
@@ -29,6 +31,7 @@ public class VideoSettings : MonoBehaviour
     [SerializeField] private ScriptableRendererFeature ssao;
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private Slider scaleSlider;
     [SerializeField] private TMP_Dropdown refreshDropdown;
     [SerializeField] private Toggle ssaoToggle;
     [SerializeField] private Toggle vSyncToggle;
@@ -91,6 +94,13 @@ public class VideoSettings : MonoBehaviour
         Screen.SetResolution(CurrentResolution.width, CurrentResolution.height, ScreenMode, CurrentRefreshRate);
     }
 
+    public void ChangeRenderResolution(float scaleNumber)
+    {
+        scaleNumber = Mathf.Clamp(scaleNumber, 0.1f, 2);
+        urpAsset.renderScale = scaleNumber;
+        DebugConsole.Log("Changed render scale to: " + urpAsset.renderScale * 100 + "%", DebugConsole.TestColor);
+    }
+
     public void ChangeRefreshRate(int rateNumber)
     {
         var newRate = int.Parse(refreshRates[rateNumber]);
@@ -123,7 +133,7 @@ public class VideoSettings : MonoBehaviour
         var quality = worldQualities[level];
         QualitySettings.masterTextureLimit = quality.maxTextureSize;
         QualitySettings.streamingMipmapsMemoryBudget = quality.textureMemoryBudget;
-        DebugConsole.Log("changed world quality, new max texture size: " + quality.maxTextureSize, DebugConsole.TestColor);
+        cam.farClipPlane = quality.farClippingPlane;
     }
 
     public void ChangeModelQuality(int level)
@@ -161,6 +171,18 @@ public class VideoSettings : MonoBehaviour
         Screen.brightness = Brightness;
     }
 
+    private void ApplyFarClipping()
+    {
+        var fcp = worldQualities[WorldQualityLevel].farClippingPlane;
+        if (cam.TryGetComponent<CinemachineVirtualCamera>(out var vCam))
+        {
+            var lens = vCam.m_Lens;
+            lens.FarClipPlane = fcp;
+            vCam.m_Lens = lens;
+        }
+        else cam.farClipPlane = fcp;
+    }
+
     private void Start()
     {
         cameraData = FindObjectOfType<UniversalAdditionalCameraData>();
@@ -176,23 +198,40 @@ public class VideoSettings : MonoBehaviour
         refreshDropdown.AddOptions(refreshRates);
         var displayInfo = Screen.currentResolution;
         CurrentResolution = displayInfo;
+        RenderScale = urpAsset.renderScale;
         CurrentRefreshRate = displayInfo.refreshRate;
         IsSsaoEnabled = ssao.isActive;
         IsVSyncEnabled = QualitySettings.vSyncCount == 1;
         AntiAliasing = cameraData.antialiasing;
         IsUsingAnisoFiltering = QualitySettings.anisotropicFiltering == AnisotropicFiltering.ForceEnable;
-        WorldQualityLevel = (byte) Array.IndexOf(worldQualities,
-            worldQualities.First(q => Mathf.Approximately(q.farClippingPlane, cam.farClipPlane)));
-        ModelQualityLevel = (byte)Array.IndexOf(LODSettings,
-            LODSettings.First(l => l == (QualitySettings.lodBias, QualitySettings.maximumLODLevel)));
+        try
+        {
+            WorldQualityLevel = (byte)Array.IndexOf(worldQualities,
+                        worldQualities.First(q => Mathf.Approximately(q.farClippingPlane, cam.farClipPlane)));
+        }
+        catch
+        {
+            WorldQualityLevel = 0;
+        }
+        try
+        {
+            ModelQualityLevel = (byte)Array.IndexOf(LODSettings,
+                       LODSettings.First(l => l == (QualitySettings.lodBias, QualitySettings.maximumLODLevel)));
+        }
+        catch
+        {
+            ModelQualityLevel = 0;
+        }
+
         ShadowQuality = (byte)(urpAsset.maxAdditionalLightsCount / 2);
         Brightness = Screen.brightness;
         resolutionDropdown.value = resolutions.IndexOf((CurrentResolution.width, CurrentResolution.height));
+        scaleSlider.value = RenderScale;
         refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
         ssaoToggle.SetIsOnWithoutNotify(IsSsaoEnabled);
         vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
         aaDropdown.value = (int)AntiAliasing;
-        #region aaCameraSetup
+        #region crossSceneSetup
         UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
         {
             var cd = FindObjectOfType<UniversalAdditionalCameraData>();
@@ -202,6 +241,8 @@ public class VideoSettings : MonoBehaviour
                 return;
             }
             cd.antialiasing = AntiAliasing;
+            cam = cd.GetComponent<Camera>();
+            ApplyFarClipping();
         };
         #endregion
         worldDropdown.value = WorldQualityLevel;

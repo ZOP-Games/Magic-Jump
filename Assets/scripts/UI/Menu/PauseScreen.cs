@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameExtensions;
+using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,7 +29,7 @@ namespace GameExtensions.UI.Menus
 
         public override void Open()
         {
-            if(PInput is null) Debug.LogError("There is no PlayerInput provided to PauseScreen.");
+            if(PInput is null) DebugConsole.LogError("There is no PlayerInput provided to PauseScreen.");
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
             PInput!.SwitchCurrentActionMap("UI");
             Time.timeScale = 0;
