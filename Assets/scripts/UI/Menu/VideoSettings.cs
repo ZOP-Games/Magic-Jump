@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using GameExtensions.Debug;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
@@ -22,6 +23,13 @@ public class VideoSettings : MonoBehaviour
     public byte WorldQualityLevel { get; private set; }
     public byte ModelQualityLevel { get; private set; }
     public byte ShadowQuality { get; private set; }
+
+    public byte VFXQuality
+    {
+        get => throw new NotImplementedException();
+        private set => throw new NotImplementedException();
+    }
+
     public float Brightness { get; private set; }
 
     private List<(int width, int height)> resolutions;
@@ -40,6 +48,7 @@ public class VideoSettings : MonoBehaviour
     [SerializeField] private TMP_Dropdown modelDropdown;
     [SerializeField] private Toggle filterToggle;
     [SerializeField] private TMP_Dropdown shadowDropdown;
+    [SerializeField] private TMP_Dropdown vfxDropdown;
     [SerializeField] private Slider brightnessSlider;
 
     private readonly List<string> refreshRates = new() { "60", "120", "144" };

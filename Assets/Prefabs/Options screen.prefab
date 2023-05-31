@@ -21440,6 +21440,7 @@ MonoBehaviour:
   modelDropdown: {fileID: 1623105311836105558}
   filterToggle: {fileID: 5445332202027971228}
   shadowDropdown: {fileID: 3550473248028636316}
+  vfxDropdown: {fileID: 4318830494034020453}
   brightnessSlider: {fileID: 5523090631818714159}
 --- !u!114 &9011696040983631642
 MonoBehaviour:
