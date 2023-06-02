@@ -2,7 +2,6 @@
 using System.Runtime.Serialization;
 using GameExtensions.Debug;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 namespace GameExtensions
 {

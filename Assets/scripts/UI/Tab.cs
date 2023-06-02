@@ -8,7 +8,7 @@ namespace GameExtensions.UI
     [RequireComponent(typeof(Image))]
     public class Tab : UIComponent, IPointerDownHandler
     {
-        [HideInInspector]public byte id;
+        [HideInInspector] public byte id;
         [SerializeField] private Color activeColor;
         [SerializeField] private Color disabledColor;
         [SerializeField] private GameObject menuLayout;

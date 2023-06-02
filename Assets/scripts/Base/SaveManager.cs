@@ -53,16 +53,15 @@ namespace GameExtensions
 
         public static void LoadAll()
         {
-            if (!Player.Instance.isActiveAndEnabled)
-            {
-                Player.Instance.Refill();
-                //UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-            }
+            DebugConsole.Log("Loading " + Savebles.Count + " objects");
             foreach (var saveable in Savebles)
             {
                 saveable.Load(ReadFromFile(saveable.Id));
             }
-
+            if (Player.Instance is not null && !Player.Instance.isActiveAndEnabled)
+            {
+                Player.Instance.Refill();
+            }
             DebugConsole.Log("save has loaded");
         }
     }

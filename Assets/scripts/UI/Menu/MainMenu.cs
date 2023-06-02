@@ -12,8 +12,8 @@ namespace GameExtensions.UI.Menus
     {
 
         //public GameObject loading;  //the loading screen, not needed yet
-        [SerializeField]private Button continueButton;
-        [SerializeField]private Button newGameButton;
+        [SerializeField] private Button continueButton;
+        [SerializeField] private Button newGameButton;
         // this has all the things for the menu like button events, menu mechanics and more...
 
         public override void Close()
@@ -30,7 +30,6 @@ namespace GameExtensions.UI.Menus
         public void Continue()
         {
             DebugConsole.Log("continue clicked");
-            //checking for save file, showing error if there isn't one, greying out the button would be a better solution though
             if (!SaveManager.SaveExists) return;
             SceneManager.LoadScene(1);
             Player.PlayerReady += SaveManager.LoadAll;
@@ -44,8 +43,6 @@ namespace GameExtensions.UI.Menus
 
         private void Start()
         {
-            //PlayerPrefs.DeleteAll();
-            //Open();
             ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
             if (!SaveManager.SaveExists) continueButton.interactable = false;
         }

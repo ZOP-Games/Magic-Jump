@@ -78,11 +78,7 @@ namespace GameExtensions
         /// </summary>
         private CinemachineVirtualCamera vCam;
 
-        byte ISaveable.Id
-        {
-            get => id;
-            set => id = value;
-        }
+        byte ISaveable.Id { get; set; }
 
         /// <summary>
         /// The player's XP.
@@ -107,7 +103,6 @@ namespace GameExtensions
 
         public event UnityAction PlayerDied;
 
-        private byte id;
         //some constants to make code readable + adjustable
         /// <summary>
         /// The force the player's <see cref="Rigidbody"/> pushes it up to jump. You can change its value to adjust jump height.

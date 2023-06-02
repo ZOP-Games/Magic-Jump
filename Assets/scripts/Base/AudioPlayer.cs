@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GameExtensions.Audio
+namespace GameExtensions
 {
     public class AudioPlayer : MonoBehaviour
     {
+        public bool ReadyToPlay => sauces is not null;
         private AudioSource[] sauces;
         public void PlayAll()
         {
@@ -37,6 +39,7 @@ namespace GameExtensions.Audio
                 StopAll();
                 PlayAll();
             };
+            PlayAll();
         }
     }
 }
