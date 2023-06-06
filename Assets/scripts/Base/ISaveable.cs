@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.Serialization;
 using GameExtensions.Debug;
 using UnityEngine;
 
@@ -12,7 +11,10 @@ namespace GameExtensions
         public void Save()
         {
             var id = Id;
-            SaveManager.SaveToFile(JsonUtility.ToJson(this), id);
+            var json = JsonUtility.ToJson(this).Split(',').Where(i => !i.Contains("instanceID"))
+                .Aggregate((c, n) => c + "," + n);
+            json = '{' + json + '}';
+            SaveManager.SaveToFile(json, id);
         }
         public void Load(string serializedClass)
         {
@@ -24,7 +26,7 @@ namespace GameExtensions
             if(SaveManager.Savebles.Any(s => s.GetType() == GetType())) return;
             Id = (byte)SaveManager.Savebles.Count;
             SaveManager.Savebles.Add(this);
-            DebugConsole.Log("Added self to saveable object list: #" + Id);
+            DebugConsole.Log("Added self ("+ GetType() +") to saveable object list: #" + Id);
         }
     }
 }

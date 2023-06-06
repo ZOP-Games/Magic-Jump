@@ -22,7 +22,7 @@ namespace GameExtensions.UI
             if(Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("UI");
             var firstButton = GetComponentInChildren<Button>();
             if(firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
-            else DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",Color.yellow);
+            else DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",DebugConsole.WarningColor);
         }
         public virtual void Close()
         {

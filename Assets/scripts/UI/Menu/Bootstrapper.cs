@@ -2,7 +2,6 @@
 using System.Linq;
 using GameExtensions.Debug;
 using UnityEngine;
-using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
 namespace GameExtensions.UI.Menus
@@ -31,6 +30,7 @@ namespace GameExtensions.UI.Menus
             {
                 pstart.PassiveStart();
             }
+            Destroy(gameObject);
         }
     }
 }

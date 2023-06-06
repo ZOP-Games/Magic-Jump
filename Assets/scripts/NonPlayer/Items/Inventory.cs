@@ -8,11 +8,7 @@ namespace GameExtensions.Nonplayer.Items
     {
         private Inventory()
         {
-            Player.PlayerReady += () =>
-            {
-                var isa = this as ISaveable;
-                isa.AddToList();
-            };
+            (this as ISaveable).AddToList();
         }
         public static Inventory Instance => new();
 

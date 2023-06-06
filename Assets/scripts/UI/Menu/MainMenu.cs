@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace GameExtensions.UI.Menus
 {
-    public class MainMenu : MenuScreen
+    public class MainMenu : OptionsParentScreen
     {
 
         //public GameObject loading;  //the loading screen, not needed yet
@@ -18,6 +18,7 @@ namespace GameExtensions.UI.Menus
 
         public override void Close()
         {
+            //todo:highlight exit button
         }
 
         public void NewGame()

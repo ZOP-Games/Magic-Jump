@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameExtensions;
@@ -6,11 +5,10 @@ using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace GameExtensions.UI.Menus
 {
-    public class PauseScreen : MenuScreen
+    public class PauseScreen : OptionsParentScreen
     {
         [SerializeField]private TextMeshProUGUI xpText;
         public void Quit()

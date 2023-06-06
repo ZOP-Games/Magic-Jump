@@ -72,11 +72,12 @@ namespace GameExtensions.UI.Menus
 
         private void ApplySpeakerMode(AudioSpeakerMode speakerMode)
         {
+            if (speakerMode is 0) speakerMode = AudioSpeakerMode.Mono;
             SpeakerMode = speakerMode;
             conf.speakerMode = SpeakerMode;
             var worked = UnityEngine.AudioSettings.Reset(conf);
             UnityEngine.Debug.Assert(worked, "Couldn't change audio config");
-            if(player.ReadyToPlay) player.PlayAll();
+            if(player is not null && player.ReadyToPlay) player.PlayAll();
         }
 
         private float LinearToLog(float value)
@@ -102,7 +103,6 @@ namespace GameExtensions.UI.Menus
 
         private new void Start()
         {
-            base.Start();
             if (Instance is not null) Destroy(this);
             Instance = this;
             var options = GetComponentsInChildren<Selectable>();
@@ -121,12 +121,14 @@ namespace GameExtensions.UI.Menus
                                       " Please change it either in the script or in the Editor");
             }
 
+            firstObj = masterVolumeSlider.gameObject;
             masterVolumeSlider.value = LogToLinear(MasterVolume);
             musicVolumeSlider.value = LogToLinear(BgVolume);
             sfxVolumeSlider.value = LogToLinear(SfxVolume);
             speechVolumeSlider.value = LogToLinear(SpeechVolume);
             speakerModeDropdown.value = (int)SpeakerMode - 1;
             subtitlesToggle.SetIsOnWithoutNotify(EnableSubtitles);
+            base.Start();
         }
 
         private void OnDestroy()

@@ -8,7 +8,7 @@ namespace GameExtensions.UI
 {
     public class ScreenLayout : UIComponent
     {
-        [SerializeField] private GameObject firstObj;
+        [SerializeField] protected GameObject firstObj;
 
         protected void OnEnable()
         {
