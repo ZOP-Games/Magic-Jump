@@ -392,9 +392,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: OptionsScreen, Assembly-CSharp
-        m_MethodName: Open
+      - m_Target: {fileID: 4703012525571810105}
+        m_TargetAssemblyTypeName: GameExtensions.UI.Menus.OptionsParentScreen, GameExtensions.UI.Menus
+        m_MethodName: OpenOptions
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1446,6 +1446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da81f28da73ffe74198df1933a959cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  options: {fileID: 0}
   xpText: {fileID: 9217257279935499751}
 --- !u!1 &5110455377460641963
 GameObject:

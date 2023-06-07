@@ -64,7 +64,8 @@ namespace GameExtensions.Nonplayer.Items
         
         private void Start()
         {
-            Player.PlayerReady += () => Player.Instance.AddInputAction("Attack",Interact,IInputHandler.ActionType.Canceled);
+            Player.PlayerReady += () =>
+                Player.Instance.AddInputAction("Attack", Interact, IInputHandler.ActionType.Canceled);
             inventory = Inventory.Instance;
             BaseItem = Inventory.AllItems.FirstOrDefault(i => i.Name == ownName);
             Description = BaseItem!.Description;

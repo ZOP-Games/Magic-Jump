@@ -6,17 +6,20 @@ using UnityEngine;
 namespace GameExtensions.Nonplayer.Items
 {
     [Serializable]
-    public record Item
+    public struct Item
     {
-        public string Name => name;
-        [SerializeField]private string name;
-        public string Description => description;
-        [SerializeField]private string description;
 
-        public Item(string name, string desc)
+        public readonly string Name => name;
+
+        public readonly string Description => description;
+
+        [SerializeField] private string name;
+        [SerializeField] private string description;
+
+        public Item(string name, string description)
         {
+            this.description = description;
             this.name = name;
-            description = desc;
         }
     }
 }

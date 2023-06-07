@@ -16,6 +16,10 @@ namespace GameExtensions.UI.Menus
         [SerializeField] private Button newGameButton;
         // this has all the things for the menu like button events, menu mechanics and more...
 
+        public override void Open()
+        {
+        }
+
         public override void Close()
         {
             //todo:highlight exit button

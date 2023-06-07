@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GameExtensions.Nonplayer.Items
@@ -20,8 +21,9 @@ namespace GameExtensions.Nonplayer.Items
         };
 
         public List<Item> Items => items;
-        [SerializeField] private List<Item> items = new();
+
         private byte id;
+        [SerializeField]private List<Item> items = new();
 
         public void AddItem(Item item)
         {

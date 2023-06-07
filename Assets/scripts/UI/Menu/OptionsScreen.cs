@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using GameExtensions;
+using GameExtensions.Debug;
 
 namespace GameExtensions.UI.Menus
 {
@@ -13,6 +14,7 @@ namespace GameExtensions.UI.Menus
         public void SetParent(MenuScreen newParent)
         {
             parent = newParent;
+            DebugConsole.Log("Set parent to " + Parent);
         }
 
         public override void Open()
