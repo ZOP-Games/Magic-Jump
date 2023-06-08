@@ -75,14 +75,20 @@ namespace GameExtensions.Enemies
             Ctg.RemoveMember(target);
         }
 
+        private void ApplyDifficulty()
+        {
+            Hp = Mathf.RoundToInt(Hp * DifficultyMultiplier);
+            AtkPower = Mathf.RoundToInt(AtkPower * DifficultyMultiplier);
+            Defense = Mathf.RoundToInt(Defense * DifficultyMultiplier);
+        }
+
         protected new void Start()
         {
             base.Start();
             //putting tag on enemy, helps w/ identification
             tag = "Enemy";
-            Hp = Mathf.RoundToInt(Hp * DifficultyMultiplier);
-            AtkPower = Mathf.RoundToInt(AtkPower * DifficultyMultiplier);
-            Defense = Mathf.RoundToInt(Defense * DifficultyMultiplier);
+            ApplyDifficulty();
+            Difficulty.DifficultyLevelChanged += ApplyDifficulty;
         }
     }
 }

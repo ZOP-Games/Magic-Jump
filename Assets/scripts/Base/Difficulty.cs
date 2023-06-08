@@ -18,8 +18,8 @@ namespace GameExtensions
         {
             0.5f,
             1,
-            1.2f,
-            1.7f
+            1.5f,
+            2f
         };
 
         public static void ChangeDifficultyLevel(DifficultyLevel level)

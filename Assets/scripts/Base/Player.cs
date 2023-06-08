@@ -122,7 +122,7 @@ namespace GameExtensions
         /// <summary>
         /// The amount of damping on the camera while walking. You can change its value to adjust how far the camera zooms out while walking.
         /// </summary>
-        private const int WalkDamping = 5;
+        private const int WalkDamping = 0;
 
         /// <summary>
         /// The amount of damping on the camera while running. You can change its value to adjust how far the camera zooms out while running.
@@ -458,7 +458,11 @@ namespace GameExtensions
                 .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
-            if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier); 
+            Difficulty.DifficultyLevelChanged += () =>
+            {
+                if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
+            };
+            if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
             (this as ISaveable).AddToList();
             PlayerReady?.Invoke();
         }
