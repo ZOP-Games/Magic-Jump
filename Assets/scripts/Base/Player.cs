@@ -408,8 +408,9 @@ namespace GameExtensions
         }
 
         //Start() runs once when the object is enabled, lots of early game setup goes here
-        private void Start()
+        private new void Start()
         {
+            base.Start();
             if (Instance is not null) Destroy(this);
             PInput = GetComponent<PlayerInput>(); //setting PlayerInput
             //PlayerInput setup inside
@@ -457,6 +458,7 @@ namespace GameExtensions
                 .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
             Lvl = (byte) PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
+            if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier); 
             (this as ISaveable).AddToList();
             PlayerReady?.Invoke();
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace GameExtensions
         protected abstract int DamagePmHash { get; }
         protected abstract Vector3 AtkSpherePos { get; } //position of the Enitity's hitbox
         protected abstract int AtkSphereRadius { get; } //the radius of the hitbox sphere
+        protected float DifficultyMultiplier { get; set; }
 
         //some components
         protected Rigidbody rb;
@@ -138,5 +140,10 @@ namespace GameExtensions
             rb.isKinematic = false;
         }
 
+        protected void Start()
+        {
+            DifficultyMultiplier = Difficulty.DifficultyMultiplier;
+            Difficulty.DifficultyLevelChanged += () => DifficultyMultiplier = Difficulty.DifficultyMultiplier;
+        }
     }
 }

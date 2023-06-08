@@ -31,6 +31,7 @@ namespace GameExtensions.UI.Menus
         [field: SerializeField, HideInInspector] public byte ModelQualityLevel { get; private set; }
         [field: SerializeField, HideInInspector] public byte ShadowQuality { get; private set; }
 
+        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [field: SerializeField, HideInInspector]
         public byte VFXQuality
         {
@@ -234,6 +235,20 @@ namespace GameExtensions.UI.Menus
             urpAsset.shadowDistance = selectedLevel.shadowDistance;
             if (selectedLevel.shadowCascades != 0) urpAsset.shadowCascadeCount = selectedLevel.shadowCascades;
             Screen.brightness = Brightness;
+            #region crossSceneSetup
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
+            {
+                var cd = FindObjectOfType<UniversalAdditionalCameraData>();
+                if (cd is null)
+                {
+                    DebugConsole.Log("Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.", DebugConsole.WarningColor);
+                    return;
+                }
+                cd.antialiasing = AntiAliasing;
+                cam = cd.GetComponent<Camera>();
+                ApplyFarClipping();
+            };
+            #endregion
         }
 
         public void OnBeforeSerialize()
@@ -266,20 +281,6 @@ namespace GameExtensions.UI.Menus
             ssaoToggle.SetIsOnWithoutNotify(IsSsaoEnabled);
             vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
             aaDropdown.value = (int)AntiAliasing;
-            #region crossSceneSetup
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
-            {
-                var cd = FindObjectOfType<UniversalAdditionalCameraData>();
-                if (cd is null)
-                {
-                    DebugConsole.Log("Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.", DebugConsole.WarningColor);
-                    return;
-                }
-                cd.antialiasing = AntiAliasing;
-                cam = cd.GetComponent<Camera>();
-                ApplyFarClipping();
-            };
-            #endregion
             worldDropdown.value = WorldQualityLevel;
             modelDropdown.value = ModelQualityLevel;
             filterToggle.SetIsOnWithoutNotify(IsUsingAnisoFiltering);

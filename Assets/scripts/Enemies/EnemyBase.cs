@@ -75,11 +75,14 @@ namespace GameExtensions.Enemies
             Ctg.RemoveMember(target);
         }
 
-        protected void Start()
+        protected new void Start()
         {
+            base.Start();
             //putting tag on enemy, helps w/ identification
             tag = "Enemy";
-
+            Hp = Mathf.RoundToInt(Hp * DifficultyMultiplier);
+            AtkPower = Mathf.RoundToInt(AtkPower * DifficultyMultiplier);
+            Defense = Mathf.RoundToInt(Defense * DifficultyMultiplier);
         }
     }
 }
