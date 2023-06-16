@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
+using GameExtensions.UI.HUD;
 
 namespace GameExtensions.UI.Menus
 {
@@ -15,7 +16,7 @@ namespace GameExtensions.UI.Menus
         [field: SerializeField] public bool IsHUDEnabled { get; private set; }
 
         [SerializeField] private TMP_Dropdown difficultyDropdown;
-
+        [SerializeField] private Toggle hudToggle;
 
         public void ChangeDifficultyLevel(int levelNumber)
         {
@@ -24,9 +25,16 @@ namespace GameExtensions.UI.Menus
             Difficulty.ChangeDifficultyLevel(CurrentDifficultyLevel);
         }
 
+        public void ChangeHUDVisibility(bool newValue)
+        {
+            IsHUDEnabled = newValue;
+            HUDToggler.AskSetHUD(IsHUDEnabled);
+        }
+
         private new void Start()
         {
             difficultyDropdown.value = (int)Difficulty.CurrentDifficultyLevel;
+            hudToggle.SetIsOnWithoutNotify(IsHUDEnabled);
             base.Start();
         }
 
@@ -34,6 +42,7 @@ namespace GameExtensions.UI.Menus
         public void PassiveStart()
         {
             Difficulty.ChangeDifficultyLevel(CurrentDifficultyLevel);
+            HUDToggler.AskSetHUD(IsHUDEnabled);
         }
     }
 
