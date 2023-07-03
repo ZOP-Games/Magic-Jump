@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
 using UnityEngine.UI;
+
 // ReSharper disable Unity.RedundantHideInInspectorAttribute
 
 namespace GameExtensions.UI.Menus
@@ -19,17 +20,38 @@ namespace GameExtensions.UI.Menus
     public class VideoSettings : ScreenLayout, ISaveable, IAwakeStart, ISerializationCallbackReceiver
     {
         public static VideoSettings Instance { get; private set; }
-        [field: SerializeField, HideInInspector] public FullScreenMode ScreenMode { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public FullScreenMode ScreenMode { get; private set; }
+
         public Resolution CurrentResolution { get; private set; }
-        [field: SerializeField, HideInInspector] public float RenderScale { get; private set; }
-        [field: SerializeField, HideInInspector] public int CurrentRefreshRate { get; private set; }
-        [field: SerializeField, HideInInspector] public bool IsSsaoEnabled { get; private set; }
-        [field: SerializeField, HideInInspector] public bool IsVSyncEnabled { get; private set; }
-        [field: SerializeField, HideInInspector] public AntialiasingMode AntiAliasing { get; private set; }
-        [field: SerializeField, HideInInspector] public bool IsUsingAnisoFiltering { get; private set; }
-        [field: SerializeField, HideInInspector] public byte WorldQualityLevel { get; private set; }
-        [field: SerializeField, HideInInspector] public byte ModelQualityLevel { get; private set; }
-        [field: SerializeField, HideInInspector] public byte ShadowQuality { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public float RenderScale { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public int CurrentRefreshRate { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public bool IsSsaoEnabled { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public bool IsVSyncEnabled { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public AntialiasingMode AntiAliasing { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public bool IsUsingAnisoFiltering { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public byte WorldQualityLevel { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public byte ModelQualityLevel { get; private set; }
+
+        [field: SerializeField, HideInInspector]
+        public byte ShadowQuality { get; private set; }
 
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [field: SerializeField, HideInInspector]
@@ -39,7 +61,8 @@ namespace GameExtensions.UI.Menus
             private set => throw new NotImplementedException();
         }
 
-        [field: SerializeField, HideInInspector] public float Brightness { get; private set; }
+        [field: SerializeField, HideInInspector]
+        public float Brightness { get; private set; }
 
         byte ISaveable.Id { get; set; }
 
@@ -69,25 +92,28 @@ namespace GameExtensions.UI.Menus
 
         private readonly WorldQuality[] worldQualities =
         {
-        new(200, 2, 512),   //low
-        new(1000, 2, 512),   //medium
-        new(2500, 1, 1024), //high
-        new(5000, 0, 2048)  //ultra
-    };
+            new(200, 2, 512), //low
+            new(1000, 2, 512), //medium
+            new(2500, 1, 1024), //high
+            new(5000, 0, 2048) //ultra
+        };
+
         // ReSharper disable once InconsistentNaming
-        private readonly (float bias, int max)[] LODSettings = {
-        (0.75f,1),  //low
-        (1,1),  //medium
-        (1,0),  //high
-        (2,0)   //ultra
-    };
+        private readonly (float bias, int max)[] LODSettings =
+        {
+            (0.75f, 1), //low
+            (1, 1), //medium
+            (1, 0), //high
+            (2, 0) //ultra
+        };
+
         private readonly LightingQuality[] lightingQualities =
         {
-        new(0,50,4),    //low
-        new(2,50,4),    //medium
-        new(4,75,2),    //high
-        new(6,100,0)   //ultra
-    };
+            new(0, 50, 4), //low
+            new(2, 50, 4), //medium
+            new(4, 75, 2), //high
+            new(6, 100, 0) //ultra
+        };
 
         public void ChangeFullscreenMode(int modeNumber)
         {
@@ -100,6 +126,7 @@ namespace GameExtensions.UI.Menus
                     modeNumber = 3;
                     break;
             }
+
             ScreenMode = (FullScreenMode)modeNumber;
             Screen.fullScreenMode = ScreenMode;
         }
@@ -235,19 +262,25 @@ namespace GameExtensions.UI.Menus
             urpAsset.shadowDistance = selectedLevel.shadowDistance;
             if (selectedLevel.shadowCascades != 0) urpAsset.shadowCascadeCount = selectedLevel.shadowCascades;
             Screen.brightness = Brightness;
+
             #region crossSceneSetup
+
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
             {
                 var cd = FindObjectOfType<UniversalAdditionalCameraData>();
                 if (cd is null)
                 {
-                    DebugConsole.Log("Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.", DebugConsole.WarningColor);
+                    DebugConsole.Log(
+                        "Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.",
+                        DebugConsole.WarningColor);
                     return;
                 }
+
                 cd.antialiasing = AntiAliasing;
                 cam = cd.GetComponent<Camera>();
                 ApplyFarClipping();
             };
+
             #endregion
         }
 
@@ -321,6 +354,4 @@ namespace GameExtensions.UI.Menus
             }
         }
     }
-
 }
-
