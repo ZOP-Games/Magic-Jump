@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-using GameExtensions.UI;
+﻿using UnityEngine;
+
 // ReSharper disable ConvertIfStatementToNullCoalescingAssignment
 namespace GameExtensions.UI.Menus
 {
@@ -8,15 +7,15 @@ namespace GameExtensions.UI.Menus
     {
         [SerializeField] private OptionsScreen options;
 
+        private void Start()
+        {
+            if (options is null) options = FindObjectOfType<OptionsScreen>(true);
+        }
+
         public void OpenOptions()
         {
             options.SetParent(this);
             options.Open();
-        }
-
-        private void Start()
-        {
-            if (options is null) options = FindObjectOfType<OptionsScreen>(true);
         }
     }
 }

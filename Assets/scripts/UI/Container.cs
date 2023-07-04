@@ -1,13 +1,11 @@
-﻿using System;
-using GameExtensions.Debug;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GameExtensions.UI
 {
     public abstract class Container : UIComponent
     {
+        [SerializeField] protected float padding = 8f;
         protected RectTransform[] elements;
-        [SerializeField]protected float padding = 8f;
         protected abstract void BuildLayout();
     }
 }

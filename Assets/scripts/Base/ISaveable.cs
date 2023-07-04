@@ -13,11 +13,12 @@ namespace GameExtensions
         {
             var id = Id;
             var json = JsonUtility.ToJson(this).Split(',').Where(i => !i.Contains("instanceID"))
-            .Aggregate((c, n) => c + "," + n);
+                .Aggregate((c, n) => c + "," + n);
             if (!json.StartsWith('{')) json = json.Insert(0, "{");
-            if (!json.EndsWith('}')) json = json.Insert(json.Length,"}");
+            if (!json.EndsWith('}')) json = json.Insert(json.Length, "}");
             SaveManager.SaveToFile(json, id);
         }
+
         public void Load(string serializedClass)
         {
             try

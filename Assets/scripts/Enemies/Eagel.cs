@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using Cinemachine;
+using TMPro;
+using UnityEngine;
+
 namespace GameExtensions.Enemies
 {
-
     /// <summary>
-    /// <inheritdoc cref="Kwork"/>
+    ///     <inheritdoc cref="Kwork" />
     /// </summary>
     public class Eagel : EnemyBase
     {
@@ -26,40 +24,6 @@ namespace GameExtensions.Enemies
         protected override float AtkRepeatRate => 1.5f;
         protected override CinemachineTargetGroup Ctg { get; set; }
 
-        protected override void Aim()
-        {
-            var transform1 = transform;
-            var pos = PlayerTransform.position;
-            transform1.LookAt(pos);
-            if (Mathf.Abs(Vector3.Distance(transform1.position, pos)) > AtkRange)
-            {
-                CancelInvoke(nameof(Attack));
-                isAttacking = false;
-                anim.SetBool(MovingPmHash,true);
-                Move(transform1.InverseTransformDirection(transform1.forward));
-            }
-            else if(!isAttacking)
-            {
-                InvokeRepeating(nameof(Attack),0,AtkRepeatRate);
-                isAttacking = true;
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag("Player")) return;
-            LookAtMe(transform);
-            InvokeRepeating(nameof(Aim),0,TrackInterval);
-        }
-
-        //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag("Player")) return;
-            DontLookAtMe(transform);
-            StopAiming();
-        }
-
         protected new void Start()
         {
             //setting the attack stat for the enemy and getting some components from the gameobject
@@ -72,6 +36,40 @@ namespace GameExtensions.Enemies
             Ctg = FindObjectOfType<CinemachineTargetGroup>();
             Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
             HealthChanged += () => hpText.SetText("HP: " + Hp);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+            LookAtMe(transform);
+            InvokeRepeating(nameof(Aim), 0, TrackInterval);
+        }
+
+        //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+            DontLookAtMe(transform);
+            StopAiming();
+        }
+
+        protected override void Aim()
+        {
+            var transform1 = transform;
+            var pos = PlayerTransform.position;
+            transform1.LookAt(pos);
+            if (Mathf.Abs(Vector3.Distance(transform1.position, pos)) > AtkRange)
+            {
+                CancelInvoke(nameof(Attack));
+                isAttacking = false;
+                anim.SetBool(MovingPmHash, true);
+                Move(transform1.InverseTransformDirection(transform1.forward));
+            }
+            else if (!isAttacking)
+            {
+                InvokeRepeating(nameof(Attack), 0, AtkRepeatRate);
+                isAttacking = true;
+            }
         }
     }
 }

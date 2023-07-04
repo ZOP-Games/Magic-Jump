@@ -1,43 +1,42 @@
-using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using UnityEngine;
 using GameExtensions.UI;
+using UnityEngine;
 
 namespace GameExtensions.Nonplayer
 {
     /// <summary>
-    /// An object reprsenting an NPC (Non-Player Character).
+    ///     An object reprsenting an NPC (Non-Player Character).
     /// </summary>
     public class NonPlayer : MonoBehaviour, IInteractable
     {
+        [SerializeField] private string ownName;
+
         /// <summary>
-        /// The name of the character.
-        /// </summary>
-        public string OwnName => ownName;
-        [SerializeField]private string ownName;
-        /// <summary>
-        /// The first <see cref="IContinuable"/> the character will show when interacted with.
+        ///     The first <see cref="IContinuable" /> the character will show when interacted with.
         /// </summary>
         private MenuScreen firstDialogBox;
 
-        /// <summary>
-        /// Starts an interaction with the NPC and opens the first dialog box.
-        /// </summary>
-        public void Interact()
-        {
-            firstDialogBox.Open();
-        }
-
         private void Start()
         {
-            
             firstDialogBox = GetComponentInChildren<IContinuable>(true) as MenuScreen;
             Player.PlayerReady += () =>
             {
                 Player.Instance.AddInputAction("Attack", CheckForInteraction);
                 Player.Instance.AddInputAction("Interact", ContinueDialog);
             };
+        }
+
+        /// <summary>
+        ///     The name of the character.
+        /// </summary>
+        public string OwnName => ownName;
+
+        /// <summary>
+        ///     Starts an interaction with the NPC and opens the first dialog box.
+        /// </summary>
+        public void Interact()
+        {
+            firstDialogBox.Open();
         }
 
         private static void CheckForInteraction()

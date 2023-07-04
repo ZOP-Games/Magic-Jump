@@ -5,13 +5,14 @@ namespace GameExtensions.UI.HUD
 {
     public class HUDToggler : MonoBehaviour
     {
-        public bool IsHUDVisible => gameObject.activeSelf;
         private static bool targetState;
         private static bool isChecking;
+        public bool IsHUDVisible => gameObject.activeSelf;
 
         public static void AskSetHUD(bool state)
         {
             var instance = FindObjectOfType<HUDToggler>(true);
+
             void Check(Scene scene, Scene scene1)
             {
                 AskSetHUD(state);
@@ -22,6 +23,7 @@ namespace GameExtensions.UI.HUD
                 isChecking = false;
                 targetState = state;
             }
+
             if (instance is not null)
             {
                 instance.gameObject.SetActive(state);

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using GameExtensions;
 using NUnit.Framework;
@@ -14,7 +13,6 @@ public class SaveLoadTests
     public void SaveLoadTestsSimplePasses()
     {
         // Use the Assert class to test conditions
-        
     }
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
@@ -36,6 +34,6 @@ public class SaveLoadTests
         var cond = new FileInfo(path).Exists;
         Assert.That(cond, Is.True);
         var stream = new FileStream(path, FileMode.Open);
-        Assert.That(stream.Length,Is.GreaterThan(0));
+        Assert.That(stream.Length, Is.GreaterThan(0));
     }
 }

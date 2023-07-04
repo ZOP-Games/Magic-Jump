@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Collections;
-using GameExtensions;
 using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,10 +7,16 @@ namespace GameExtensions.UI.Menus
 {
     public class MainMenu : OptionsParentScreen
     {
-
         //public GameObject loading;  //the loading screen, not needed yet
         [SerializeField] private Button continueButton;
         [SerializeField] private Button newGameButton;
+
+
+        private void Start()
+        {
+            ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
+            if (!SaveManager.SaveExists) continueButton.interactable = false;
+        }
         // this has all the things for the menu like button events, menu mechanics and more...
 
         public override void Open()
@@ -32,6 +35,7 @@ namespace GameExtensions.UI.Menus
             SaveManager.SaveAll();
             SceneManager.LoadScene(1);
         }
+
         public void Continue()
         {
             DebugConsole.Log("continue clicked");
@@ -43,13 +47,6 @@ namespace GameExtensions.UI.Menus
         public void Quit()
         {
             GameHelper.Quit();
-        }
-
-
-        private void Start()
-        {
-            ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
-            if (!SaveManager.SaveExists) continueButton.interactable = false;
         }
     }
 }

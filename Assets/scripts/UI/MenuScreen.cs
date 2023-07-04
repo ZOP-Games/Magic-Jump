@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using GameExtensions.Debug;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -10,6 +9,14 @@ namespace GameExtensions.UI
     [RequireComponent(typeof(RectTransform))]
     public abstract class MenuScreen : UIComponent
     {
+        public enum NavigationDirection
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        }
+
         [CanBeNull]
         protected virtual MenuScreen Parent => transform.parent.TryGetComponent<Canvas>(out _)
             ? transform.parent.parent.GetComponent<MenuScreen>()
@@ -19,20 +26,23 @@ namespace GameExtensions.UI
         {
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
-            if(Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("UI");
+            if (Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("UI");
             var firstButton = GetComponentInChildren<Button>();
-            if(firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
-            else DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",DebugConsole.WarningColor);
+            if (firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
+            else
+                DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",
+                    DebugConsole.WarningColor);
         }
+
         public virtual void Close()
         {
             Controller.ActiveScreen = Parent;
-            if(Parent is not null) Parent.Open();
+            if (Parent is not null) Parent.Open();
             GObj.SetActive(false);
-            if(Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("Player");
+            if (Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("Player");
         }
 
-        public static void RemapNavigation(Selectable target,Selectable obj,NavigationDirection dir)
+        public static void RemapNavigation(Selectable target, Selectable obj, NavigationDirection dir)
         {
             var nav = target.navigation;
             switch (dir)
@@ -55,14 +65,6 @@ namespace GameExtensions.UI
             }
 
             target.navigation = nav;
-        }
-
-        public enum NavigationDirection
-        {
-            Left,
-            Right,
-            Up,
-            Down
         }
     }
 }

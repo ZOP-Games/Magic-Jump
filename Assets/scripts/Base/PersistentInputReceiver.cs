@@ -6,14 +6,23 @@ using UnityEngine.InputSystem;
 namespace GameExtensions
 {
     /// <summary>
-    /// Stores input callbacks that need to work without the player (e.g. saving).
+    ///     Stores input callbacks that need to work without the player (e.g. saving).
     /// </summary>
     [RequireComponent(typeof(PlayerInput))]
     public class PersistentInputReceiver : MonoBehaviour, IInputHandler
     {
+        // Start is called before the first frame update
+        private void Start()
+        {
+            PInput = GetComponent<PlayerInput>();
+            AddInputAction("Save", SaveManager.SaveAll, IInputHandler.ActionType.Canceled);
+            AddInputAction("Load", SaveManager.LoadAll, IInputHandler.ActionType.Canceled);
+        }
+
         public PlayerInput PInput { get; set; }
 
-        public void AddInputAction(string actionName, UnityAction action, IInputHandler.ActionType type = IInputHandler.ActionType.Performed)
+        public void AddInputAction(string actionName, UnityAction action,
+            IInputHandler.ActionType type = IInputHandler.ActionType.Performed)
         {
             switch (type)
             {
@@ -36,18 +45,9 @@ namespace GameExtensions
                     };
                     break;
                 default:
-                    DebugConsole.Log("bad ActionType found",Color.red);
+                    DebugConsole.Log("bad ActionType found", Color.red);
                     break;
             }
-        }
-
-        // Start is called before the first frame update
-        private void Start()
-        {
-            PInput = GetComponent<PlayerInput>();
-            AddInputAction("Save",SaveManager.SaveAll,IInputHandler.ActionType.Canceled);
-            AddInputAction("Load",SaveManager.LoadAll,IInputHandler.ActionType.Canceled);
-
         }
     }
 }

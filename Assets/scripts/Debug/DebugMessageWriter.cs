@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -9,10 +7,20 @@ namespace GameExtensions.Debug
 {
     public class DebugMessageWriter : MonoBehaviour
     {
-        internal static DebugMessageWriter Instance { get; private set; }
-        private TextMeshProUGUI debugText;
-        private readonly Queue<string> textBuffer = new();
         private const byte MaxLogs = 5;
+        private readonly Queue<string> textBuffer = new();
+        private TextMeshProUGUI debugText;
+        internal static DebugMessageWriter Instance { get; private set; }
+
+
+        // Start is called before the first frame update
+        private void Start()
+        {
+            if (Instance is null) Instance = this;
+            else Destroy(this);
+            debugText = GetComponent<TextMeshProUGUI>();
+            DontDestroyOnLoad(transform.parent.gameObject);
+        }
 
         internal void WriteLine(string text, Color fontColor, byte fontSize)
         {
@@ -20,8 +28,8 @@ namespace GameExtensions.Debug
             debugText.color = fontColor;
             debugText.fontSize = fontSize;
             textBuffer.Enqueue(text);
-            if(textBuffer.Count > MaxLogs) textBuffer.Dequeue();
-            var allText = textBuffer.Aggregate((s,next) => s+'\n'+next);
+            if (textBuffer.Count > MaxLogs) textBuffer.Dequeue();
+            var allText = textBuffer.Aggregate((s, next) => s + '\n' + next);
             debugText.SetText(allText);
         }
 
@@ -61,17 +69,7 @@ namespace GameExtensions.Debug
             Strikethrough,
             Highlight
         }
-        #endregion
-        
 
-        // Start is called before the first frame update
-        private void Start()
-        {
-            if (Instance is null) Instance = this;
-            else Destroy(this);
-            debugText = GetComponent<TextMeshProUGUI>();
-            DontDestroyOnLoad(transform.parent.gameObject);
-        }
+        #endregion
     }
 }
-

@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using GameExtensions.Enemies;
+﻿using GameExtensions.Enemies;
+using UnityEngine;
 
 namespace GameExtensions.Spells
 {
     public class SpellController : MonoBehaviour
     {
-        private  readonly SpellManager spells = SpellManager.Instance;
+        private readonly SpellManager spells = SpellManager.Instance;
         private Player player;
 
         private void Start()
@@ -15,11 +15,10 @@ namespace GameExtensions.Spells
                 player = Player.Instance;
                 player.AddInputAction("Spell", UseSpell);
             };
-
         }
 
         /// <summary>
-        /// Event handler for using spells.
+        ///     Event handler for using spells.
         /// </summary>
         private void UseSpell()
         {

@@ -1,34 +1,40 @@
-using System;
-using System.Collections.Generic;
-using System.Collections;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace GameExtensions.Enemies
 {
     /// <summary>
-    /// Base class for all enemies.
+    ///     Base class for all enemies.
     /// </summary>
     [RequireComponent(typeof(LODGroup))]
     public abstract class EnemyBase : Entity
     {
+        protected const float TrackInterval = .02f;
+        private const float LookAtWeight = 0.1f;
+        private const float LookAtRadius = 1;
+        protected TextMeshPro hpText;
+
+        protected bool isAttacking;
         //Base class for enemies, for things all enemies do
 
         /*The enemy will only attack when the player is within this range (should be in meters,
         but because of scaling it's quite inconsistent, try to experiment with values)*/
         protected int AtkRange { get; set; }
-        protected TextMeshPro hpText;
         protected abstract float Height { get; }
         protected abstract byte XpReward { get; }
         protected abstract Transform PlayerTransform { get; set; }
         protected abstract float AtkRepeatRate { get; }
         protected abstract CinemachineTargetGroup Ctg { get; set; }
-        protected const float TrackInterval = .02f;
-        protected bool isAttacking;
-        private const float LookAtWeight = 0.1f;
-        private const float LookAtRadius = 1;
+
+        protected new void Start()
+        {
+            base.Start();
+            //putting tag on enemy, helps w/ identification
+            tag = "Enemy";
+            ApplyDifficulty();
+            Difficulty.DifficultyLevelChanged += ApplyDifficulty;
+        }
 
         //death logic, just destroys itself
         public override void Die()
@@ -80,15 +86,6 @@ namespace GameExtensions.Enemies
             Hp = Mathf.RoundToInt(Hp * DifficultyMultiplier);
             AtkPower = Mathf.RoundToInt(AtkPower * DifficultyMultiplier);
             Defense = Mathf.RoundToInt(Defense * DifficultyMultiplier);
-        }
-
-        protected new void Start()
-        {
-            base.Start();
-            //putting tag on enemy, helps w/ identification
-            tag = "Enemy";
-            ApplyDifficulty();
-            Difficulty.DifficultyLevelChanged += ApplyDifficulty;
         }
     }
 }

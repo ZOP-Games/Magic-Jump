@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
-using GameExtensions;
 using GameExtensions.Debug;
-using GameExtensions.UI;
-using GameExtensions.UI.Menus;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // ReSharper disable Unity.RedundantHideInInspectorAttribute
@@ -19,58 +16,52 @@ namespace GameExtensions.UI.Menus
     [Serializable]
     public class VideoSettings : ScreenLayout, ISaveable, IAwakeStart, ISerializationCallbackReceiver
     {
-        public static VideoSettings Instance { get; private set; }
-
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public FullScreenMode ScreenMode { get; private set; }
 
-        public Resolution CurrentResolution { get; private set; }
-
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public float RenderScale { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public int CurrentRefreshRate { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public bool IsSsaoEnabled { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public bool IsVSyncEnabled { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public AntialiasingMode AntiAliasing { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public bool IsUsingAnisoFiltering { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public byte WorldQualityLevel { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public byte ModelQualityLevel { get; private set; }
 
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public byte ShadowQuality { get; private set; }
 
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [field: SerializeField, HideInInspector]
-        public byte VFXQuality
-        {
-            get => throw new NotImplementedException();
-            private set => throw new NotImplementedException();
-        }
-
-        [field: SerializeField, HideInInspector]
+        [field: SerializeField]
+        [field: HideInInspector]
         public float Brightness { get; private set; }
 
-        byte ISaveable.Id { get; set; }
-
-        private List<(int width, int height)> resolutions;
-        private UniversalAdditionalCameraData cameraData;
-        private Camera cam;
-        [SerializeField, HideInInspector] private int currentHeight;
-        [SerializeField, HideInInspector] private int currentWidth;
+        [SerializeField] [HideInInspector] private int currentHeight;
+        [SerializeField] [HideInInspector] private int currentWidth;
         [SerializeField] private UniversalRenderPipelineAsset urpAsset;
         [SerializeField] private ScriptableRendererFeature ssao;
 
@@ -88,14 +79,12 @@ namespace GameExtensions.UI.Menus
         [SerializeField] private TMP_Dropdown vfxDropdown;
         [SerializeField] private Slider brightnessSlider;
 
-        private readonly List<string> refreshRates = new() { "60", "120", "144" };
-
-        private readonly WorldQuality[] worldQualities =
+        private readonly LightingQuality[] lightingQualities =
         {
-            new(200, 2, 512), //low
-            new(1000, 2, 512), //medium
-            new(2500, 1, 1024), //high
-            new(5000, 0, 2048) //ultra
+            new(0, 50, 4), //low
+            new(2, 50, 4), //medium
+            new(4, 75, 2), //high
+            new(6, 100, 0) //ultra
         };
 
         // ReSharper disable once InconsistentNaming
@@ -107,13 +96,127 @@ namespace GameExtensions.UI.Menus
             (2, 0) //ultra
         };
 
-        private readonly LightingQuality[] lightingQualities =
+        private readonly List<string> refreshRates = new() { "60", "120", "144" };
+
+        private readonly WorldQuality[] worldQualities =
         {
-            new(0, 50, 4), //low
-            new(2, 50, 4), //medium
-            new(4, 75, 2), //high
-            new(6, 100, 0) //ultra
+            new(200, 2, 512), //low
+            new(1000, 2, 512), //medium
+            new(2500, 1, 1024), //high
+            new(5000, 0, 2048) //ultra
         };
+
+        private Camera cam;
+        private UniversalAdditionalCameraData cameraData;
+
+        private List<(int width, int height)> resolutions;
+        public static VideoSettings Instance { get; private set; }
+
+        public Resolution CurrentResolution { get; private set; }
+
+        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
+        [field: SerializeField]
+        [field: HideInInspector]
+        public byte VFXQuality
+        {
+            get => throw new NotImplementedException();
+            private set => throw new NotImplementedException();
+        }
+
+        private new void Start()
+        {
+            base.Start();
+            if (Instance is not null) Destroy(this);
+            else Instance = this;
+            resolutions = Screen.resolutions.GroupBy(r => (r.width, r.height)).Select(r => r.Key).ToList();
+            resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
+            refreshDropdown.AddOptions(Screen.resolutions.Select(r => r.refreshRate.ToString()).Distinct().ToList());
+            screenDropdown.value = ScreenMode == FullScreenMode.Windowed ? 2 : (int)ScreenMode;
+            resolutionDropdown.value = resolutions.IndexOf((CurrentResolution.width, CurrentResolution.height));
+            scaleSlider.value = RenderScale;
+            refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
+            ssaoToggle.SetIsOnWithoutNotify(IsSsaoEnabled);
+            vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
+            aaDropdown.value = (int)AntiAliasing;
+            worldDropdown.value = WorldQualityLevel;
+            modelDropdown.value = ModelQualityLevel;
+            filterToggle.SetIsOnWithoutNotify(IsUsingAnisoFiltering);
+            shadowDropdown.value = ShadowQuality;
+            brightnessSlider.value = Brightness;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
+
+        public void AwakeStart()
+        {
+            cameraData = FindObjectOfType<UniversalAdditionalCameraData>();
+            if (cameraData is null)
+            {
+                DebugConsole.LogError("Universal Additional Camera Data cannot be found.");
+                return;
+            }
+
+            cam = cameraData.GetComponent<Camera>();
+            Screen.fullScreenMode = ScreenMode;
+            Screen.SetResolution(CurrentResolution.width, CurrentResolution.height, ScreenMode, CurrentRefreshRate);
+            urpAsset.renderScale = RenderScale;
+            Application.targetFrameRate = CurrentRefreshRate;
+            ssao.SetActive(IsSsaoEnabled);
+            QualitySettings.vSyncCount = IsVSyncEnabled ? 1 : 0;
+            var quality = worldQualities[WorldQualityLevel];
+            QualitySettings.masterTextureLimit = quality.maxTextureSize;
+            QualitySettings.streamingMipmapsMemoryBudget = quality.textureMemoryBudget;
+            ApplyFarClipping();
+            var (bias, max) = LODSettings[ModelQualityLevel];
+            QualitySettings.SetLODSettings(bias, max);
+            QualitySettings.anisotropicFiltering =
+                IsUsingAnisoFiltering ? AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
+            var selectedLevel = lightingQualities[ShadowQuality];
+            urpAsset.maxAdditionalLightsCount = selectedLevel.maxLightsCount;
+            urpAsset.shadowDistance = selectedLevel.shadowDistance;
+            if (selectedLevel.shadowCascades != 0) urpAsset.shadowCascadeCount = selectedLevel.shadowCascades;
+            Screen.brightness = Brightness;
+
+            #region crossSceneSetup
+
+            SceneManager.activeSceneChanged += (_, _) =>
+            {
+                var cd = FindObjectOfType<UniversalAdditionalCameraData>();
+                if (cd is null)
+                {
+                    DebugConsole.Log(
+                        "Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.",
+                        DebugConsole.WarningColor);
+                    return;
+                }
+
+                cd.antialiasing = AntiAliasing;
+                cam = cd.GetComponent<Camera>();
+                ApplyFarClipping();
+            };
+
+            #endregion
+        }
+
+        byte ISaveable.Id { get; set; }
+
+        public void OnBeforeSerialize()
+        {
+            currentHeight = CurrentResolution.height;
+            currentWidth = CurrentResolution.width;
+        }
+
+        public void OnAfterDeserialize()
+        {
+            var res = CurrentResolution;
+            res.height = currentHeight;
+            res.width = currentWidth;
+            res.refreshRate = CurrentRefreshRate;
+            CurrentResolution = res;
+        }
 
         public void ChangeFullscreenMode(int modeNumber)
         {
@@ -230,100 +333,10 @@ namespace GameExtensions.UI.Menus
                 lens.FarClipPlane = fcp;
                 vCam.m_Lens = lens;
             }
-            else cam.farClipPlane = fcp;
-        }
-
-        public void AwakeStart()
-        {
-            cameraData = FindObjectOfType<UniversalAdditionalCameraData>();
-            if (cameraData is null)
+            else
             {
-                DebugConsole.LogError("Universal Additional Camera Data cannot be found.");
-                return;
+                cam.farClipPlane = fcp;
             }
-
-            cam = cameraData.GetComponent<Camera>();
-            Screen.fullScreenMode = ScreenMode;
-            Screen.SetResolution(CurrentResolution.width, CurrentResolution.height, ScreenMode, CurrentRefreshRate);
-            urpAsset.renderScale = RenderScale;
-            Application.targetFrameRate = CurrentRefreshRate;
-            ssao.SetActive(IsSsaoEnabled);
-            QualitySettings.vSyncCount = IsVSyncEnabled ? 1 : 0;
-            var quality = worldQualities[WorldQualityLevel];
-            QualitySettings.masterTextureLimit = quality.maxTextureSize;
-            QualitySettings.streamingMipmapsMemoryBudget = quality.textureMemoryBudget;
-            ApplyFarClipping();
-            var (bias, max) = LODSettings[ModelQualityLevel];
-            QualitySettings.SetLODSettings(bias, max);
-            QualitySettings.anisotropicFiltering =
-                IsUsingAnisoFiltering ? AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
-            var selectedLevel = lightingQualities[ShadowQuality];
-            urpAsset.maxAdditionalLightsCount = selectedLevel.maxLightsCount;
-            urpAsset.shadowDistance = selectedLevel.shadowDistance;
-            if (selectedLevel.shadowCascades != 0) urpAsset.shadowCascadeCount = selectedLevel.shadowCascades;
-            Screen.brightness = Brightness;
-
-            #region crossSceneSetup
-
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (_, _) =>
-            {
-                var cd = FindObjectOfType<UniversalAdditionalCameraData>();
-                if (cd is null)
-                {
-                    DebugConsole.Log(
-                        "Universal Additional Camera Data couldn't be found in this scene. Anti-aliasing settings won't be applied.",
-                        DebugConsole.WarningColor);
-                    return;
-                }
-
-                cd.antialiasing = AntiAliasing;
-                cam = cd.GetComponent<Camera>();
-                ApplyFarClipping();
-            };
-
-            #endregion
-        }
-
-        public void OnBeforeSerialize()
-        {
-            currentHeight = CurrentResolution.height;
-            currentWidth = CurrentResolution.width;
-        }
-
-        public void OnAfterDeserialize()
-        {
-            var res = CurrentResolution;
-            res.height = currentHeight;
-            res.width = currentWidth;
-            res.refreshRate = CurrentRefreshRate;
-            CurrentResolution = res;
-        }
-
-        private new void Start()
-        {
-            base.Start();
-            if (Instance is not null) Destroy(this);
-            else Instance = this;
-            resolutions = Screen.resolutions.GroupBy(r => (r.width, r.height)).Select(r => r.Key).ToList();
-            resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
-            refreshDropdown.AddOptions(refreshRates);
-            screenDropdown.value = ScreenMode == FullScreenMode.Windowed ? 2 : (int)ScreenMode;
-            resolutionDropdown.value = resolutions.IndexOf((CurrentResolution.width, CurrentResolution.height));
-            scaleSlider.value = RenderScale;
-            refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
-            ssaoToggle.SetIsOnWithoutNotify(IsSsaoEnabled);
-            vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
-            aaDropdown.value = (int)AntiAliasing;
-            worldDropdown.value = WorldQualityLevel;
-            modelDropdown.value = ModelQualityLevel;
-            filterToggle.SetIsOnWithoutNotify(IsUsingAnisoFiltering);
-            shadowDropdown.value = ShadowQuality;
-            brightnessSlider.value = Brightness;
-        }
-
-        private void OnDestroy()
-        {
-            Instance = null;
         }
 
         private struct WorldQuality

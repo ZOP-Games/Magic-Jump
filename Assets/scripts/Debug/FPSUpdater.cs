@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 namespace GameExtensions.Debug
 {
@@ -22,4 +20,3 @@ namespace GameExtensions.Debug
         }
     }
 }
-

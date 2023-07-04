@@ -1,18 +1,18 @@
 {
-    "name": "GameExtensions.Enemies",
-    "rootNamespace": "",
-    "references": [
-        "GameExtensions",
-        "Unity.TextMeshPro",
-        "Cinemachine"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "GameExtensions.Enemies",
+  "rootNamespace": "",
+  "references": [
+    "GameExtensions",
+    "Unity.TextMeshPro",
+    "Cinemachine"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

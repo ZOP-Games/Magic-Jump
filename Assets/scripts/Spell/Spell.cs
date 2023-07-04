@@ -1,12 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameExtensions.Enemies;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-namespace GameExtensions 
+namespace GameExtensions
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class Spell
     {
         public abstract string Name { get; }
@@ -26,12 +27,12 @@ namespace GameExtensions
             if (TargetAmount < 1)
             {
                 var realAmount = (int)(targetList.Count * TargetAmount);
-                return targetList.Skip(Random.Range(0, (targetList.Count + 1) - realAmount)).Take(realAmount);
+                return targetList.Skip(Random.Range(0, targetList.Count + 1 - realAmount)).Take(realAmount);
             }
             else
             {
                 var realAmount = (int)TargetAmount;
-                return targetList.Skip(Random.Range(0, (targetList.Count + 1) - realAmount)).Take(realAmount);
+                return targetList.Skip(Random.Range(0, targetList.Count + 1 - realAmount)).Take(realAmount);
             }
         }
     }

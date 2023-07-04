@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -14,25 +13,10 @@ namespace GameExtensions.UI
         [SerializeField] private GameObject menuLayout;
         [SerializeField] private float passiveSizePc;
         private Vector2 activeSize;
-        private Vector2 passiveSize;
-        private Image Background => GetComponent<Image>();
-        private RectTransform rTf;
         private TabGroup group;
-
-        public void Activate()
-        {
-            Background.color = activeColor;
-            rTf.sizeDelta = activeSize;
-            group.RefreshLayout();
-            menuLayout.SetActive(true);
-        }
-
-        public void Deactivate()
-        {
-            Background.color = disabledColor;
-            rTf.sizeDelta = passiveSize;
-            menuLayout.SetActive(false);
-        }
+        private Vector2 passiveSize;
+        private RectTransform rTf;
+        private Image Background => GetComponent<Image>();
 
         private void Awake()
         {
@@ -47,6 +31,21 @@ namespace GameExtensions.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             group.SetActiveTab(id);
+        }
+
+        public void Activate()
+        {
+            Background.color = activeColor;
+            rTf.sizeDelta = activeSize;
+            group.RefreshLayout();
+            menuLayout.SetActive(true);
+        }
+
+        public void Deactivate()
+        {
+            Background.color = disabledColor;
+            rTf.sizeDelta = passiveSize;
+            menuLayout.SetActive(false);
         }
     }
 }

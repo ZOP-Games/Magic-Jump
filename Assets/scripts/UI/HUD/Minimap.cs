@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameExtensions.UI.HUD
@@ -16,7 +14,5 @@ namespace GameExtensions.UI.HUD
                 tf.localPosition = new Vector3(0, tf.localPosition.y, 0);
             };
         }
-    
     }
 }
-

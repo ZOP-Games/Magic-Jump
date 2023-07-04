@@ -1,27 +1,27 @@
 {
-    "name": "PlayMode",
-    "rootNamespace": "",
-    "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "GameExtensions",
-        "GameExtensions.UI.Menus",
-        "GameExtensions.UI",
-        "Unity.InputSystem",
-        "Unity.InputSystem.TestFramework",
-        "GameExtensions.Enemies"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "nunit.framework.dll"
-    ],
-    "autoReferenced": false,
-    "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
-    ],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "PlayMode",
+  "rootNamespace": "",
+  "references": [
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "GameExtensions",
+    "GameExtensions.UI.Menus",
+    "GameExtensions.UI",
+    "Unity.InputSystem",
+    "Unity.InputSystem.TestFramework",
+    "GameExtensions.Enemies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

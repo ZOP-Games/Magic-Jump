@@ -6,10 +6,12 @@ using UnityEngine;
 namespace GameExtensions.Enemies
 {
     /// <summary>
-    /// A Knight (lovag) enemy.
+    ///     A Knight (lovag) enemy.
     /// </summary>
     public class Knight : EnemyBase
     {
+        private float height;
+
         //todo: research: is this necesarry??
         protected override int AttackingPmHash => Animator.StringToHash("attack");
         protected int Attacking2PmHash => Animator.StringToHash("attack2");
@@ -24,8 +26,32 @@ namespace GameExtensions.Enemies
         protected override float AtkRepeatRate => 0.5f;
         protected override CinemachineTargetGroup Ctg { get; set; }
 
-        private float height;
-        
+        private new void Start()
+        {
+            base.Start();
+            height = transform.position.y * 2;
+            AtkRange = 4;
+            AtkPower = 1;
+            rb = GetComponent<Rigidbody>();
+            anim = GetComponent<Animator>();
+            hpText = GetComponentInChildren<TextMeshPro>();
+            if (hpText is null)
+            {
+                Debug.LogWarning("Where yo HP text at for " + name + "??");
+            }
+            else
+            {
+                hpText.SetText("HP: 100");
+                HealthChanged += () => hpText.SetText("HP: " + Hp);
+            }
+
+            Ctg = FindObjectOfType<CinemachineTargetGroup>();
+            if (GetComponentsInChildren<Collider>()
+                .All(c => !c.isTrigger))
+                Debug.LogError("The attack trigger on " + name + " missing u idoit");
+            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
@@ -39,27 +65,6 @@ namespace GameExtensions.Enemies
             if (!other.CompareTag("Player")) return;
             DontLookAtMe(transform);
             StopAiming();
-        }
-        private new void Start()
-        {
-            base.Start();
-            height = transform.position.y * 2;
-            AtkRange = 4;
-            AtkPower = 1;
-            rb = GetComponent<Rigidbody>();
-            anim = GetComponent<Animator>();
-            hpText = GetComponentInChildren<TextMeshPro>();
-            if (hpText is null) Debug.LogWarning("Where yo HP text at for " + name + "??");
-            else
-            {
-                hpText.SetText("HP: 100");
-                HealthChanged += () => hpText.SetText("HP: " + Hp);
-            }
-            Ctg = FindObjectOfType<CinemachineTargetGroup>();
-            if (GetComponentsInChildren<Collider>()
-                .All(c => !c.isTrigger))
-                Debug.LogError("The attack trigger on " + name + " missing u idoit");
-            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
         }
     }
 }

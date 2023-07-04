@@ -1,18 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameExtensions.Debug;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace GameExtensions
 {
     public static class Difficulty
     {
-
-        public static event UnityAction DifficultyLevelChanged;
-
-        public static DifficultyLevel CurrentDifficultyLevel { get; private set; }
-        public static float DifficultyMultiplier => DifficultyMultipliers[(int)CurrentDifficultyLevel];
+        public enum DifficultyLevel
+        {
+            Easy,
+            Medium,
+            Hard,
+            Intense
+        }
 
         private static readonly float[] DifficultyMultipliers =
         {
@@ -22,20 +20,15 @@ namespace GameExtensions
             2f
         };
 
+        public static DifficultyLevel CurrentDifficultyLevel { get; private set; }
+        public static float DifficultyMultiplier => DifficultyMultipliers[(int)CurrentDifficultyLevel];
+
+        public static event UnityAction DifficultyLevelChanged;
+
         public static void ChangeDifficultyLevel(DifficultyLevel level)
         {
             CurrentDifficultyLevel = level;
             DifficultyLevelChanged?.Invoke();
         }
-
-        public enum DifficultyLevel
-        {
-            Easy,
-            Medium,
-            Hard,
-            Intense
-        }
     }
 }
-
-

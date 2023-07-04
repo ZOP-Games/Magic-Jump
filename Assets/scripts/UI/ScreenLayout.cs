@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
@@ -10,6 +9,12 @@ namespace GameExtensions.UI
     {
         [SerializeField] protected GameObject firstObj;
 
+        protected void Start()
+        {
+            UnityEngine.Debug.Assert(ES.currentInputModule is InputSystemUIInputModule,
+                "Current Input Module is not of type InputSystemUIInputModule.");
+        }
+
         protected void OnEnable()
         {
             var menu = Controller.ActiveScreen;
@@ -18,12 +23,6 @@ namespace GameExtensions.UI
                 GetComponentsInChildren<Selectable>().LastOrDefault(s => s is not Scrollbar),
                 MenuScreen.NavigationDirection.Up);
             ES.SetSelectedGameObject(firstObj);
-        }
-
-        protected void Start()
-        {
-            UnityEngine.Debug.Assert(ES.currentInputModule is InputSystemUIInputModule,
-                "Current Input Module is not of type InputSystemUIInputModule.");
         }
     }
 }

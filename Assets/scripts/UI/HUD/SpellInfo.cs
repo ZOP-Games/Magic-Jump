@@ -1,7 +1,6 @@
-﻿using System;
-using GameExtensions.Spells;
-using UnityEngine;
+﻿using GameExtensions.Spells;
 using TMPro;
+using UnityEngine;
 
 namespace GameExtensions.UI.HUD
 {
@@ -9,6 +8,7 @@ namespace GameExtensions.UI.HUD
     {
         private SpellManager spells;
         private TextMeshProUGUI textBox;
+
         private void Start()
         {
             textBox = GetComponentInChildren<TextMeshProUGUI>();

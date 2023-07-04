@@ -1,16 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
+
 namespace GameExtensions.Enemies
 {
     /// <summary>
-    /// A Kwork enemy.
+    ///     A Kwork enemy.
     /// </summary>
     public class Kwork : EnemyBase
     {
+        private readonly WaitForSeconds wfs = new(0.5f);
+
         //class for the Kwork enemy, it's a basic implementation of EnemyBase
         protected override int AttackingPmHash => Animator.StringToHash("attack");
         protected override int MovingPmHash => Animator.StringToHash("moving");
@@ -23,7 +24,33 @@ namespace GameExtensions.Enemies
         protected override byte XpReward => 12;
         protected override float AtkRepeatRate => 0.5f;
         protected override CinemachineTargetGroup Ctg { get; set; }
-        private readonly WaitForSeconds wfs = new(0.5f);
+
+
+        protected new void Start()
+        {
+            //setting the attack stat for the enemy and getting some components from the gameobject
+            base.Start();
+            AtkRange = 4;
+            AtkPower = 1;
+            rb = GetComponent<Rigidbody>();
+            anim = GetComponent<Animator>();
+            hpText = GetComponentInChildren<TextMeshPro>();
+            if (hpText is null)
+            {
+                Debug.LogWarning("Where yo HP text at for " + name + "???");
+            }
+            else
+            {
+                hpText.SetText("HP: 100");
+                HealthChanged += () => hpText.SetText("HP: " + Hp);
+            }
+
+            Ctg = FindObjectOfType<CinemachineTargetGroup>();
+            if (GetComponentsInChildren<Collider>()
+                .All(c => !c.isTrigger))
+                Debug.LogError("The attack trigger on " + name + " missing u idoit");
+            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -38,29 +65,6 @@ namespace GameExtensions.Enemies
             if (!other.CompareTag("Player")) return;
             DontLookAtMe(transform);
             StopAiming();
-        }
-
-
-        protected new void Start()
-        {
-            //setting the attack stat for the enemy and getting some components from the gameobject
-            base.Start();
-            AtkRange = 4;
-            AtkPower = 1;
-            rb = GetComponent<Rigidbody>();
-            anim = GetComponent<Animator>();
-            hpText = GetComponentInChildren<TextMeshPro>();
-            if (hpText is null) Debug.LogWarning("Where yo HP text at for " + name + "???");
-            else
-            {
-                hpText.SetText("HP: 100");
-                HealthChanged += () => hpText.SetText("HP: " + Hp);
-            }
-            Ctg = FindObjectOfType<CinemachineTargetGroup>();
-            if (GetComponentsInChildren<Collider>()
-                .All(c => !c.isTrigger))
-                Debug.LogError("The attack trigger on " + name + " missing u idoit");
-            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
         }
     }
 }

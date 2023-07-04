@@ -1,7 +1,5 @@
-﻿using System;
-using GameExtensions.Debug;
+﻿using System.Linq;
 using JetBrains.Annotations;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -12,13 +10,41 @@ namespace GameExtensions.UI
 {
     public class MenuController : MonoBehaviour
     {
-        /// <summary>Item1: XP, Item2: Xp threshold, Item3: Level</summary>
-        public (int, int, byte) XpInfo { get; private set; }
-        [CanBeNull] public MenuScreen ActiveScreen { get; set; }
+        [SerializeField] private InputActionAsset actions;
         private MenuScreen pause;
         private MenuScreen spells;
-        [SerializeField] private InputActionAsset actions;
+
+        /// <summary>Item1: XP, Item2: Xp threshold, Item3: Level</summary>
+        public (int, int, byte) XpInfo { get; private set; }
+
+        [CanBeNull] public MenuScreen ActiveScreen { get; set; }
         public static MenuController Controller { get; private set; }
+
+
+        public void Start()
+        {
+            if (Controller is not null) Destroy(this);
+            Controller = this;
+            DontDestroyOnLoad(gameObject);
+            Player.PlayerReady += () =>
+            {
+                var player = Player.Instance;
+                player.AddInputAction("Change", OpenSpell);
+                player.AddInputAction("Pause", OpenPause);
+                player.AddInputAction("Exit", CloseActive);
+                pause = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(p => p.CompareTag("Pause"));
+                spells = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(o => o.CompareTag("Spell menu"));
+                UnityEngine.Debug.Assert(pause is not null, "pause is not assigned in MenuController.");
+                UnityEngine.Debug.Assert(spells is not null);
+                pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
+            };
+            actions["Exit"].canceled += _ => CloseActive();
+        }
+
+        private void OnDestroy()
+        {
+            Controller = null;
+        }
 
         public void OpenPause()
         {
@@ -36,32 +62,5 @@ namespace GameExtensions.UI
         {
             if (ActiveScreen is not null) ActiveScreen.Close();
         }
-
-
-        public void Start()
-        {
-            if (Controller is not null) Destroy(this);
-            Controller = this;
-            DontDestroyOnLoad(gameObject);
-            Player.PlayerReady += () =>
-            {
-                var player = Player.Instance;
-                player.AddInputAction("Change", OpenSpell);
-                player.AddInputAction("Pause", OpenPause);
-                player.AddInputAction("Exit", CloseActive);
-                pause = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(p => p.CompareTag("Pause"));
-                spells = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(o => o.CompareTag("Spell menu"));
-                UnityEngine.Debug.Assert(pause is not null,"pause is not assigned in MenuController.");
-                UnityEngine.Debug.Assert(spells is not null);
-                pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
-            };
-            actions["Exit"].canceled += _ => CloseActive();
-        }
-
-        private void OnDestroy()
-        {
-           Controller = null;
-        }
     }
 }
-

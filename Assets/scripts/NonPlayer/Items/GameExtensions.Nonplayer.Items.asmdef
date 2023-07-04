@@ -1,18 +1,18 @@
 {
-    "name": "GameExtensions.Nonplayer.Items",
-    "rootNamespace": "",
-    "references": [
-        "GUID:3f945c094a7aed545a4e13467b341380",
-        "GUID:ead87674422092c49bc1096c34a73b8a",
-        "GUID:88a3b412107009c459367093fcb69d31"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "GameExtensions.Nonplayer.Items",
+  "rootNamespace": "",
+  "references": [
+    "GUID:3f945c094a7aed545a4e13467b341380",
+    "GUID:ead87674422092c49bc1096c34a73b8a",
+    "GUID:88a3b412107009c459367093fcb69d31"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }
