@@ -482,7 +482,7 @@
                 {
                     "name": "up",
                     "id": "1b9fb36e-3b74-46c3-a193-320201ef9d96",
-                    "path": "<Keyboard>/#(W)",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -493,7 +493,7 @@
                 {
                     "name": "down",
                     "id": "31c6755d-e587-4059-bc8a-2506ccde7a7b",
-                    "path": "<Keyboard>/#(S)",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -504,7 +504,7 @@
                 {
                     "name": "left",
                     "id": "f99d3ea7-75f2-4f40-af89-7bdae2491e67",
-                    "path": "<Keyboard>/#(A)",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -747,7 +747,7 @@
                     "name": "",
                     "id": "1a5bf41a-4b19-476d-80fc-8a7043c9aa46",
                     "path": "<Gamepad>/rightShoulder",
-                    "interactions": "Tap",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Controller",
                     "action": "Spell",

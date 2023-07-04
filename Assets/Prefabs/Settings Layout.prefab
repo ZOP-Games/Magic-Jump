@@ -121,8 +121,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3860767443994395223}
   m_HandleRect: {fileID: 3944046901605259286}
   m_Direction: 2
-  m_Value: 0.2083945
-  m_Size: 0.5565723
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -434,7 +434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f19ba1caa87ae4ba446f38c7619b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  padding: 5
 --- !u!222 &2621593678925605229
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -27,8 +27,8 @@ namespace GameExtensions.UI
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
             if (Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("UI");
-            var firstButton = GetComponentInChildren<Button>();
-            if (firstButton is not null) ES.SetSelectedGameObject(firstButton.gameObject);
+            var firstSelectable = GetComponentInChildren<Selectable>();
+            if (firstSelectable is not null) ES.SetSelectedGameObject(firstSelectable.gameObject);
             else
                 DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",
                     DebugConsole.WarningColor);
