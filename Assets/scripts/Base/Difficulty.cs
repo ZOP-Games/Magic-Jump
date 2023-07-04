@@ -8,7 +8,7 @@ namespace GameExtensions
 {
     public static class Difficulty
     {
-
+        
         public static event UnityAction DifficultyLevelChanged;
 
         public static DifficultyLevel CurrentDifficultyLevel { get; private set; }
