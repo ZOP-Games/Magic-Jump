@@ -83,6 +83,7 @@ namespace GameExtensions.UI.Menus
                     .WithCancelingThrough("<Keyboard>/Escape")
                     .Start();
                     DebugConsole.Log("Remapping began, press a key...");
+                    //todo:make this nice
             }
         }
     }
