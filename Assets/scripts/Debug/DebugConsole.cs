@@ -59,12 +59,12 @@ namespace GameExtensions.Debug
         {
             if (!IsWriterAvalaible)
             {
-                Log(text, Color.red, ErrorFontSize);
+                Log("ERROR: " + text, ErrorColor, ErrorFontSize);
                 return;
             }
 
             Writer.ClearText();
-            Log(text, Color.red, ErrorFontSize);
+            Log(text, ErrorColor, ErrorFontSize);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Bold);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Underline);
         }

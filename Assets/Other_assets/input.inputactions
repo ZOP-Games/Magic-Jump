@@ -646,17 +646,6 @@
                 },
                 {
                     "name": "",
-                    "id": "2f97b002-a2a2-4c9a-a6e9-755731d9fb48",
-                    "path": "<DualShockGamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "907350b1-4420-43ac-b215-4740e92a5bbf",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -734,17 +723,6 @@
                 },
                 {
                     "name": "",
-                    "id": "5f440395-a736-49c3-bf5b-b1338d49bf5c",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Spell",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1a5bf41a-4b19-476d-80fc-8a7043c9aa46",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
@@ -756,6 +734,50 @@
                 },
                 {
                     "name": "",
+                    "id": "5f440395-a736-49c3-bf5b-b1338d49bf5c",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Spell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "e1af2c5b-9977-4d91-80ea-4f1109aa4302",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Save",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "f2213d1e-b69c-4552-8252-7791292b022e",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "bd742843-dd7f-4c31-8d76-c8cb7b7a989b",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
                     "id": "18bf63fe-5470-46ba-95d2-0f6113fc6dc6",
                     "path": "<Keyboard>/f6",
                     "interactions": "Press(behavior=1)",
@@ -764,6 +786,39 @@
                     "action": "Save",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "d6f4f9a1-ab02-40fa-9f63-5a0d2d0e6529",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Load",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "4ffab7bc-b140-41f4-ae0f-e946ac1a2457",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Load",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "c2edb436-e27d-4717-bf1e-e1f2cf80df0e",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Load",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
