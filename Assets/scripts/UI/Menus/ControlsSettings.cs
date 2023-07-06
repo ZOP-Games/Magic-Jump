@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.UI;
 using GameExtensions.Debug;
 using Cinemachine;
@@ -12,13 +13,17 @@ namespace GameExtensions.UI.Menus
 
         [field: SerializeField, HideInInspector] public float Sensitivity { get; private set; }
         [field: SerializeField, HideInInspector] public float Deadzone { get; private set; }
+        [field: SerializeField, HideInInspector] public bool IsRumbleEnabled { get; private set; }
+        [field:SerializeField,HideInInspector] public bool IsCameraYInverted {get; private set;}
 
         private Button remapButton;
         [SerializeField] private InputSettings inputSettings;
         [SerializeField] private InputActionAsset inputActions;
         [SerializeField] private Slider sensitivitySlider;
         [SerializeField] private Slider deadzoneSlider;
-        [SerializeField] private string remapsJson;
+        [SerializeField] private Toggle rumbleToggle;
+        [SerializeField] private Toggle invertToggle;
+        [SerializeField, HideInInspector] private string remapsJson;
 
         private MenuScreen remapMenu;
 
@@ -54,13 +59,45 @@ namespace GameExtensions.UI.Menus
         public void ChangeDeadzone(float amount)
         {
             Deadzone = amount;
-            inputSettings.defaultDeadzoneMin = amount;
+            inputSettings.defaultDeadzoneMin = Deadzone;
+        }
+
+        public void ChangeRumble(bool value)
+        {
+            IsRumbleEnabled = value;
+            if(IsRumbleEnabled) InputSystem.ResetHaptics();
+            else {
+                InputSystem.ResumeHaptics();
+                InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.4f,0.9f);
+                //todo: test rumble on Windows + finish
+            } 
+        }
+
+        public void ChangeInvertCamera(bool value){
+            IsCameraYInverted = value;
+            void ApplyInvert()
+            {
+                (CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera)
+                    .GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_InvertInput = IsCameraYInverted;
+            }
+            if (CinemachineCore.Instance.VirtualCameraCount < 1)
+            {
+                Player.PlayerReady -= ApplyInvert; //remove any previous subscription so it will only be added once
+                Player.PlayerReady += ApplyInvert;
+            }
+            else
+            {
+                ApplyInvert();
+            }
+            
         }
 
         public void PassiveStart()
         {
             ChangeSensitivity(Sensitivity);
             inputSettings.defaultDeadzoneMin = Deadzone;
+            ChangeRumble(IsRumbleEnabled);
+            ChangeInvertCamera(IsCameraYInverted);
             var splitMaps = remapsJson.Split(';').ToList();
             var iActionsArr = inputActions.ToArray();
             for (int i = 0; i < iActionsArr.Length; i++)
@@ -69,7 +106,8 @@ namespace GameExtensions.UI.Menus
             }
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             remapsJson = GetComponentInChildren<ControlRemappingScreen>(true).RebindsJson;
         }
 
@@ -79,6 +117,9 @@ namespace GameExtensions.UI.Menus
             remapMenu = GetComponentInChildren<MenuScreen>(true);
             remapButton.onClick.AddListener(() => remapMenu.Open());
             sensitivitySlider.value = Sensitivity;
+            deadzoneSlider.value = Deadzone;
+            rumbleToggle.SetIsOnWithoutNotify(IsRumbleEnabled);
+            invertToggle.SetIsOnWithoutNotify(IsCameraYInverted);
             base.Start();
         }
     }
