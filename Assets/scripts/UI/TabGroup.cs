@@ -33,6 +33,7 @@ namespace GameExtensions.UI
                 if (val < 0) PreviousTab();
                 else NextTab();
             };
+            activeTabIndex = 0;
             activeTab = tabs[0];
             activeTab.Activate();
         }
