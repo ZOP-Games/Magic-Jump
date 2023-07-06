@@ -14,7 +14,7 @@ namespace GameExtensions.UI.Menus
         [field: SerializeField, HideInInspector] public float Sensitivity { get; private set; }
         [field: SerializeField, HideInInspector] public float Deadzone { get; private set; }
         [field: SerializeField, HideInInspector] public bool IsRumbleEnabled { get; private set; }
-        [field:SerializeField,HideInInspector] public bool IsCameraYInverted {get; private set;}
+        [field: SerializeField, HideInInspector] public bool IsCameraYInverted { get; private set; }
 
         private Button remapButton;
         [SerializeField] private InputSettings inputSettings;
@@ -40,9 +40,9 @@ namespace GameExtensions.UI.Menus
             Sensitivity = amount;
             void ApplySensitivity()
             {
-                (CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera)
+                ((CinemachineVirtualCamera)CinemachineCore.Instance.GetVirtualCamera(0))
                     .GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = Sensitivity;
-                (CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera)
+                ((CinemachineVirtualCamera)CinemachineCore.Instance.GetVirtualCamera(0))
                     .GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = Sensitivity;
             }
             if (CinemachineCore.Instance.VirtualCameraCount < 1)
@@ -65,19 +65,21 @@ namespace GameExtensions.UI.Menus
         public void ChangeRumble(bool value)
         {
             IsRumbleEnabled = value;
-            if(IsRumbleEnabled) InputSystem.ResetHaptics();
-            else {
+            if (!IsRumbleEnabled) InputSystem.ResetHaptics();
+            else
+            {
                 InputSystem.ResumeHaptics();
-                InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.4f,0.9f);
-                //todo: test rumble on Windows + finish
-            } 
+                InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.4f, 0.9f);
+                //todo: finish rumbling
+            }
         }
 
-        public void ChangeInvertCamera(bool value){
+        public void ChangeInvertCamera(bool value)
+        {
             IsCameraYInverted = value;
             void ApplyInvert()
             {
-                (CinemachineCore.Instance.GetVirtualCamera(0) as CinemachineVirtualCamera)
+                ((CinemachineVirtualCamera)CinemachineCore.Instance.GetVirtualCamera(0))
                     .GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_InvertInput = IsCameraYInverted;
             }
             if (CinemachineCore.Instance.VirtualCameraCount < 1)
@@ -89,7 +91,7 @@ namespace GameExtensions.UI.Menus
             {
                 ApplyInvert();
             }
-            
+
         }
 
         public void PassiveStart()
@@ -100,7 +102,7 @@ namespace GameExtensions.UI.Menus
             ChangeInvertCamera(IsCameraYInverted);
             var splitMaps = remapsJson.Split(';').ToList();
             var iActionsArr = inputActions.ToArray();
-            for (int i = 0; i < iActionsArr.Length; i++)
+            for (var i = 0; i < iActionsArr.Length; i++)
             {
                 iActionsArr[i].LoadBindingOverridesFromJson(splitMaps[i]);
             }

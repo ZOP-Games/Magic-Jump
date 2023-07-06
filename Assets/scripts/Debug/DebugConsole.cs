@@ -7,7 +7,7 @@ namespace GameExtensions.Debug
     {
         private const byte FontSize = 20;
         private const byte ErrorFontSize = 36;
-        private static bool _writtenError;
+        private static bool writtenError;
         private static readonly Color FontColor = Color.black;
         public static Color TestColor => new(0, 0.91f, 0.8f);
         public static Color WarningColor => Color.yellow;
@@ -17,13 +17,14 @@ namespace GameExtensions.Debug
         private static bool IsWriterAvalaible => Writer is not null;
         private static DebugMessageWriter Writer => DebugMessageWriter.Instance;
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public static void Log(string text, Color color, byte fontSize)
         {
-            if (!IsWriterAvalaible && !_writtenError)
+            if (!IsWriterAvalaible && !writtenError)
             {
                 UnityEngine.Debug.LogWarning(
                     "The message writer is not available. Debug console messages will be written to Unity console only");
-                _writtenError = true;
+                writtenError = true;
             }
 
             if (!IsWriterAvalaible)

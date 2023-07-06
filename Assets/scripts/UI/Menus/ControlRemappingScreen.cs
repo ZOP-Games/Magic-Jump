@@ -11,9 +11,11 @@ namespace GameExtensions.UI.Menus
 {
     public class ControlRemappingScreen : MenuScreen
     {
-        public string RebindsJson {
-            get  {
-                return inputActionAsset.Select(a => a.SaveBindingOverridesAsJson()).Aggregate((c,n) => c + ";" +n);
+        public string RebindsJson
+        {
+            get
+            {
+                return inputActionAsset.Select(a => a.SaveBindingOverridesAsJson()).Aggregate((c, n) => c + ";" + n);
             }
         }
 
@@ -22,7 +24,7 @@ namespace GameExtensions.UI.Menus
         [SerializeField] private MenuScreen activeRemapScreen;
         private TMP_Dropdown schemesDropdown;
         private byte bindingIndex;
-        private UnityAction RedrawBinding;
+        private UnityAction redrawBinding;
 
         private const string ActiveBindText = "Press a new key for ";
         public void SetBindingIndex(int scheme)
@@ -63,7 +65,7 @@ namespace GameExtensions.UI.Menus
                     .Select(b => action.bindings.ToList().IndexOf(b))
                     .ToArray();
                     StartCoroutine(RebindCoroutine(action, bindingIndices));
-                    RedrawBinding = () =>
+                    redrawBinding = () =>
                     {
                         DrawBinding(action, obj.GetComponentsInChildren<TextMeshProUGUI>());
                     };
@@ -79,6 +81,8 @@ namespace GameExtensions.UI.Menus
                 .Replace('\u001b', '\u200b'));    //removing bad characters to get rid of warnings
         }
 
+        // ReSharper disable once FunctionRecursiveOnAllPaths
+        // ReSharper disable Unity.PerformanceAnalysis
         private IEnumerator RebindCoroutine(InputAction action, int[] bIndices, int i = 0)
         {
             var dun = false;
@@ -117,7 +121,7 @@ namespace GameExtensions.UI.Menus
             {
                 StopCoroutine(RebindCoroutine(action, bIndices, i));
                 activeRemapScreen.Close();
-                RedrawBinding.Invoke();
+                redrawBinding.Invoke();
             }
         }
     }
