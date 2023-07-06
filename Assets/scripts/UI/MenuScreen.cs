@@ -45,6 +45,7 @@ namespace GameExtensions.UI
         public static void RemapNavigation(Selectable target, Selectable obj, NavigationDirection dir)
         {
             var nav = target.navigation;
+            nav.mode = Navigation.Mode.Explicit;
             switch (dir)
             {
                 case NavigationDirection.Up:

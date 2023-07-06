@@ -17,7 +17,9 @@ namespace GameExtensions.UI.Menus
         {
             difficultyDropdown.value = (int)Difficulty.CurrentDifficultyLevel;
             hudToggle.SetIsOnWithoutNotify(IsHUDEnabled);
+            firstObj = difficultyDropdown.gameObject;
             base.Start();
+            base.OnEnable();
         }
 
 

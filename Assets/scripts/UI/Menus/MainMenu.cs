@@ -21,6 +21,8 @@ namespace GameExtensions.UI.Menus
 
         public override void Open()
         {
+            var idx = SaveManager.SaveExists ? 1 : 0;
+            ES.SetSelectedGameObject(GetComponentsInChildren<Button>()[idx].gameObject);
         }
 
         public override void Close()

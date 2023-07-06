@@ -128,6 +128,8 @@ namespace GameExtensions.UI.Menus
             base.Start();
             if (Instance is not null) Destroy(this);
             else Instance = this;
+            firstObj = screenDropdown.gameObject;
+            base.OnEnable();
             resolutions = Screen.resolutions.GroupBy(r => (r.width, r.height)).Select(r => r.Key).ToList();
             resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
             refreshDropdown.AddOptions(Screen.resolutions.Select(r => r.refreshRate.ToString()).Distinct().ToList());

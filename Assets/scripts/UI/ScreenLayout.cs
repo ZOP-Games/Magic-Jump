@@ -17,11 +17,6 @@ namespace GameExtensions.UI
 
         protected void OnEnable()
         {
-            var menu = Controller.ActiveScreen;
-            if (menu is null) return;
-            MenuScreen.RemapNavigation(menu.GetComponentInChildren<Button>(),
-                GetComponentsInChildren<Selectable>().LastOrDefault(s => s is not Scrollbar),
-                MenuScreen.NavigationDirection.Up);
             ES.SetSelectedGameObject(firstObj);
         }
     }

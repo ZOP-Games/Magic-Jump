@@ -4477,7 +4477,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 5164148256513833440}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 1374542545354926143}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -24167,7 +24167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6708172b95a034faca8b67c58b2500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstObj: {fileID: 1440963532418411441}
+  firstObj: {fileID: 1242342909694166717}
   <ScreenMode>k__BackingField: 0
   <RenderScale>k__BackingField: 1
   <CurrentRefreshRate>k__BackingField: 0
@@ -24647,7 +24647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6290c3202e3849c48846646b17ef333f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstObj: {fileID: 7017441760513419026}
+  firstObj: {fileID: 3648499137864836206}
   <CurrentDifficultyLevel>k__BackingField: 0
   <IsHUDEnabled>k__BackingField: 1
   difficultyDropdown: {fileID: 5164148256513833440}
@@ -25088,9 +25088,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef62e7656d10634187b3ca9f963a4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstObj: {fileID: 0}
+  firstObj: {fileID: 5495063793706767054}
   <EnableSubtitles>k__BackingField: 0
-  <SpeakerMode>k__BackingField: 0
+  <SpeakerMode>k__BackingField: 2
   <MasterVolume>k__BackingField: -6.0206003
   <BgVolume>k__BackingField: -6.0206003
   <SpeechVolume>k__BackingField: -6.0206003
@@ -25261,7 +25261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 600cd2a0fd0a49b99498bfeb336dd2e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstObj: {fileID: 4614240824672675546}
+  firstObj: {fileID: 5101584932005928894}
   <Sensitivity>k__BackingField: 100
   <Deadzone>k__BackingField: 0.125
   inputSettings: {fileID: 11400000, guid: 78148d82e62cfee4cbbaf773d8726406, type: 2}

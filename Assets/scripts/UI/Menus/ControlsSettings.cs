@@ -12,6 +12,7 @@ namespace GameExtensions.UI.Menus
         [field: SerializeField, HideInInspector] public float Sensitivity { get; private set; }
         [field: SerializeField, HideInInspector] public float Deadzone { get; private set; }
 
+        private Button remapButton;
         [SerializeField] private InputSettings inputSettings;
         [SerializeField] private Slider sensitivitySlider;
         [SerializeField] private Slider deadzoneSlider;
@@ -60,8 +61,9 @@ namespace GameExtensions.UI.Menus
 
         private new void Start()
         {
+            remapButton = firstObj.GetComponent<Button>();
             remapMenu = GetComponentInChildren<MenuScreen>(true);
-            GetComponentInChildren<Button>().onClick.AddListener(() => remapMenu.Open());
+            remapButton.onClick.AddListener(() => remapMenu.Open());
             base.Start();
         }
     }
