@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -14,8 +15,10 @@ namespace GameExtensions.UI.Menus
 
         private Button remapButton;
         [SerializeField] private InputSettings inputSettings;
+        [SerializeField] private InputActionAsset inputActions;
         [SerializeField] private Slider sensitivitySlider;
         [SerializeField] private Slider deadzoneSlider;
+        [SerializeField] private string remapsJson;
 
         private MenuScreen remapMenu;
 
@@ -56,7 +59,18 @@ namespace GameExtensions.UI.Menus
 
         public void PassiveStart()
         {
-            sensitivitySlider.value = Sensitivity;
+            ChangeSensitivity(Sensitivity);
+            inputSettings.defaultDeadzoneMin = Deadzone;
+            var splitMaps = remapsJson.Split(';').ToList();
+            var iActionsArr = inputActions.ToArray();
+            for (int i = 0; i < iActionsArr.Length; i++)
+            {
+                iActionsArr[i].LoadBindingOverridesFromJson(splitMaps[i]);
+            }
+        }
+
+        private void OnDisable() {
+            remapsJson = GetComponentInChildren<ControlRemappingScreen>(true).RebindsJson;
         }
 
         private new void Start()
@@ -64,6 +78,7 @@ namespace GameExtensions.UI.Menus
             remapButton = firstObj.GetComponent<Button>();
             remapMenu = GetComponentInChildren<MenuScreen>(true);
             remapButton.onClick.AddListener(() => remapMenu.Open());
+            sensitivitySlider.value = Sensitivity;
             base.Start();
         }
     }

@@ -25265,8 +25265,10 @@ MonoBehaviour:
   <Sensitivity>k__BackingField: 100
   <Deadzone>k__BackingField: 0.125
   inputSettings: {fileID: 11400000, guid: 78148d82e62cfee4cbbaf773d8726406, type: 2}
+  inputActions: {fileID: -944628639613478452, guid: 06fc5c275387bc847adb6c11a7246b44, type: 3}
   sensitivitySlider: {fileID: 1845832428974038840}
   deadzoneSlider: {fileID: 6399222858016374464}
+  remapsJson: 
 --- !u!224 &1808362408705692773 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9217929398104646242, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}

@@ -11,6 +11,12 @@ namespace GameExtensions.UI.Menus
 {
     public class ControlRemappingScreen : MenuScreen
     {
+        public string RebindsJson {
+            get  {
+                return inputActionAsset.Select(a => a.SaveBindingOverridesAsJson()).Aggregate((c,n) => c + ";" +n);
+            }
+        }
+
         [SerializeField] private InputActionAsset inputActionAsset;
         [SerializeField] private GameObject lineTemplate;
         [SerializeField] private MenuScreen activeRemapScreen;
