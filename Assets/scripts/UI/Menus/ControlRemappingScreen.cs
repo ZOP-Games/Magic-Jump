@@ -77,8 +77,8 @@ namespace GameExtensions.UI.Menus
         private void DrawBinding(InputAction action, TextMeshProUGUI[] txts)
         {
             txts[0].SetText(action.name);
-            txts[1].SetText(action.GetBindingDisplayString().Replace('\u0001', '\u200b')
-                .Replace('\u001b', '\u200b'));    //removing bad characters to get rid of warnings
+            txts[1].SetText(action.GetBindingDisplayString().Replace("\u0001", "#")
+                .Replace("\u001b", "Esc"));    //removing bad characters to get rid of warnings
         }
 
         // ReSharper disable once FunctionRecursiveOnAllPaths

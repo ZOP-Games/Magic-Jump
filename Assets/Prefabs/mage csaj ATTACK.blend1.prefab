@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 4144926518508765163}
   - component: {fileID: 1256836915203627837}
   - component: {fileID: 7726339654319232628}
+  - component: {fileID: 5132949276729383243}
   m_Layer: 0
   m_Name: mage csaj ATTACK.blend1
   m_TagString: Untagged
@@ -629,6 +630,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indicatorObject: {fileID: 8599832880562893524, guid: 086d572a76adbab48b28f41098811799, type: 3}
   material: {fileID: 2100000, guid: b8008176988686d4b91cf412b00e52ed, type: 2}
+--- !u!114 &5132949276729383243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336797001405887970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27d23fa95aaf0304eb23ebf7ff817a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &352997538967256116
 GameObject:
   m_ObjectHideFlags: 0

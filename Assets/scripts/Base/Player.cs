@@ -224,7 +224,7 @@ namespace GameExtensions
         public void HeavyAttack(InputAction.CallbackContext context)
         {
             //we don't know what to do with this yet :/
-            if (context.performed) DebugConsole.Log("Heavy Attack", 3);
+            if (context.performed) Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Maximum);
         }
 
         /// <summary>

@@ -69,9 +69,9 @@ namespace GameExtensions.UI.Menus
             else
             {
                 InputSystem.ResumeHaptics();
-                InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.4f, 0.9f);
-                //todo: finish rumbling
             }
+            InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.4f, 0.9f);
+            InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0, 0);
         }
 
         public void ChangeInvertCamera(bool value)
