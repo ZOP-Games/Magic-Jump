@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using GameExtensions.Debug;
@@ -18,21 +19,18 @@ namespace GameExtensions.UI.Menus
         public TextMeshProUGUI Body { get; private set;}
         public TextMeshProUGUI Button { get; private set;}
 
-        public static AlertScreenBuilder CreateAlert(){
-            var obj = new GameObject("Alert Screen");
-            var alert = obj.AddComponent<AlertScreen>();
-            alert.Header = obj.AddComponent<TextMeshProUGUI>();
-            alert.Body = obj.AddComponent<TextMeshProUGUI>();
-            var bObj = new GameObject();
-            var btn = bObj.AddComponent<UnityEngine.UI.Button>();
-            alert.Button = bObj.AddComponent<TextMeshProUGUI>();
-            bObj.transform.parent = obj.transform;
-            _ = obj.AddComponent<ColumnContainer>();
-            btn.onClick.AddListener(() => {
-                alert.Close();
-                Destroy(obj);
-                });
-            return new AlertScreenBuilder(alert);
+        public static void CreateAlert(string headerText = "header text", string bodyText = "body text",
+            string buttonText = "OK")
+        {
+            var alert = FindObjectOfType<AlertScreen>(true);
+            var txts = alert.GetComponentsInChildren<TextMeshProUGUI>();
+            alert.Header = txts[0];
+            alert.Body = txts[1];
+            alert.Button = txts[2];
+            alert.Header.SetText(headerText);
+            alert.Body.SetText(bodyText);
+            alert.Button.SetText(buttonText);
+            alert.Open();
         }
 
         public override void Close()
@@ -45,11 +43,24 @@ namespace GameExtensions.UI.Menus
 
         public override void Open()
         {
-            if (PInput is null) DebugConsole.LogError("There is no PlayerInput provided to PauseScreen.");
+            if (PInput is null) DebugConsole.LogError("There is no PlayerInput provided to AlertScreen.");
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
-            PInput?.SwitchCurrentActionMap("UI");
+            PInput!.SwitchCurrentActionMap("UI");
             if(Time.timeScale > 0) Time.timeScale = 0;
             base.Open();
+        }
+
+        public void Start()
+        {
+            Player.PlayerReady += () => Player.Instance.AddInputAction("Show Objective", () =>
+            {
+                if(Player.Instance.PInput.currentControlScheme != "Controller") return;
+                var saveLoadBindings = Player.Instance.PInput.actions.Where(a => a.name is "Save" or "Load")
+                    .Select(a => a.GetBindingDisplayString()).ToArray();
+                CreateAlert("You pressed the save/load button!",
+                    "Press " + saveLoadBindings[0] + " to save and " + saveLoadBindings[1] + " to load the game!");
+            },IInputHandler.ActionType.Canceled);
+            gameObject.SetActive(false);
         }
     }
 }

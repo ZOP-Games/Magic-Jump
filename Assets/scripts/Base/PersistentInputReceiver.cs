@@ -16,8 +16,8 @@ namespace GameExtensions
         {
             PInput = GetComponent<PlayerInput>();
             var ih = this as IInputHandler;
-            ih.AddInputAction("Save", SaveManager.SaveAll, IInputHandler.ActionType.Canceled);
-            ih.AddInputAction("Load", SaveManager.LoadAll, IInputHandler.ActionType.Canceled);
+            ih.AddInputAction("Save", SaveManager.SaveAll,IInputHandler.ActionType.Canceled);
+            ih.AddInputAction("Load", SaveManager.LoadAll,IInputHandler.ActionType.Canceled);
         }
 
         public PlayerInput PInput { get; set; }

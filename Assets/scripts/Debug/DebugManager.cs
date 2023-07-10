@@ -6,9 +6,6 @@ namespace GameExtensions.Debug
        
     public class DebugManager : MonoBehaviour
     {
-        void Start()
-        {
-            
-        }
+       
     }
 }

@@ -712,7 +712,7 @@
                     "name": "",
                     "id": "087945f2-9dbc-4d6e-bbff-fe1294d288b3",
                     "path": "<Gamepad>/leftShoulder",
-                    "interactions": "Hold",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "Controller",
                     "action": "Show Objective",
