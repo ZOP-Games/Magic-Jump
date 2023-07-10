@@ -15,39 +15,11 @@ namespace GameExtensions
         private void Start()
         {
             PInput = GetComponent<PlayerInput>();
-            AddInputAction("Save", SaveManager.SaveAll, IInputHandler.ActionType.Canceled);
-            AddInputAction("Load", SaveManager.LoadAll, IInputHandler.ActionType.Canceled);
+            var ih = this as IInputHandler;
+            ih.AddInputAction("Save", SaveManager.SaveAll, IInputHandler.ActionType.Canceled);
+            ih.AddInputAction("Load", SaveManager.LoadAll, IInputHandler.ActionType.Canceled);
         }
 
         public PlayerInput PInput { get; set; }
-
-        public void AddInputAction(string actionName, UnityAction action,
-            IInputHandler.ActionType type = IInputHandler.ActionType.Performed)
-        {
-            switch (type)
-            {
-                case IInputHandler.ActionType.Started:
-                    PInput.actions[actionName].started += context =>
-                    {
-                        if (context.started) action.Invoke();
-                    };
-                    break;
-                case IInputHandler.ActionType.Performed:
-                    PInput.actions[actionName].performed += context =>
-                    {
-                        if (context.performed) action.Invoke();
-                    };
-                    break;
-                case IInputHandler.ActionType.Canceled:
-                    PInput.actions[actionName].canceled += context =>
-                    {
-                        if (context.canceled) action.Invoke();
-                    };
-                    break;
-                default:
-                    DebugConsole.Log("bad ActionType found", Color.red);
-                    break;
-            }
-        }
     }
 }

@@ -454,6 +454,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Debug Enable",
+                    "type": "Button",
+                    "id": "bbfff11d-5382-4e32-82f1-2a30cb153a24",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -703,7 +712,7 @@
                     "name": "",
                     "id": "087945f2-9dbc-4d6e-bbff-fe1294d288b3",
                     "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "Controller",
                     "action": "Show Objective",
@@ -828,6 +837,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Load",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b6fa967-753e-43ad-ac78-342ad26aae19",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Debug Enable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b054a24e-ff49-4f7e-9fb9-d9ea38485a14",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "MultiTap",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Debug Enable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

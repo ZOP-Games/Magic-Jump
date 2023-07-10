@@ -9,11 +9,12 @@ namespace GameExtensions.Debug
         private const byte ErrorFontSize = 36;
         private static bool writtenError;
         private static readonly Color FontColor = Color.black;
-        public static Color TestColor => new(0, 0.91f, 0.8f);
+        public static Color TestColor => Color.cyan;
         public static Color WarningColor => Color.yellow;
         public static Color ErrorColor => Color.red;
         public static Color SuccessColor => Color.green;
         public static Color MissingColor => Color.magenta;
+        public static Color HintColor => new Color32(103, 58, 183,255);
         private static bool IsWriterAvalaible => Writer is not null;
         private static DebugMessageWriter Writer => DebugMessageWriter.Instance;
 

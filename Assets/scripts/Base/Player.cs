@@ -13,7 +13,7 @@ namespace GameExtensions
     /// </summary>
     [RequireComponent(typeof(PlayerInput))]
     [Serializable]
-    public sealed class Player : Entity, ISaveable, ISerializationCallbackReceiver
+    public sealed class Player : Entity, ISaveable, ISerializationCallbackReceiver, IInputHandler
     {
         //some constants to make code readable + adjustable
         /// <summary>
@@ -262,21 +262,6 @@ namespace GameExtensions
             anim.SetBool(RunningPmHash, false);
         }
 
-        /// <summary>
-        ///     Event handler for looking at the objective.
-        /// </summary>
-        /// <param name="context">
-        ///     <inheritdoc cref="Jump" />
-        /// </param>
-        public void ShowObjective(InputAction.CallbackContext context)
-        {
-            //again, not sure if we need this but it's here anyway
-            if (!context.performed) return;
-            //vCam.LookAt = Objective.transform; it's commented out because there is no objective yet
-            DebugConsole.Log("Show Objective", LookTimeout);
-            Invoke(nameof(DoneLooking), LookTimeout); //after <LookTimeout> seconds, return to normal camera view
-        }
-
         public void SaveGame(InputAction.CallbackContext context)
         {
             if (!context.canceled) return;
@@ -287,16 +272,6 @@ namespace GameExtensions
         {
             if (!context.canceled) return;
             SaveManager.LoadAll();
-        }
-
-        /// <summary>
-        ///     Looks back at the player.
-        /// </summary>
-        /// <remarks>It's used for calling it in Invoke().</remarks>
-        private void DoneLooking()
-        {
-            DebugConsole.Log("Camera looks back at player", 1);
-            //vCam.LookAt = tf;
         }
 
         /// <summary>
@@ -385,7 +360,6 @@ namespace GameExtensions
             PInput.actions["Dodge"].performed += Dodge;
             PInput.actions["Run"].performed += Run;
             PInput.actions["Run"].canceled += Run;
-            PInput.actions["Show Objective"].performed += ShowObjective;
             PInput.actions["Save"].canceled += SaveGame;
             PInput.actions["Load"].canceled += LoadGame;
             PInput.SwitchCurrentActionMap("Player");
@@ -410,7 +384,7 @@ namespace GameExtensions
             PlayerPrefs.SetInt("PlayerXp", 12); //setting XP (for dev purposes)
             PlayerPrefs.SetInt("PlayerLvl", 1);
             Xp = PlayerPrefs
-                .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold //todo: move PlayerPrefs saves to real saves
+                .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold
             Lvl = (byte)PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
             Difficulty.DifficultyLevelChanged += () =>
@@ -452,9 +426,6 @@ namespace GameExtensions
                     {
                         if (context.canceled) action.Invoke();
                     };
-                    break;
-                default:
-                    DebugConsole.LogError("bad ActionType found");
                     break;
             }
         }
