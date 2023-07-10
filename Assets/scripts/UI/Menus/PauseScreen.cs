@@ -26,11 +26,13 @@ namespace GameExtensions.UI.Menus
         {
             if (PInput is null) DebugConsole.LogError("There is no PlayerInput provided to PauseScreen.");
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
-            PInput!.SwitchCurrentActionMap("UI");
-            Time.timeScale = 0;
+            PInput?.SwitchCurrentActionMap("UI");
+            DebugConsole.Log("Time goes " + Time.timeScale);
+            if(Time.timeScale > 0) Time.timeScale = 0;
             var xpInfo = MenuController.Controller.XpInfo;
             xpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}", xpInfo.Item3, xpInfo.Item1,
                 xpInfo.Item2 - xpInfo.Item1);
+            DebugConsole.Log("Hey all, stuck here,");
             base.Open();
         }
 

@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9beda531928fc40968802117a5d256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RecenterTarget: 2
+  m_RecenterTarget: 0
   m_VerticalAxis:
     Value: 0
     m_SpeedMode: 0
@@ -499,10 +499,10 @@ MonoBehaviour:
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
-    m_InputAxisValue: 2.25
+    m_InputAxisValue: 0
     m_InvertInput: 1
     m_MinValue: 0
-    m_MaxValue: 40
+    m_MaxValue: 45
     m_Wrap: 0
     m_Recentering:
       m_enabled: 0
@@ -511,9 +511,9 @@ MonoBehaviour:
       m_LegacyHeadingDefinition: -1
       m_LegacyVelocityFilterStrength: -1
   m_VerticalRecentering:
-    m_enabled: 0
+    m_enabled: 1
     m_WaitTime: 3
-    m_RecenteringTime: 1
+    m_RecenteringTime: 1.5
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_HorizontalAxis:
@@ -536,7 +536,7 @@ MonoBehaviour:
       m_LegacyVelocityFilterStrength: -1
   m_HorizontalRecentering:
     m_enabled: 0
-    m_WaitTime: 5
+    m_WaitTime: 1
     m_RecenteringTime: 2
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
@@ -648,7 +648,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 600
-  field of view: 40
+  field of view: 45
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -703,7 +703,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 8131240506476065869}
   m_Follow: {fileID: 8131240506476065869}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 600
@@ -2315,12 +2315,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -8.44199, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 967758184}
   m_maskType: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
 --- !u!23 &967758184
 MeshRenderer:
   m_ObjectHideFlags: 0

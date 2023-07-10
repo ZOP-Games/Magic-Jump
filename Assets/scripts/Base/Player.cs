@@ -454,7 +454,7 @@ namespace GameExtensions
                     };
                     break;
                 default:
-                    DebugConsole.Log("bad ActionType found", Color.red);
+                    DebugConsole.LogError("bad ActionType found");
                     break;
             }
         }

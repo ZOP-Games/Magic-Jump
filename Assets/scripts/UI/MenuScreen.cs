@@ -36,6 +36,7 @@ namespace GameExtensions.UI
 
         public virtual void Close()
         {
+            DebugConsole.Log("closing");
             Controller.ActiveScreen = Parent;
             if (Parent is not null) Parent.Open();
             GObj.SetActive(false);

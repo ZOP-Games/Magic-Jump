@@ -28,8 +28,6 @@ namespace GameExtensions.UI.Menus
 
         public override void Close()
         {
-            DebugConsole.Log("Yep that's me alright");
-            //todo: wtf?? make UI/Back do this
             var menusToSave = GetComponentsInChildren<ISaveable>(true).Intersect(SaveManager.Savebles).ToList();
             foreach (var menu in menusToSave) menu.Save();
             base.Close();
