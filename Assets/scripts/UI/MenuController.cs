@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,7 +31,7 @@ namespace GameExtensions.UI
             {
                 var player = Player.Instance;
                 player.AddInputAction("Change", OpenSpell);
-                player.AddInputAction("Pause", OpenPause);
+                player.AddInputAction("Pause", OpenPause,IInputHandler.ActionType.Canceled);
                 pause = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(p => p.CompareTag("Pause"));
                 spells = FindObjectsOfType<MenuScreen>(true).FirstOrDefault(o => o.CompareTag("Spell menu"));
                 UnityEngine.Debug.Assert(pause is not null, "pause is not assigned in MenuController.");

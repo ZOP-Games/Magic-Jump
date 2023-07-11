@@ -1,7 +1,6 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Haptics;
 using UnityEngine.UI;
 using GameExtensions.Debug;
 using Cinemachine;
@@ -70,7 +69,7 @@ namespace GameExtensions.UI.Menus
             {
                 InputSystem.ResumeHaptics();
             }
-            InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.4f, 0.9f);
+            InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0.5f, 0.5f);
             InputSystem.GetDevice<Gamepad>()?.SetMotorSpeeds(0, 0);
         }
 
@@ -100,7 +99,7 @@ namespace GameExtensions.UI.Menus
             inputSettings.defaultDeadzoneMin = Deadzone;
             ChangeRumble(IsRumbleEnabled);
             ChangeInvertCamera(IsCameraYInverted);
-            var splitMaps = remapsJson.Split(';').ToList();
+            var splitMaps = remapsJson.Split(';');
             var iActionsArr = inputActions.ToArray();
             for (var i = 0; i < iActionsArr.Length; i++)
             {

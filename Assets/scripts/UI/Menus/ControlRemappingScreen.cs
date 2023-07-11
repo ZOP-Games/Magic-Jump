@@ -33,6 +33,17 @@ namespace GameExtensions.UI.Menus
             DebugConsole.Log("scheme is " + scheme);
         }
 
+        public override void Open()
+        {
+            base.Open();
+            GetComponentInParent<ScreenLayout>().enabled = false;
+        }
+        public override void Close()
+        {
+            base.Close();
+            GetComponentInParent<ScreenLayout>().enabled = true;
+        }
+
         private void Awake()
         {
             schemesDropdown = GetComponentInChildren<TMP_Dropdown>();
@@ -77,7 +88,7 @@ namespace GameExtensions.UI.Menus
         private void DrawBinding(InputAction action, TextMeshProUGUI[] txts)
         {
             txts[0].SetText(action.name);
-            txts[1].SetText(action.GetBindingDisplayString().Replace("\u0001", "#")
+            txts[1].SetText(action.GetBindingDisplayString().Replace("\u0001", " ")
                 .Replace("\u001b", "Esc"));    //removing bad characters to get rid of warnings
         }
 

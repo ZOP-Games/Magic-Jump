@@ -16,7 +16,6 @@ namespace GameExtensions.UI.Menus
         public void SetParent(MenuScreen newParent)
         {
             parent = newParent;
-            DebugConsole.Log("Set parent to " + Parent);
         }
 
         public override void Open()

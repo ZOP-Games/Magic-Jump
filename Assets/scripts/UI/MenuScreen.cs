@@ -1,3 +1,4 @@
+using System.Collections;
 using GameExtensions.Debug;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -18,25 +19,24 @@ namespace GameExtensions.UI
         }
 
         [CanBeNull]
-        protected virtual MenuScreen Parent => transform.parent.TryGetComponent<Canvas>(out _)
-            ? transform.parent.parent.GetComponent<MenuScreen>()
-            : transform.parent.GetComponent<MenuScreen>();
+        protected virtual MenuScreen Parent => parentScreen;
+        private MenuScreen parentScreen;
 
         public virtual void Open()
         {
             Controller.ActiveScreen = this;
             GObj.SetActive(true);
+            StartCoroutine(FindParentMenu(transform));
             if (Parent is null && PInput is not null) PInput.SwitchCurrentActionMap("UI");
             var firstSelectable = GetComponentInChildren<Selectable>();
             if (firstSelectable is not null) ES.SetSelectedGameObject(firstSelectable.gameObject);
             else
-                DebugConsole.Log("There is no button on this MenuScreen so EventSystem will not focus on it.",
+                DebugConsole.Log("There is no Selectable on this MenuScreen so EventSystem will not focus on it.",
                     DebugConsole.WarningColor);
         }
 
         public virtual void Close()
         {
-            DebugConsole.Log("closing");
             Controller.ActiveScreen = Parent;
             if (Parent is not null) Parent.Open();
             GObj.SetActive(false);
@@ -67,6 +67,15 @@ namespace GameExtensions.UI
             }
 
             target.navigation = nav;
+        }
+
+        protected IEnumerator FindParentMenu(Transform tf){
+                tf = tf.parent;
+            yield return new WaitForEndOfFrame();
+            if(tf.TryGetComponent<MenuScreen>(out parentScreen) || tf.parent is null){
+                StopCoroutine(FindParentMenu(tf));
+            } 
+            else StartCoroutine(FindParentMenu(tf));
         }
     }
 }

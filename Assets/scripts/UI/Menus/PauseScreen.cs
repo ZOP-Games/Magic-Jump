@@ -31,7 +31,6 @@ namespace GameExtensions.UI.Menus
             var xpInfo = MenuController.Controller.XpInfo;
             xpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}", xpInfo.Item3, xpInfo.Item1,
                 xpInfo.Item2 - xpInfo.Item1);
-            DebugConsole.Log("Hey all, stuck here,");
             base.Open();
         }
 
