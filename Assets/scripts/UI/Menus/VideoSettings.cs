@@ -76,7 +76,7 @@ namespace GameExtensions.UI.Menus
         [SerializeField] private TMP_Dropdown modelDropdown;
         [SerializeField] private Toggle filterToggle;
         [SerializeField] private TMP_Dropdown shadowDropdown;
-        [SerializeField] private TMP_Dropdown vfxDropdown;
+        //[SerializeField] private TMP_Dropdown vfxDropdown;    todo: do vfx settings
         [SerializeField] private Slider brightnessSlider;
 
         private readonly LightingQuality[] lightingQualities =
@@ -114,14 +114,9 @@ namespace GameExtensions.UI.Menus
 
         public Resolution CurrentResolution { get; private set; }
 
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [field: SerializeField]
         [field: HideInInspector]
-        public byte VFXQuality
-        {
-            get => throw new NotImplementedException();
-            private set => throw new NotImplementedException();
-        }
+        public byte VFXQuality { get; private set; }
 
         private new void Start()
         {

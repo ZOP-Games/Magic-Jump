@@ -49,18 +49,5 @@ namespace GameExtensions.UI.Menus
             if(Time.timeScale > 0) Time.timeScale = 0;
             base.Open();
         }
-
-        public void Start()
-        {
-            Player.PlayerReady += () => Player.Instance.AddInputAction("Show Objective", () =>
-            {
-                if(Player.Instance.PInput.currentControlScheme != "Controller") return;
-                var saveLoadBindings = Player.Instance.PInput.actions.Where(a => a.name is "Save" or "Load")
-                    .Select(a => a.GetBindingDisplayString()).ToArray();
-                CreateAlert("You pressed the save/load button!",
-                    "Press " + saveLoadBindings[0] + " to save and " + saveLoadBindings[1] + " to load the game!");
-            },IInputHandler.ActionType.Canceled);
-            gameObject.SetActive(false);
-        }
     }
 }

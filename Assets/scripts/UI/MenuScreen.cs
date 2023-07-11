@@ -69,10 +69,12 @@ namespace GameExtensions.UI
             target.navigation = nav;
         }
 
+        
+        // ReSharper disable once FunctionRecursiveOnAllPaths
         protected IEnumerator FindParentMenu(Transform tf){
                 tf = tf.parent;
             yield return new WaitForEndOfFrame();
-            if(tf.TryGetComponent<MenuScreen>(out parentScreen) || tf.parent is null){
+            if(tf.TryGetComponent(out parentScreen) || tf.parent is null){
                 StopCoroutine(FindParentMenu(tf));
             } 
             else StartCoroutine(FindParentMenu(tf));

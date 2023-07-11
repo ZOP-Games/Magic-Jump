@@ -57,7 +57,7 @@ namespace GameExtensions
         public event UnityAction HealthChanged;
 
         //damage logic, the dealt damage is substracted from Enitity's HP
-        public void TakeDamage(int amount)
+        public virtual void TakeDamage(int amount)
         {
             anim.SetTrigger(DamagePmHash);
             Hp -= Mathf.Clamp(amount - Defense / 100, 0, amount);

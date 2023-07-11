@@ -215,6 +215,24 @@ namespace GameExtensions
             Attack(); //see Entity.Attack()
         }
 
+        protected override void Attack()
+        {
+            //docs here
+            anim.SetTrigger(AttackingPmHash);
+            var collidersList = GetNearbyEntities();
+            collidersList.ForEach(c =>
+            {
+                c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
+                Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Medium,0.1f);
+            });
+        }
+
+        public override void TakeDamage(int amount)
+        {
+            base.TakeDamage(amount);
+            Rumble.RumbleFor(Rumble.RumbleStrength.Strong,Rumble.RumbleStrength.Strong,0.1f);
+        }
+
         /// <summary>
         ///     Event handler for second (heavy) attacking.
         /// </summary>
@@ -224,7 +242,9 @@ namespace GameExtensions
         public void HeavyAttack(InputAction.CallbackContext context)
         {
             //we don't know what to do with this yet :/
-            if (context.performed) Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Maximum);
+            if (context.performed) //Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Strong,0.3f);
+                Stun();
+            Invoke(nameof(UnStun),3);
         }
 
         /// <summary>
@@ -248,9 +268,12 @@ namespace GameExtensions
         /// </param>
         public void Run(InputAction.CallbackContext context)
         {
+
             if (context.performed)
             {
                 //tell the code in FixedUpdate() we're running
+                DebugConsole.Log("Where yo rumble at?");
+                Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Light,0.1f);
                 running = true;
                 anim.SetFloat(MoveSpeedId, 2); //set "running" animation (speeding up walk animation)
                 anim.SetBool(RunningPmHash, true);
@@ -293,6 +316,7 @@ namespace GameExtensions
         {
             base.Stun();
             PInput.DeactivateInput();
+            Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Strong,0.3f);
         }
 
         /// <summary>
@@ -315,7 +339,7 @@ namespace GameExtensions
             if (Xp < XpThreshold) return;
             Lvl++;
             XpThreshold = Xp + Mathf.RoundToInt(XpThreshold * ThresholdMultiplier);
-            DebugConsole.Log("leveled up! Level" + Lvl, Color.green);
+            DebugConsole.Log("leveled up! Level" + Lvl, DebugConsole.SuccessColor);
         }
 
         //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
@@ -427,6 +451,9 @@ namespace GameExtensions
                         if (context.canceled) action.Invoke();
                     };
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type,
+                        "The specified ActionType does not exist");
             }
         }
 

@@ -456,9 +456,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Debug Enable",
+                    "name": "[Debug] Debug Enable",
                     "type": "Button",
                     "id": "bbfff11d-5382-4e32-82f1-2a30cb153a24",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "[Debug] Toggle HUD",
+                    "type": "Button",
+                    "id": "21752484-f954-4c82-a79c-acd3e998f915",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -847,7 +856,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Debug Enable",
+                    "action": "[Debug] Debug Enable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -858,9 +867,53 @@
                     "interactions": "MultiTap",
                     "processors": "",
                     "groups": "Controller",
-                    "action": "Debug Enable",
+                    "action": "[Debug] Debug Enable",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9ba691c-8764-4a9b-865e-150fc2d954e3",
+                    "path": "<Keyboard>/f10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "[Debug] Toggle HUD",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "e6ed7880-742e-4ecb-a49a-61c2b4278473",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "[Debug] Toggle HUD",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "7157cb20-869c-438b-a2e1-a05f1a387393",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "[Debug] Toggle HUD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "9df81afe-9886-4813-91cf-cde17f93dab1",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "[Debug] Toggle HUD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

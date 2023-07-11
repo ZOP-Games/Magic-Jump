@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameExtensions.Debug;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GameExtensions.UI.HUD
@@ -15,6 +16,7 @@ namespace GameExtensions.UI.HUD
 
             void Check(Scene scene, Scene scene1)
             {
+                //DebugInputHandler.Instance.AddInputCallback("[Debug] Toggle HUD");
                 AskSetHUD(state);
             }
 
