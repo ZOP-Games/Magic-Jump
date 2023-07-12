@@ -8,7 +8,7 @@ namespace GameExtensions.UI
     {
         private void Start()
         {
-            elements = ;
+            elements = GetComponentsInChildren<RectTransform>().Where(t => t.parent == transform).ToArray();
             BuildLayout();
         }
 
