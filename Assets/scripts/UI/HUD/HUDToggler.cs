@@ -37,7 +37,6 @@ namespace GameExtensions.UI.HUD
                 SceneManager.activeSceneChanged += Check;
                 isChecking = true;
             }
-            //todo:set button for hud toggling
         }
 
         private void Start()

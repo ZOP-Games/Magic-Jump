@@ -26,7 +26,7 @@ namespace GameExtensions
         ///     The force the player's <see cref="Rigidbody" /> pushes it to dodge. You can change its value to adjust dodge
         ///     distance.
         /// </summary>
-        private const int DodgePower = 2300;
+        private const int DodgePower = 230;
         private const int SuperDodgePower = 2300;
 
         /// <summary>
@@ -56,14 +56,14 @@ namespace GameExtensions
         /// <summary>
         ///     Angular drag of the <see cref="Rigidbody" /> comonent.
         /// </summary>
-        /// <remarks><inheritdoc cref="Drag"></remarks>
+        /// <remarks><inheritdoc cref="Drag"/></remarks>
         private const float AngularDrag = 1;
 
         /// <summary>
         ///     Constraint sum of the <see cref="Rigidbody" /> component. See
         ///     <see href="https://docs.unity3d.com/ScriptReference/Rigidbody-constraints.html" /> for details.
         /// </summary>
-        /// <remarks><inheritdoc cref="Drag"></remarks>
+        /// <remarks><inheritdoc cref="Drag"/></remarks>
         private const int Constraints = 80;
 
         /// <summary>
@@ -256,11 +256,9 @@ namespace GameExtensions
         /// </param>
         public void Dodge(InputAction.CallbackContext context)
         {
-            if (context.performed && Mathf.Abs(rb.velocity.x) < 1){
-                rb.AddRelativeForce(DodgePower, 0, 0); //pushing player to the side (idk if we still need this tbh) hell yeah brother
-                DebugConsole.Log("dodging with " + rb.velocity.x + " km/h");
-            }
-                
+            if (!context.performed || !(Mathf.Abs(rb.velocity.x) < 1)) return;
+            rb.AddRelativeForce(DodgePower, 0, 0); //pushing player to the side (idk if we still need this tbh) hell yeah brother
+
         }
 
         /// <summary>

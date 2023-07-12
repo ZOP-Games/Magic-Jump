@@ -15,7 +15,7 @@ namespace GameExtensions.Debug
         public static Color ErrorColor => Color.red;
         public static Color SuccessColor => Color.green;
         public static Color MissingColor => Color.magenta;
-        public static Color HintColor => new Color32(103, 58, 183,255);
+        public static Color HintColor => new Color32(103, 58, 183, 255);
         private static bool IsWriterAvalaible => Writer is not null;
         private static DebugMessageWriter Writer => DebugMessageWriter.Instance;
 
@@ -73,12 +73,14 @@ namespace GameExtensions.Debug
             Writer.AddStyle(DebugMessageWriter.TextStyle.Underline);
         }
 
-        public static void ToggleConsole(){
+        public static void ToggleConsole()
+        {
             enabled = !enabled;
-            Writer?.gameObject.SetActive(enabled);
-            if(!enabled) UnityEngine.Debug.Log(
-                    "The on-screen debug console is disabled. "
-                    + "Debug console messages will be written to Unity console only");
+            if (enabled || Writer is null) return;
+            Writer.gameObject.SetActive(enabled);
+            UnityEngine.Debug.Log(
+                "The on-screen debug console is disabled. "
+                + "Debug console messages will be written to Unity console only");
         }
     }
 }
