@@ -103,7 +103,15 @@ namespace GameExtensions.UI.Menus
             var iActionsArr = inputActions.ToArray();
             for (var i = 0; i < iActionsArr.Length; i++)
             {
-                iActionsArr[i].LoadBindingOverridesFromJson(splitMaps[i]);
+                try
+                {
+                    iActionsArr[i].LoadBindingOverridesFromJson(splitMaps[i]);
+                }
+                catch (System.IndexOutOfRangeException)
+                {
+                    break;
+                }
+                
             }
         }
 

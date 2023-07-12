@@ -26,7 +26,8 @@ namespace GameExtensions
         ///     The force the player's <see cref="Rigidbody" /> pushes it to dodge. You can change its value to adjust dodge
         ///     distance.
         /// </summary>
-        private const int DodgePower = 23;
+        private const int DodgePower = 2300;
+        private const int SuperDodgePower = 2300;
 
         /// <summary>
         ///     The amount of seconds the game waits to look at the objective.
@@ -55,14 +56,14 @@ namespace GameExtensions
         /// <summary>
         ///     Angular drag of the <see cref="Rigidbody" /> comonent.
         /// </summary>
-        /// <remarks>Don't change this unless things don't move as they should.</remarks>
+        /// <remarks><inheritdoc cref="Drag"></remarks>
         private const float AngularDrag = 1;
 
         /// <summary>
         ///     Constraint sum of the <see cref="Rigidbody" /> component. See
         ///     <see href="https://docs.unity3d.com/ScriptReference/Rigidbody-constraints.html" /> for details.
         /// </summary>
-        /// <remarks>Don't change this unless things don't move as they should.</remarks>
+        /// <remarks><inheritdoc cref="Drag"></remarks>
         private const int Constraints = 80;
 
         /// <summary>
@@ -255,9 +256,11 @@ namespace GameExtensions
         /// </param>
         public void Dodge(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                rb.AddForce(rb.velocity.x + DodgePower, 0,
-                    0); //pushing player to the side (idk if we still need this tbh)
+            if (context.performed && Mathf.Abs(rb.velocity.x) < 1){
+                rb.AddRelativeForce(DodgePower, 0, 0); //pushing player to the side (idk if we still need this tbh) hell yeah brother
+                DebugConsole.Log("dodging with " + rb.velocity.x + " km/h");
+            }
+                
         }
 
         /// <summary>
@@ -272,7 +275,6 @@ namespace GameExtensions
             if (context.performed)
             {
                 //tell the code in FixedUpdate() we're running
-                DebugConsole.Log("Where yo rumble at?");
                 Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Light,0.1f);
                 running = true;
                 anim.SetFloat(MoveSpeedId, 2); //set "running" animation (speeding up walk animation)
@@ -416,6 +418,10 @@ namespace GameExtensions
                 if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
             };
             if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
+            DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP",() => {
+                AddXp(1000);
+                DebugConsole.Log("Added 1000 XP!",DebugConsole.TestColor);
+                });
             (this as ISaveable).AddToList();
             PlayerReady?.Invoke();
         }

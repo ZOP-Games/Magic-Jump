@@ -1,11 +1,14 @@
-using UnityEngine;
-using GameExtensions;
-
 namespace GameExtensions.Debug
 {
        
-    public class DebugManager : MonoBehaviour
+    public static class DebugManager
     {
-       
+       public static bool IsDebugEnabled {get;private set;}
+
+       public static void ToggleDebug(){
+        IsDebugEnabled = !IsDebugEnabled;
+        if(IsDebugEnabled) DebugInputHandler.Instance.EnableDebugActions();
+        else DebugInputHandler.Instance.DisableDebugActions();
+       }
     }
 }

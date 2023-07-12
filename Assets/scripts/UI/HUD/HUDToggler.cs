@@ -16,7 +16,6 @@ namespace GameExtensions.UI.HUD
 
             void Check(Scene scene, Scene scene1)
             {
-                //DebugInputHandler.Instance.AddInputCallback("[Debug] Toggle HUD");
                 AskSetHUD(state);
             }
 
@@ -28,6 +27,7 @@ namespace GameExtensions.UI.HUD
 
             if (instance is not null)
             {
+                
                 instance.gameObject.SetActive(state);
                 SceneManager.activeSceneChanged -= Check;
                 isChecking = false;
@@ -38,6 +38,11 @@ namespace GameExtensions.UI.HUD
                 isChecking = true;
             }
             //todo:set button for hud toggling
+        }
+
+        private void Start()
+        {
+            DebugInputHandler.Instance.AddInputCallback("[Debug] Toggle HUD",() => AskSetHUD(!IsHUDVisible));
         }
     }
 }

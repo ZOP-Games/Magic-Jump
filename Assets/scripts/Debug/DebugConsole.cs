@@ -8,6 +8,7 @@ namespace GameExtensions.Debug
         private const byte FontSize = 20;
         private const byte ErrorFontSize = 36;
         private static bool writtenError;
+        private static bool enabled = true;
         private static readonly Color FontColor = Color.black;
         public static Color TestColor => Color.cyan;
         public static Color WarningColor => Color.yellow;
@@ -24,11 +25,12 @@ namespace GameExtensions.Debug
             if (!IsWriterAvalaible && !writtenError)
             {
                 UnityEngine.Debug.LogWarning(
-                    "The message writer is not available. Debug console messages will be written to Unity console only");
+                    "The message writer is not available. Debug console messages will be written to Unity console only"
+                    );
                 writtenError = true;
             }
 
-            if (!IsWriterAvalaible)
+            if (!IsWriterAvalaible || !enabled)
             {
                 UnityEngine.Debug.Log(text);
                 return;
@@ -69,6 +71,14 @@ namespace GameExtensions.Debug
             Log(text, ErrorColor, ErrorFontSize);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Bold);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Underline);
+        }
+
+        public static void ToggleConsole(){
+            enabled = !enabled;
+            Writer?.gameObject.SetActive(enabled);
+            if(!enabled) UnityEngine.Debug.Log(
+                    "The on-screen debug console is disabled. "
+                    + "Debug console messages will be written to Unity console only");
         }
     }
 }

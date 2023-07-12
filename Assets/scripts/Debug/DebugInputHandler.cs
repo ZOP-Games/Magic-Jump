@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -10,26 +10,42 @@ namespace GameExtensions.Debug
         public static DebugInputHandler Instance { get; private set; }
         [SerializeField] private InputActionAsset actions;
 
-        public void AddInputCallback(string actionName, UnityAction callback, InputActionPhase type = InputActionPhase.Performed)
+        public void AddInputCallback(string actionName, UnityAction callback, CallbackType type = CallbackType.Performed)
         {
             switch (type)
             {
-                case InputActionPhase.Started:
+                case CallbackType.Started:
                     actions[actionName].started += _ => callback();
                     break;
-                case InputActionPhase.Performed:
+                case CallbackType.Performed:
                     actions[actionName].performed += _ => callback();
                     break;
-                case InputActionPhase.Canceled:
+                case CallbackType.Canceled:
                     actions[actionName].canceled += _ => callback();
                     break;
-                case InputActionPhase.Disabled:
-                case InputActionPhase.Waiting:
                 default:
-                    DebugConsole.Log("The provided InputActionPhase ("
+                    DebugConsole.Log("The provided CallbackType ("
                                      + type + ") is invalid for adding a new callback.",
                         DebugConsole.WarningColor);
                     break;
+            }
+        }
+
+        internal void DisableDebugActions()
+        {
+            var debugActions = actions.Where(a => a.name.Contains("[Debug]")).ToList();
+            foreach (var action in debugActions)
+            {
+                action.Disable();
+            }
+        }
+
+        internal void EnableDebugActions()
+        {
+            var debugActions = actions.Where(a => a.name.Contains("[Debug]")).ToList();
+            foreach (var action in debugActions)
+            {
+                action.Enable();
             }
         }
 
@@ -38,11 +54,20 @@ namespace GameExtensions.Debug
             if (Instance is not null) Destroy(this);
             else Instance = this;
             DontDestroyOnLoad(gameObject);
+            AddInputCallback("[Debug] Toggle Console", DebugConsole.ToggleConsole);
+            AddInputCallback("Debug enable",DebugManager.ToggleDebug);
         }
 
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;
+        }
+
+        public enum CallbackType
+        {
+            Started,
+            Performed,
+            Canceled
         }
     }
 }

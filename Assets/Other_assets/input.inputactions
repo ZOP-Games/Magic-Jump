@@ -456,7 +456,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "[Debug] Debug Enable",
+                    "name": "Debug Enable",
                     "type": "Button",
                     "id": "bbfff11d-5382-4e32-82f1-2a30cb153a24",
                     "expectedControlType": "Button",
@@ -468,6 +468,24 @@
                     "name": "[Debug] Toggle HUD",
                     "type": "Button",
                     "id": "21752484-f954-4c82-a79c-acd3e998f915",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "[Debug] Toggle Console",
+                    "type": "Button",
+                    "id": "0f6daf47-dcb3-462c-9de8-afb1e0c2f16d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "[Debug] Add XP",
+                    "type": "Button",
+                    "id": "519619ce-c5b3-43e4-8bc4-2955b4cc0615",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -856,7 +874,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "[Debug] Debug Enable",
+                    "action": "Debug Enable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -867,14 +885,14 @@
                     "interactions": "MultiTap",
                     "processors": "",
                     "groups": "Controller",
-                    "action": "[Debug] Debug Enable",
+                    "action": "Debug Enable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "d9ba691c-8764-4a9b-865e-150fc2d954e3",
-                    "path": "<Keyboard>/f10",
+                    "path": "<Keyboard>/h",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -912,6 +930,94 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "[Debug] Toggle HUD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ad88ba7a-776a-4332-87dc-ab39e6ef1d1f",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "[Debug] Add XP",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "60656523-bb4d-43da-b628-3816ad02c8a0",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "[Debug] Add XP",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "6513c646-4f7e-4d7c-bd23-fb0161ce3890",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "[Debug] Add XP",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "0482d9ab-ad7a-4bd9-bbfd-f803831cdaf6",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "[Debug] Add XP",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "db3976a7-8059-4d5d-a317-00f1ac2b6f90",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "[Debug] Toggle Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "634f7904-16df-4dd8-be09-d6c2d4aa92cd",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "[Debug] Toggle Console",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "0750bec1-c55e-4930-b001-2939cb47bf26",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "[Debug] Toggle Console",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "ce23f02d-8a1a-4cde-9ea4-4b1c877589da",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "[Debug] Toggle Console",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
