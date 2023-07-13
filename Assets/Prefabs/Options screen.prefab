@@ -7821,7 +7821,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.33333334, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12398,8 +12398,8 @@ RectTransform:
   m_Father: {fileID: 1841728615276811098}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.33333334, y: 0}
-  m_AnchorMax: {x: 0.33333334, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -14470,7 +14470,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.25, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15793,7 +15793,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4173825217636123752}
         m_TargetAssemblyTypeName: GameExtensions.Debug.DebugMenu.DebugOptions, GameExtensions.Debug.DebugMenu
-        m_MethodName: ChangeForceRays
+        m_MethodName: ChangeForceLine
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22217,8 +22217,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.9658, y: -285.83923}
-  m_SizeDelta: {x: 932.07, y: 1071.6786}
+  m_AnchoredPosition: {x: 8.9658, y: -414.77795}
+  m_SizeDelta: {x: 932.07, y: 1329.556}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4071903502511294546
 MonoBehaviour:
@@ -25884,8 +25884,8 @@ RectTransform:
   m_Father: {fileID: 6649456468993058416}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.25, y: 0}
-  m_AnchorMax: {x: 0.25, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -26714,10 +26714,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Debug Settings Layout
       objectReference: {fileID: 0}
-    - target: {fileID: 7989154815674923037, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9217929398104646242, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_SizeDelta.y
       value: 350.07
@@ -26767,6 +26763,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstObj: {fileID: 8725561250919836553}
+  dodgeToggle: {fileID: 7344602375538501548}
+  invincibilityToggle: {fileID: 3834442977276827282}
+  consoleToggle: {fileID: 808939836859477049}
+  lineToggle: {fileID: 7603931147090560716}
 --- !u!224 &6401872700064244981 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9217929398104646242, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
@@ -27479,7 +27479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3318341976052568734, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_Size
-      value: 0.7919038
+      value: 0.79938024
       objectReference: {fileID: 0}
     - target: {fileID: 3318341976052568734, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_Value
@@ -27521,17 +27521,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Controls Settings Layout
       objectReference: {fileID: 0}
+    - target: {fileID: 7989154815674923037, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8704620223662991729, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9217929398104646242, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 442.0613
+      value: 437.9268
       objectReference: {fileID: 0}
     - target: {fileID: 9217929398104646242, guid: 3559fb2f3105c6f4a95eda96fd77314b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.995636
+      value: -43.928406
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
