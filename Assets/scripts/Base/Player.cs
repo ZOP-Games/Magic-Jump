@@ -77,6 +77,10 @@ namespace GameExtensions
         /// </summary>
         private const float ThresholdMultiplier = 1.2f;
 
+        private const float ShortRumble = 0.1f;
+        private const float MediumRumble = 0.2f;
+        private const float LongRumble = 0.3f;
+
         [SerializeField] [HideInInspector] private Vector3 playerPos;
         [SerializeField] [HideInInspector] private Vector3 playerAngles;
 
@@ -112,6 +116,8 @@ namespace GameExtensions
         ///     Used for checking if the player is running or not
         /// </summary>
         private bool running;
+
+        private LineRenderer line;
 
         /// <summary>
         ///     the player's <see cref="Transform" />.
@@ -230,6 +236,7 @@ namespace GameExtensions
 
         public override void TakeDamage(int amount)
         {
+            if(DebugManager.IsInvincible) return;
             base.TakeDamage(amount);
             Rumble.RumbleFor(Rumble.RumbleStrength.Strong,Rumble.RumbleStrength.Strong,0.1f);
         }
@@ -243,7 +250,7 @@ namespace GameExtensions
         public void HeavyAttack(InputAction.CallbackContext context)
         {
             //we don't know what to do with this yet :/
-            if (context.performed) //Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Strong,0.3f);
+            if (context.performed) 
                 Stun();
             Invoke(nameof(UnStun),3);
         }
@@ -257,7 +264,8 @@ namespace GameExtensions
         public void Dodge(InputAction.CallbackContext context)
         {
             if (!context.performed || !(Mathf.Abs(rb.velocity.x) < 1)) return;
-            rb.AddRelativeForce(DodgePower, 0, 0); //pushing player to the side (idk if we still need this tbh) hell yeah brother
+            var power = DebugManager.IsSuperDodging ? SuperDodgePower : DodgePower;
+            rb.AddRelativeForce(power, 0, 0); //pushing player to the side (idk if we still need this tbh) hell yeah brother
 
         }
 
@@ -348,6 +356,7 @@ namespace GameExtensions
             //movement logic
             var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
             tf.localEulerAngles += new Vector3(0, angle * Time.fixedDeltaTime, 0); //rotating the player
+            if(DebugManager.DrawForceRays) line.SetPosition(1,rb.velocity);
             if (running && mozog)
                 Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
             else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
@@ -420,6 +429,7 @@ namespace GameExtensions
                 AddXp(1000);
                 DebugConsole.Log("Added 1000 XP!",DebugConsole.TestColor);
                 });
+            line = GetComponentInChildren<LineRenderer>();
             (this as ISaveable).AddToList();
             PlayerReady?.Invoke();
         }

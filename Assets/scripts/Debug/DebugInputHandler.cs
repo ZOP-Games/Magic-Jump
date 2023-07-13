@@ -38,6 +38,7 @@ namespace GameExtensions.Debug
             {
                 action.Disable();
             }
+            DebugConsole.Log("Debug features disabled!",DebugConsole.ErrorColor);
         }
 
         internal void EnableDebugActions()
@@ -47,6 +48,7 @@ namespace GameExtensions.Debug
             {
                 action.Enable();
             }
+            DebugConsole.Log("Debug features enabled!",DebugConsole.SuccessColor);
         }
 
         private void Start()
