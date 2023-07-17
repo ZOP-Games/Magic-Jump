@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using GameExtensions.Debug;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -12,14 +11,17 @@ namespace GameExtensions
     {
         public static Rumbler Instance { get; private set; }
         [CanBeNull] private IDualMotorRumble device;
+        private bool canRumble;
 
         public void Rumble(float smallMotor, float largeMotor)
         {
+            if (!canRumble) return;
             device?.SetMotorSpeeds(smallMotor, largeMotor);
         }
 
         public void StopRumbling()
         {
+            if(!canRumble) return;
             device?.SetMotorSpeeds(0, 0);
         }
 
@@ -31,13 +33,15 @@ namespace GameExtensions
             if (device is null)
             {
                 DebugConsole.Log(
-                                    "No rumble device detected, rumble will be disabled until a rumble device is connected.", DebugConsole.WarningColor);
+                                    "No rumble device detected," +
+                                    " rumble will be disabled until a rumble device is connected.",
+                                    DebugConsole.WarningColor);
                 InputSystem.PauseHaptics();
-                
+
             }
             InputSystem.onDeviceChange += (d, c) =>
             {
-                if(d is not IDualMotorRumble rumbleDevice) return;
+                if (d is not IDualMotorRumble rumbleDevice) return;
                 switch (c)
                 {
                     case InputDeviceChange.Added or InputDeviceChange.Reconnected:
@@ -47,6 +51,16 @@ namespace GameExtensions
                         device = null;
                         break;
                 }
+            };
+            Player.PlayerReady += () =>
+            {
+                var pInput = Player.Instance.PInput;
+                void CheckRumble()
+                {
+                    canRumble = pInput.currentControlScheme == "Controller";
+                }
+                CheckRumble();
+                pInput.controlsChangedEvent.AddListener(_ => CheckRumble());
             };
         }
 

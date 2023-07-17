@@ -422,11 +422,6 @@ namespace GameExtensions
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = this;
-            PlayerPrefs.SetInt("PlayerXp", 12); //setting XP (for dev purposes)
-            PlayerPrefs.SetInt("PlayerLvl", 1);
-            Xp = PlayerPrefs
-                .GetInt("PlayerXp"); //getting XP and Level, then calculating the current XP threshold
-            Lvl = (byte)PlayerPrefs.GetInt("PlayerLvl");
             XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
             Difficulty.DifficultyLevelChanged += () =>
             {

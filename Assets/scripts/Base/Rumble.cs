@@ -5,7 +5,7 @@ namespace GameExtensions
     {
         private static readonly Rumbler Rumbler = Rumbler.Instance;
 
-        private static readonly float[] Strengths = new[]
+        private static readonly float[] Strengths = 
         {
             0.1f,
             0.25f,

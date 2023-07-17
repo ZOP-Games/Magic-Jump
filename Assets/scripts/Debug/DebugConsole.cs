@@ -26,7 +26,7 @@ namespace GameExtensions.Debug
             {
                 UnityEngine.Debug.LogWarning(
                     "The message writer is not available. Debug console messages will be written to Unity console only"
-                    );
+                );
                 writtenError = true;
             }
 
