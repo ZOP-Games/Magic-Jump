@@ -2017,6 +2017,7 @@ MonoBehaviour:
   options: {fileID: 651222792}
   continueButton: {fileID: 1811649365}
   newGameButton: {fileID: 1645016061}
+  exitButton: {fileID: 1946450788}
 --- !u!1 &1946450786
 GameObject:
   m_ObjectHideFlags: 0

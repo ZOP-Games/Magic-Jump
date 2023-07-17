@@ -21,7 +21,7 @@ namespace GameExtensions
 
         public void StopRumbling()
         {
-            if(!canRumble) return;
+            if (!canRumble) return;
             device?.SetMotorSpeeds(0, 0);
         }
 

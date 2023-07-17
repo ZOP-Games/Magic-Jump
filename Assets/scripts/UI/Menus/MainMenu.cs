@@ -10,24 +10,24 @@ namespace GameExtensions.UI.Menus
         //public GameObject loading;  //the loading screen, not needed yet
         [SerializeField] private Button continueButton;
         [SerializeField] private Button newGameButton;
+        [SerializeField] private Button exitButton;
 
 
         private void Start()
         {
-            ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
-            if (!SaveManager.SaveExists) continueButton.interactable = false;
+            Open();
         }
-        // this has all the things for the menu like button events, menu mechanics and more...
 
         public override void Open()
         {
-            var idx = SaveManager.SaveExists ? 1 : 0;
-            ES.SetSelectedGameObject(GetComponentsInChildren<Button>()[idx].gameObject);
+            ES.SetSelectedGameObject(SaveManager.SaveExists ? continueButton.gameObject : newGameButton.gameObject);
+            if (!SaveManager.SaveExists) continueButton.interactable = false;
+            Controller.ActiveScreen = this;
         }
 
         public override void Close()
         {
-            //todo:highlight exit button
+            ES.SetSelectedGameObject(exitButton.gameObject);
         }
 
         public void NewGame()
