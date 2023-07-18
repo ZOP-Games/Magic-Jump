@@ -428,7 +428,7 @@ namespace GameExtensions
                 if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
             };
             if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
-            DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP",() => {
+            DebugInputHandler.Instance?.AddInputCallback("[Debug] Add XP",() => {
                 AddXp(1000);
                 DebugConsole.Log("Added 1000 XP!",DebugConsole.TestColor);
                 });

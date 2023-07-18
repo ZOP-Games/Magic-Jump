@@ -9,24 +9,27 @@ namespace GameExtensions.UI.HUD
         // Start is called before the first frame update
         [SerializeField] private Image bar;
         [SerializeField] private TextMeshProUGUI hpNumber;
+        private Animator anim;
         private Player player;
+        private int oldHp = 100;
+        
+        private readonly int helfPmHash = Animator.StringToHash("helf");
 
         private void Start()
         {
-            bar.color = Color.green;
             Player.PlayerReady += () =>
             {
                 player = Player.Instance;
-                player.HealthChanged += UpdateHealth;
+                player.HealthChanged += UpdateHealthBar;
             };
+            anim = bar.GetComponent<Animator>();
         }
 
-        private void UpdateHealth()
+        private void UpdateHealthBar()
         {
-            bar.fillAmount = (float)player.Hp / 100;
+            anim.SetInteger(helfPmHash,Mathf.CeilToInt(player.Hp/20f));
             hpNumber.SetText(player.Hp + "/100");
-            if (player.Hp > 25) return;
-            bar.color = Color.red;
+            oldHp = player.Hp;
         }
     }
 }

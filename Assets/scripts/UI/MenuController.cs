@@ -39,7 +39,7 @@ namespace GameExtensions.UI
                 UnityEngine.Debug.Assert(spells is not null);
                 pause.GetComponentInChildren<Button>().onClick.AddListener(CloseActive);
             };
-            actions["Exit"].canceled += _ => CloseActive();
+            actions["Exit"].started += _ => CloseActive();
         }
 
         private void OnDestroy()

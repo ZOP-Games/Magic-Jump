@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.2d.animation": "7.0.11",
     "com.unity.addressables": "1.19.19",
     "com.unity.burst": "1.7.2",
     "com.unity.cinemachine": "2.9.4",

@@ -27,12 +27,12 @@ namespace GameExtensions.UI.Menus
 
         public override void Close()
         {
-            ES.SetSelectedGameObject(exitButton.gameObject);
+            if (exitButton is not null) ES.SetSelectedGameObject(exitButton.gameObject);    //just to avoid errors when pausing
         }
 
         public void NewGame()
         {
-            //FadeBlack() so the transition between scenes won't be visible to the player;
+            //FadeBlack() so the transition between scenes won't be visible to the player
             //loading the game
             SaveManager.SaveAll();
             SceneManager.LoadScene(1);
