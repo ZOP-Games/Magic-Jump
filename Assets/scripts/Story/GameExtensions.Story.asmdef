@@ -1,17 +1,18 @@
 {
-  "name": "GameExtensions.Story",
-  "rootNamespace": "",
-  "references": [
-    "GUID:3f945c094a7aed545a4e13467b341380",
-    "GUID:75469ad4d38634e559750d17036d5f7c"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "GameExtensions.Story",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3f945c094a7aed545a4e13467b341380",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:b5b9d7734ac762f40ab8f651cfdd42db"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

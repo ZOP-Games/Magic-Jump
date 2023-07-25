@@ -3,30 +3,30 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using GameExtensions.UI.HUD;
 
 namespace GameExtensions.Story
 {
-    public class CutscenePlayer : MonoBehaviour
+    public class CutscenePlayer : StoryEvent
     {
         [SerializeField] private GameObject skipText;
-        private GameObject background;
+        [SerializeField] private string targetTag;
         private PlayerInput pInput;
         private Player player;
-        private GameObject screen;
 
         private Vector3 triggerPos;
         private float triggerRadius;
 
         private bool tryingToSkip;
 
-        //[SerializeField] private int cutsceneId; todo:implement story progression
+        //todo:implement story progression
         private VideoPlayer video;
 
         private void Start()
         {
             video = GetComponent<VideoPlayer>();
-            background = GetComponentInChildren<Image>(true).gameObject;
-            screen = GetComponentInChildren<RawImage>(true).gameObject;
+            /*video = gameObject.AddComponent<VideoPlayer>();
+            video.playOnAwake = false;*/
             Player.PlayerReady += () =>
             {
                 player = Player.Instance;
@@ -43,19 +43,9 @@ namespace GameExtensions.Story
             Gizmos.DrawWireSphere(triggerPos, triggerRadius);
         }
 
-        private void OnTriggerEnter(Collider other)
+        private new void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("Player")) return;
-            video.Prepare();
-            background.SetActive(true);
-            screen.SetActive(true);
-            video.loopPointReached += _ => Close();
-            video.prepareCompleted += source =>
-            {
-                background.SetActive(false);
-                source.Play();
-                pInput.SwitchCurrentActionMap("Cutscene");
-            };
+            base.OnTriggerEnter(other);
         }
 
         private void Skip()
@@ -76,11 +66,22 @@ namespace GameExtensions.Story
 
         private void Close()
         {
-            screen.SetActive(false);
             skipText.SetActive(false);
             tryingToSkip = false;
 
             pInput.SwitchCurrentActionMap("Player");
+        }
+
+        protected override void DoEvent()
+        {
+            video.Prepare();
+            video.loopPointReached += _ => Close();
+            video.prepareCompleted += source =>
+            {
+                HUDToggler.AskSetHUD(false);
+                source.Play();
+                pInput.SwitchCurrentActionMap("Cutscene");
+            };
         }
     }
 }
