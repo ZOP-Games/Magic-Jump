@@ -1,6 +1,7 @@
 using GameExtensions.Debug;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 namespace GameExtensions.UI.Menus
@@ -11,6 +12,7 @@ namespace GameExtensions.UI.Menus
         [SerializeField] private Button continueButton;
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button exitButton;
+        [SerializeField] private AssetReference hubSceneReference;
 
 
         private void Start()
@@ -35,14 +37,20 @@ namespace GameExtensions.UI.Menus
             //FadeBlack() so the transition between scenes won't be visible to the player
             //loading the game
             SaveManager.SaveAll();
-            SceneManager.LoadScene(1);
+            hubSceneReference.LoadSceneAsync().Completed += op =>
+            {
+                op.Result.ActivateAsync();
+            };
         }
 
         public void Continue()
         {
             DebugConsole.Log("continue clicked");
             if (!SaveManager.SaveExists) return;
-            SceneManager.LoadScene(1);
+            hubSceneReference.LoadSceneAsync().Completed += op =>
+            {
+                op.Result.ActivateAsync();
+            };
             Player.PlayerReady += SaveManager.LoadAll;
         }
 

@@ -2018,6 +2018,11 @@ MonoBehaviour:
   continueButton: {fileID: 1811649365}
   newGameButton: {fileID: 1645016061}
   exitButton: {fileID: 1946450788}
+  hubSceneReference:
+    m_AssetGUID: adcb96b0b1ceb0e4080dfba15f78bb6b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!1 &1946450786
 GameObject:
   m_ObjectHideFlags: 0

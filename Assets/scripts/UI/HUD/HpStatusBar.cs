@@ -11,8 +11,7 @@ namespace GameExtensions.UI.HUD
         [SerializeField] private TextMeshProUGUI hpNumber;
         private Animator anim;
         private Player player;
-        private int oldHp = 100;
-        
+
         private readonly int helfPmHash = Animator.StringToHash("helf");
 
         private void Start()
@@ -29,7 +28,6 @@ namespace GameExtensions.UI.HUD
         {
             anim.SetInteger(helfPmHash,Mathf.CeilToInt(player.Hp/20f));
             hpNumber.SetText(player.Hp + "/100");
-            oldHp = player.Hp;
         }
     }
 }

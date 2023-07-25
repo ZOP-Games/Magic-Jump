@@ -1,16 +1,27 @@
-﻿using System;
+﻿using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using GameExtensions.UI.HUD;
+using UnityEngine.AddressableAssets;
 
 namespace GameExtensions.Story
 {
+    [System.Serializable]
+    internal class VideoClipReference : AssetReferenceT<VideoClip>
+    {
+        public VideoClipReference(string guid) : base(guid)
+        {
+        }
+    }
+
     public class CutscenePlayer : StoryEvent
     {
         [SerializeField] private GameObject skipText;
         [SerializeField] private string targetTag;
+        [SerializeField] private VideoClipReference video;
+        [SerializeField] private VideoClipReference linuxVideo;
         private PlayerInput pInput;
         private Player player;
 
@@ -18,15 +29,15 @@ namespace GameExtensions.Story
         private float triggerRadius;
 
         private bool tryingToSkip;
+        private bool isUsingWebm;
 
         //todo:implement story progression
-        private VideoPlayer video;
+        private VideoPlayer videoPlayer;
 
         private void Start()
         {
-            video = GetComponent<VideoPlayer>();
-            /*video = gameObject.AddComponent<VideoPlayer>();
-            video.playOnAwake = false;*/
+            videoPlayer = GetComponent<VideoPlayer>();
+            videoPlayer.source = VideoSource.VideoClip;
             Player.PlayerReady += () =>
             {
                 player = Player.Instance;
@@ -45,12 +56,13 @@ namespace GameExtensions.Story
 
         private new void OnTriggerEnter(Collider other)
         {
+            if (!other.CompareTag(targetTag)) return;
             base.OnTriggerEnter(other);
         }
 
         private void Skip()
         {
-            if (!video.isPlaying) return;
+            if (!videoPlayer.isPlaying) return;
             if (!tryingToSkip)
             {
                 skipText.SetActive(true);
@@ -58,8 +70,8 @@ namespace GameExtensions.Story
             }
             else
             {
-                video.Stop();
-                GC.Collect();
+                videoPlayer.Stop();
+                System.GC.Collect();
                 Close();
             }
         }
@@ -68,15 +80,24 @@ namespace GameExtensions.Story
         {
             skipText.SetActive(false);
             tryingToSkip = false;
-
+            HUDToggler.AskSetHUD(true);
+            if(isUsingWebm) linuxVideo?.ReleaseAsset();
+            else video.ReleaseAsset();
             pInput.SwitchCurrentActionMap("Player");
         }
 
         protected override void DoEvent()
         {
-            video.Prepare();
-            video.loopPointReached += _ => Close();
-            video.prepareCompleted += source =>
+#if UNITY_LINUX
+            linuxVideo.LoadAssetAsync().Complete += op =>  videoplayer.clip = op.Result;
+            isUsingWebm = true;
+#else
+            video.LoadAssetAsync().Completed += op => videoPlayer.clip = op.Result;
+#endif    
+            videoPlayer.Prepare();
+            DebugConsole.Log("Loading video..");
+            videoPlayer.loopPointReached += _ => Close();
+            videoPlayer.prepareCompleted += source =>
             {
                 HUDToggler.AskSetHUD(false);
                 source.Play();

@@ -19,7 +19,7 @@ namespace GameExtensions.Story
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if(other is TerrainCollider) return;
+            if(other is TerrainCollider && Player.Instance.Xp < progressThreshold) return;
             DoEvent();
             //Destroy(gameObject);
         }
