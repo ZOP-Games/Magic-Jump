@@ -21,6 +21,14 @@ MonoBehaviour:
     m_Address: Assets/Scenes/Hub/Hub.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 20f467046c62d9643a07ecb06812517c
+    m_Address: Assets/Prefabs/Chunks/chunk0_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 217a4338d10168a448146e5dd701a305
+    m_Address: Assets/Prefabs/Chunks/chunk0_0.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 91b31fc247547944d94c19bba08b7d82, type: 2}
   m_SchemaSet:

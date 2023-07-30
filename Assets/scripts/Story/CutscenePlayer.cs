@@ -1,7 +1,6 @@
 ﻿using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using UnityEngine.Video;
 using GameExtensions.UI.HUD;
 using UnityEngine.AddressableAssets;
@@ -29,7 +28,11 @@ namespace GameExtensions.Story
         private float triggerRadius;
 
         private bool tryingToSkip;
+#pragma warning disable CS0649
+#pragma warning disable IDE0044
         private bool isUsingWebm;
+#pragma warning restore IDE0044
+#pragma warning restore CS0649
 
         //todo:implement story progression
         private VideoPlayer videoPlayer;
@@ -93,7 +96,7 @@ namespace GameExtensions.Story
             isUsingWebm = true;
 #else
             video.LoadAssetAsync().Completed += op => videoPlayer.clip = op.Result;
-#endif    
+#endif  
             videoPlayer.Prepare();
             DebugConsole.Log("Loading video..");
             videoPlayer.loopPointReached += _ => Close();
