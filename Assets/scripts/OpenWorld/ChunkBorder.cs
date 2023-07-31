@@ -11,22 +11,24 @@ namespace GameExtensions.OpenWorld
         [SerializeField] private AssetReferenceGameObject otherChunk;
         [SerializeField] private Vector3Int id;
         private Transform tf;
-        private bool isNewChunkLoaded;
 
-        private void OnTriggerExit(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            var goingIn = Vector3.Dot(other.attachedRigidbody.velocity.normalized, tf.localPosition.normalized) < 0;
+            var dot = Vector3.Dot(other.transform.position.normalized, tf.position.normalized);
+            Debug.Log("Player is " + dot + " from me, that's " + Mathf.Acos(dot) + "°");
+            var goingIn = dot < 0;
             if (goingIn)
             {
                 Debug.Log("going in");
-                Destroy(tf.root.gameObject);
-                Addressables.Release(tf.root.gameObject);
+                var root = tf.root;
+                Destroy(root.gameObject);
+                Addressables.Release(root.gameObject);
                 Debug.Log("destroying " + id);
             }
             else
             {
-                otherChunk.InstantiateAsync(tf.root, true).Completed += op =>
+                otherChunk.InstantiateAsync(tf.root, true).Completed += _ =>
                 {
                     Debug.Log("made chunk by: " + id);
                 };
