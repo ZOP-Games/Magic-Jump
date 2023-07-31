@@ -2320,12 +2320,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -8.44199, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 967758184}
   m_maskType: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
 --- !u!23 &967758184
 MeshRenderer:
   m_ObjectHideFlags: 0

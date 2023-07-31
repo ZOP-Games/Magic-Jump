@@ -50,7 +50,7 @@ namespace GameExtensions
         //draws the hitbox sphere in scene view
         private void OnDrawGizmosSelected()
         {
-            Gizmos.DrawWireSphere(transform.localPosition + AtkSpherePos, AtkSphereRadius);
+            Gizmos.DrawWireSphere(transform.position + AtkSpherePos, AtkSphereRadius);
         }
 
         // this tells any entity we might have (the player, enemies, etc.) what they all can do

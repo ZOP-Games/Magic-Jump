@@ -84,19 +84,13 @@ namespace GameExtensions.Story
             skipText.SetActive(false);
             tryingToSkip = false;
             HUDToggler.AskSetHUD(true);
-            if(isUsingWebm) linuxVideo?.ReleaseAsset();
+            if (isUsingWebm) linuxVideo?.ReleaseAsset();
             else video.ReleaseAsset();
             pInput.SwitchCurrentActionMap("Player");
         }
 
-        protected override void DoEvent()
+        private void PlayVideo()
         {
-#if UNITY_LINUX
-            linuxVideo.LoadAssetAsync().Complete += op =>  videoplayer.clip = op.Result;
-            isUsingWebm = true;
-#else
-            video.LoadAssetAsync().Completed += op => videoPlayer.clip = op.Result;
-#endif  
             videoPlayer.Prepare();
             DebugConsole.Log("Loading video..");
             videoPlayer.loopPointReached += _ => Close();
@@ -106,6 +100,24 @@ namespace GameExtensions.Story
                 source.Play();
                 pInput.SwitchCurrentActionMap("Cutscene");
             };
+        }
+
+        protected override void DoEvent()
+        {
+#if UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX
+            linuxVideo.LoadAssetAsync().Completed += op =>
+            {
+                videoPlayer.clip = op.Result;
+                PlayVideo();
+            };
+            isUsingWebm = true;
+#else
+            video.LoadAssetAsync().Completed += op => {
+                videoPlayer.clip = op.Result;
+                PlayVideo();
+            };
+#endif
+
         }
     }
 }
