@@ -96,7 +96,7 @@ namespace GameExtensions.UI.Menus
             (2, 0) //ultra
         };
 
-        private readonly List<string> refreshRates = new() { "60", "120", "144" };
+        private List<string> refreshRates => Screen.resolutions.Select(r => r.refreshRate.ToString()).ToList();
 
         private readonly WorldQuality[] worldQualities =
         {
@@ -125,9 +125,11 @@ namespace GameExtensions.UI.Menus
             else Instance = this;
             firstObj = screenDropdown.gameObject;
             OnEnable();
+            refreshRates.Add("500");
             resolutions = Screen.resolutions.GroupBy(r => (r.width, r.height)).Select(r => r.Key).ToList();
             resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
             refreshDropdown.AddOptions(Screen.resolutions.Select(r => r.refreshRate.ToString()).Distinct().ToList());
+            refreshDropdown.options.Add(new TMP_Dropdown.OptionData("unlocked"));
             screenDropdown.value = ScreenMode == FullScreenMode.Windowed ? 2 : (int)ScreenMode;
             resolutionDropdown.value = resolutions.IndexOf((CurrentResolution.width, CurrentResolution.height));
             scaleSlider.value = RenderScale;
@@ -176,7 +178,7 @@ namespace GameExtensions.UI.Menus
             urpAsset.shadowDistance = selectedLevel.shadowDistance;
             if (selectedLevel.shadowCascades != 0) urpAsset.shadowCascadeCount = selectedLevel.shadowCascades;
             Screen.brightness = Brightness;
-
+            DebugConsole.Log("aiming for " + Application.targetFrameRate + " FPS");
             #region crossSceneSetup
 
             SceneManager.activeSceneChanged += (_, _) =>
@@ -211,7 +213,7 @@ namespace GameExtensions.UI.Menus
             var res = CurrentResolution;
             res.height = currentHeight;
             res.width = currentWidth;
-            res.refreshRate = CurrentRefreshRate;
+            res.refreshRate = CurrentRefreshRate != 500 ? CurrentRefreshRate : int.Parse(refreshRates.First());
             CurrentResolution = res;
         }
 
