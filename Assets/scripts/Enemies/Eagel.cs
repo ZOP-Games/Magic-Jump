@@ -34,8 +34,13 @@ namespace GameExtensions.Enemies
             hpText = GetComponentInChildren<TextMeshPro>();
             hpText.SetText("HP: 100");
             Ctg = FindObjectOfType<CinemachineTargetGroup>();
-            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
+            void GetPlayerTransform(){
+                PlayerTransform = Player.Instance.transform;
+            }
+            if(Player.Instance is not null) GetPlayerTransform();
+            else Invoke(nameof(GetPlayerTransform),1);
             HealthChanged += () => hpText.SetText("HP: " + Hp);
+            base.Start();
         }
 
         private void OnTriggerEnter(Collider other)

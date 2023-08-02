@@ -3501,12 +3501,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: -0.23671651}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1862644657180207269}
   m_maskType: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
 --- !u!1 &2855288718345914732
 GameObject:
   m_ObjectHideFlags: 0
@@ -8853,7 +8853,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7079866211607885568, guid: a6aa1df39dcb3f5469d0566dcff477ea, type: 3}
+  - {fileID: 2100000, guid: 3fe7564f18f62b44e9320f7cb3a2126f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -41,7 +41,11 @@ namespace GameExtensions.Enemies
         {
             Player.Instance.AddXp(XpReward);
             DontLookAtMe(transform);
-            Destroy(gameObject);
+            Destroy(GetComponentInChildren<EnemyLocation>().gameObject);
+        }
+
+        public void Reset(){
+            Hp = 100;
         }
 
         protected virtual void Aim()

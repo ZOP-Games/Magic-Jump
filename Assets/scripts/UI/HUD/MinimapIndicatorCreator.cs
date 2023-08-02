@@ -42,5 +42,18 @@ namespace GameExtensions.UI.HUD
         {
             Destroy(marker);
         }
+
+        private void OnDisable()
+        {
+            if(marker is null) return;
+            marker.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            if(marker is null) return;
+            marker.SetActive(true);
+        }
+
     }
 }

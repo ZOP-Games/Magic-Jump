@@ -1,3 +1,4 @@
+using GameExtensions.Debug;
 using System.Linq;
 using Cinemachine;
 using TMPro;
@@ -37,7 +38,7 @@ namespace GameExtensions.Enemies
             hpText = GetComponentInChildren<TextMeshPro>();
             if (hpText is null)
             {
-                Debug.LogWarning("Where yo HP text at for " + name + "???");
+                DebugConsole.Log("Where yo HP text at for " + name + "???",DebugConsole.WarningColor);
             }
             else
             {
@@ -48,8 +49,12 @@ namespace GameExtensions.Enemies
             Ctg = FindObjectOfType<CinemachineTargetGroup>();
             if (GetComponentsInChildren<Collider>()
                 .All(c => !c.isTrigger))
-                Debug.LogError("The attack trigger on " + name + " missing u idoit");
-            Player.PlayerReady += () => PlayerTransform = Player.Instance.transform;
+                DebugConsole.LogError("The attack trigger on " + name + " missing u idoit");
+            void GetPlayerTransform(){
+                PlayerTransform = Player.Instance.transform;
+            }
+            if(Player.Instance is not null) GetPlayerTransform();
+            else Invoke(nameof(GetPlayerTransform),1);
         }
 
         private void OnTriggerEnter(Collider other)
