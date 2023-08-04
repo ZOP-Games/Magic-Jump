@@ -1,8 +1,8 @@
 ﻿using GameExtensions.Debug;
+using GameExtensions.UI.HUD;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Video;
-using GameExtensions.UI.HUD;
 using UnityEngine.AddressableAssets;
 
 namespace GameExtensions.Story
@@ -37,8 +37,9 @@ namespace GameExtensions.Story
         //todo:implement story progression
         private VideoPlayer videoPlayer;
 
-        private void Start()
+        private new void Start()
         {
+            base.Start();
             videoPlayer = GetComponent<VideoPlayer>();
             videoPlayer.source = VideoSource.VideoClip;
             Player.PlayerReady += () =>
@@ -74,7 +75,6 @@ namespace GameExtensions.Story
             else
             {
                 videoPlayer.Stop();
-                System.GC.Collect();
                 Close();
             }
         }
@@ -86,7 +86,10 @@ namespace GameExtensions.Story
             HUDToggler.AskSetHUD(true);
             if (isUsingWebm) linuxVideo?.ReleaseAsset();
             else video.ReleaseAsset();
+            StoryProgression.Instance.AddProgress(progressAmount);
+            SaveManager.SaveAll();
             pInput.SwitchCurrentActionMap("Player");
+            Destroy(gameObject);
         }
 
         private void PlayVideo()
