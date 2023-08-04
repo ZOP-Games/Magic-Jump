@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace GameExtensions
 {
-    [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Collider))]
+    [RequireComponent(typeof(CharacterController), typeof(Animator))]
     public abstract class Entity : MonoBehaviour
     {
         //some constants
@@ -29,6 +29,7 @@ namespace GameExtensions
 
         //some components
         protected Rigidbody rb;
+        protected CharacterController cc;
 
         //hashes of animator state names, use these for state checks
         protected abstract int AttackingPmHash { get; }
@@ -106,35 +107,27 @@ namespace GameExtensions
         //common move method for all Entities
         protected void Move(Vector3 direction, int maxSpeed = 5)
         {
-            //Debug.Log(maxSpeed);
-            //speed cap
             anim.SetBool(MovingPmHash, true);
             if (maxSpeed > 5) anim.SetBool(RunningPmHash, true);
-            if (Mathf.Abs(rb.velocity.x) < maxSpeed && Mathf.Abs(rb.velocity.z) < maxSpeed)
-            {
-                rb.AddRelativeForce(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier);
-            }
-            else
-            {
-                //if the Entity is faster than it's moving, it slows it down
-                var velocity = rb.velocity;
-                if (Mathf.Abs(velocity.x) > maxSpeed) velocity.x = maxSpeed * Mathf.Sign(velocity.x);
+                cc.Move(new Vector3(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier));
+  
+        }
 
-                if (Mathf.Abs(velocity.z) > maxSpeed) velocity.z = maxSpeed * Mathf.Sign(velocity.z);
-
-                rb.velocity = velocity;
-            }
+        protected void Move(Vector3 direction,bool isRunning){
+            anim.SetBool(MovingPmHash, true);
+            anim.SetBool(RunningPmHash, isRunning);
+            cc.Move(new Vector3(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier));
         }
 
         public virtual void Stun()
         {
-            rb.isKinematic = true;
+            cc.enabled = false;
             Invoke(nameof(UnStun), StunTime);
         }
 
         protected virtual void UnStun()
         {
-            rb.isKinematic = false;
+            cc.enabled = true;
         }
     }
 }

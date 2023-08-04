@@ -116,8 +116,8 @@ namespace GameExtensions
         ///     Used for checking if the player is running or not
         /// </summary>
         private bool running;
-
         private LineRenderer line;
+        private new Camera camera;
 
         /// <summary>
         ///     the player's <see cref="Transform" />.
@@ -207,8 +207,9 @@ namespace GameExtensions
         public void Jump(InputAction.CallbackContext context)
         {
             if (!context.performed || !grounded) return;
-            rb.AddForce(0, JumpForce, 0); //jump
-            //Debug.Log("Jumping, velocity: " + rb.velocity.y);
+            //jump
+            cc.SimpleMove(tf.up * JumpForce);
+            DebugConsole.Log("Jumping, velocity: " + cc.velocity.y);
         }
 
         /// <summary>
@@ -263,9 +264,9 @@ namespace GameExtensions
         /// </param>
         public void Dodge(InputAction.CallbackContext context)
         {
-            if (!context.performed || !(Mathf.Abs(rb.velocity.x) < 1)) return;
+            if (!context.performed || !(Mathf.Abs(cc.velocity.x) < 1)) return;
             var power = DebugManager.IsSuperDodging ? SuperDodgePower : DodgePower;
-            rb.AddRelativeForce(power, 0, 0); //pushing player to the side (idk if we still need this tbh) hell yeah brother
+            cc.Move(new Vector3(power, 0, 0)); //pushing player to the side (idk if we still need this tbh) hell yeah brother
 
         }
 
@@ -355,31 +356,19 @@ namespace GameExtensions
         {
             //movement logic
             var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
-            tf.localEulerAngles += new Vector3(0, angle * Time.fixedDeltaTime, 0); //rotating the player
+            tf.localEulerAngles = new Vector3(0, angle, 0); //rotating the player
             if (DebugManager.DrawForceLine)
             {
                 line.gameObject.SetActive(true);
-                line.SetPosition(1,rb.velocity);
+                line.SetPosition(1,cc.velocity);
             }
             else
             {
                 line.gameObject.SetActive(false);
             }
-            if (running && mozog)
-                Move(tf.InverseTransformDirection(tf.forward), RunSpeed); //moving the running player forward
-            else if (mozog) Move(tf.InverseTransformDirection(tf.forward));
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            if (collision.collider is TerrainCollider && grounded)
-                grounded = false; //as soon as the player leaves the ground, they can't jump
-        }
-
-        private void OnCollisionStay(Collision collision)
-        {
-            if (collision.collider is TerrainCollider && !grounded)
-                grounded = true; //if the player is touching the ground, they can jump
+            if (mozog){
+                Move(tf.TransformDirection(tf.forward)*Time.fixedDeltaTime,running);
+            }
         }
 
         //Start() runs once when the object is enabled, lots of early game setup goes here
@@ -407,21 +396,12 @@ namespace GameExtensions
 
             #endregion
 
-            tag = "Player"; //setting a player, helps w/ identification
-            rb = GetComponent<Rigidbody>(); //getting Rigidbody and Animator and Trasnform and MenuController and SpellScreen
-            //Rigibody setup inside
-
-            #region rbSetup
-
-            rb.drag = Drag;
-            rb.angularDrag = AngularDrag;
-            rb.constraints = (RigidbodyConstraints)Constraints;
-
-            #endregion
-
+            tag = "Player"; //setting a player tag, helps w/ identification
+            cc = GetComponent<CharacterController>(); //getting Rigidbody and Animator and Transform and Instance and XP and difficulty
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = this;
+            camera = Camera.current;
             XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
             Difficulty.DifficultyLevelChanged += () =>
             {
