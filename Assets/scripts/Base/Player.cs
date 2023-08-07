@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using GameExtensions.Debug;
 using UnityEngine;
@@ -81,8 +82,8 @@ namespace GameExtensions
         private const float MediumRumble = 0.2f;
         private const float LongRumble = 0.3f;
 
-        [SerializeField] [HideInInspector] private Vector3 playerPos;
-        [SerializeField] [HideInInspector] private Vector3 playerAngles;
+        [SerializeField][HideInInspector] private Vector3 playerPos;
+        [SerializeField][HideInInspector] private Vector3 playerAngles;
 
         /// <summary>
         ///     The player's XP.
@@ -117,8 +118,8 @@ namespace GameExtensions
         /// </summary>
         private bool running;
         private LineRenderer line;
-        private new Camera camera;
 
+        private Vector3 vCamPos;
         /// <summary>
         ///     the player's <see cref="Transform" />.
         /// </summary>
@@ -231,15 +232,15 @@ namespace GameExtensions
             collidersList.ForEach(c =>
             {
                 c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
-                Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Medium,0.1f);
+                Rumble.RumbleFor(Rumble.RumbleStrength.Medium, Rumble.RumbleStrength.Medium, 0.1f);
             });
         }
 
         public override void TakeDamage(int amount)
         {
-            if(DebugManager.IsInvincible) return;
+            if (DebugManager.IsInvincible) return;
             base.TakeDamage(amount);
-            Rumble.RumbleFor(Rumble.RumbleStrength.Strong,Rumble.RumbleStrength.Strong,0.1f);
+            Rumble.RumbleFor(Rumble.RumbleStrength.Strong, Rumble.RumbleStrength.Strong, 0.1f);
         }
 
         /// <summary>
@@ -251,9 +252,9 @@ namespace GameExtensions
         public void HeavyAttack(InputAction.CallbackContext context)
         {
             //we don't know what to do with this yet :/
-            if (context.performed) 
+            if (context.performed)
                 Stun();
-            Invoke(nameof(UnStun),3);
+            Invoke(nameof(UnStun), 3);
         }
 
         /// <summary>
@@ -282,7 +283,7 @@ namespace GameExtensions
             if (context.performed)
             {
                 //tell the code in FixedUpdate() we're running
-                Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Light,0.1f);
+                Rumble.RumbleFor(Rumble.RumbleStrength.Medium, Rumble.RumbleStrength.Light, 0.1f);
                 running = true;
                 anim.SetFloat(MoveSpeedId, 2); //set "running" animation (speeding up walk animation)
                 anim.SetBool(RunningPmHash, true);
@@ -325,7 +326,7 @@ namespace GameExtensions
         {
             base.Stun();
             PInput.DeactivateInput();
-            Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Strong,0.3f);
+            Rumble.RumbleFor(Rumble.RumbleStrength.Medium, Rumble.RumbleStrength.Strong, 0.3f);
         }
 
         /// <summary>
@@ -354,20 +355,33 @@ namespace GameExtensions
         //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
         private void FixedUpdate()
         {
-            //movement logic
-            var angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
-            tf.localEulerAngles = new Vector3(0, angle, 0); //rotating the player
             if (DebugManager.DrawForceLine)
             {
                 line.gameObject.SetActive(true);
-                line.SetPosition(1,cc.velocity);
+                line.SetPosition(1, cc.velocity);
             }
-            else
+            else if (line.gameObject.activeSelf)
             {
                 line.gameObject.SetActive(false);
             }
-            if (mozog){
-                Move(tf.TransformDirection(tf.forward)*Time.fixedDeltaTime,running);
+            if (mozog)
+            {           
+                var target = Vector3.zero;
+                var angle = 0f;
+                if (mPos.y > 0 && Mathf.Abs(mPos.x) < 1)
+                {
+                    var cam = FindObjectOfType<CinemachineBrain>().transform;
+                    target = cam.forward;
+                    angle = Mathf.Atan2(tf.forward.x,tf.forward.y) * Mathf.Rad2Deg;
+                }
+                else
+                {
+                    target = tf.forward;
+                    angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
+                }
+                tf.eulerAngles = new Vector3(0, angle, 0);
+                Move(target * Time.fixedDeltaTime, running);
+                target.y = 0;
             }
         }
 
@@ -401,17 +415,17 @@ namespace GameExtensions
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = this;
-            camera = Camera.current;
             XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
             Difficulty.DifficultyLevelChanged += () =>
             {
                 if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
             };
             if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
-            DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP",() => {
+            DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP", () =>
+            {
                 AddXp(1000);
-                DebugConsole.Log("Added 1000 XP!",DebugConsole.TestColor);
-                });
+                DebugConsole.Log("Added 1000 XP!", DebugConsole.TestColor);
+            });
             line = GetComponentInChildren<LineRenderer>();
             (this as ISaveable).AddToList();
             PlayerReady?.Invoke();
