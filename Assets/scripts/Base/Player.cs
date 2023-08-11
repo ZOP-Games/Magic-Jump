@@ -4,6 +4,7 @@ using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using TMPro;
 
 // ReSharper disable MergeConditionalExpression
 
@@ -81,7 +82,9 @@ namespace GameExtensions
         private const float ShortRumble = 0.1f;
         private const float MediumRumble = 0.2f;
         private const float LongRumble = 0.3f;
-
+        private const float RightMoveMultiplier = 0.5f;
+        private const float ForwardMoveMultiplier = 0.01f;
+        private const int TurnMultiplier = 5;
         [SerializeField][HideInInspector] private Vector3 playerPos;
         [SerializeField][HideInInspector] private Vector3 playerAngles;
 
@@ -117,9 +120,10 @@ namespace GameExtensions
         ///     Used for checking if the player is running or not
         /// </summary>
         private bool running;
+        private Vector3 turnDirection;
         private LineRenderer line;
 
-        private Vector3 vCamPos;
+        private Transform vCamTf;
         /// <summary>
         ///     the player's <see cref="Transform" />.
         /// </summary>
@@ -364,24 +368,15 @@ namespace GameExtensions
             {
                 line.gameObject.SetActive(false);
             }
-            if (mozog)
-            {           
-                var target = Vector3.zero;
-                var angle = 0f;
-                if (mPos.y > 0 && Mathf.Abs(mPos.x) < 1)
-                {
-                    var cam = FindObjectOfType<CinemachineBrain>().transform;
-                    target = cam.forward;
-                    angle = Mathf.Atan2(tf.forward.x,tf.forward.y) * Mathf.Rad2Deg;
-                }
-                else
-                {
-                    target = tf.forward;
-                    angle = Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg; //getting the angle from stick input
-                }
-                tf.eulerAngles = new Vector3(0, angle, 0);
-                Move(target * Time.fixedDeltaTime, running);
-                target.y = 0;
+            if (mozog && mPos != Vector2.zero)
+            {
+                var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
+                tf.rotation = Quaternion.Slerp(tf.rotation,Quaternion.Euler(0,angle,0), TurnMultiplier * Time.fixedDeltaTime);
+                var fak = vCamTf.forward.normalized;
+                fak.y = 0;
+                var fakRight = vCamTf.right.normalized * RightMoveMultiplier;
+                fakRight.y = 0;
+                Move(fak * mPos.y * ForwardMoveMultiplier + fakRight * mPos.x * Time.fixedDeltaTime, running);
             }
         }
 
@@ -415,12 +410,14 @@ namespace GameExtensions
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = this;
+            vCamTf = FindObjectOfType<CinemachineBrain>().transform;
             XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
             Difficulty.DifficultyLevelChanged += () =>
             {
                 if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
             };
             if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
+            turnDirection = Vector3.zero;
             DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP", () =>
             {
                 AddXp(1000);
