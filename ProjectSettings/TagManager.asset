@@ -8,6 +8,7 @@ TagManager:
   - menuScreen
   - Pause
   - Spell menu
+  - ground
   layers:
   - Default
   - TransparentFX

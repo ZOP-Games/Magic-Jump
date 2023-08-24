@@ -22,7 +22,7 @@ namespace GameExtensions
         ///     The force the player's <see cref="Rigidbody" /> pushes it up to jump. You can change its value to adjust jump
         ///     height.
         /// </summary>
-        private const int JumpForce = 400;
+        private const int JumpForce = 12;
 
         /// <summary>
         ///     The force the player's <see cref="Rigidbody" /> pushes it to dodge. You can change its value to adjust dodge
@@ -83,7 +83,7 @@ namespace GameExtensions
         private const float MediumRumble = 0.2f;
         private const float LongRumble = 0.3f;
         private const float RightMoveMultiplier = 0.5f;
-        private const float ForwardMoveMultiplier = 0.01f;
+        private const float ForwardMoveMultiplier = 0.5f;
         private const int TurnMultiplier = 5;
         [SerializeField][HideInInspector] private Vector3 playerPos;
         [SerializeField][HideInInspector] private Vector3 playerAngles;
@@ -100,12 +100,9 @@ namespace GameExtensions
         [field: SerializeField]
         public byte Lvl { get; private set; }
 
-        /// <summary>
-        ///     Used for checking if the player is on ground or not
-        /// </summary>
-        private bool grounded;
+        private bool jumping;
 
-
+        private float jumpHeight;
         /// <summary>
         ///     Used for checking if the player is moving or not
         /// </summary>
@@ -122,7 +119,6 @@ namespace GameExtensions
         private bool running;
         private Vector3 turnDirection;
         private LineRenderer line;
-
         private Transform vCamTf;
         /// <summary>
         ///     the player's <see cref="Transform" />.
@@ -211,10 +207,9 @@ namespace GameExtensions
         /// <param name="context">The input data.</param>
         public void Jump(InputAction.CallbackContext context)
         {
-            if (!context.performed || !grounded) return;
-            //jump
-            cc.SimpleMove(tf.up * JumpForce);
-            DebugConsole.Log("Jumping, velocity: " + cc.velocity.y);
+            if (!context.performed || jumping) return;
+            jumping = true;
+            jumpHeight = JumpForce;
         }
 
         /// <summary>
@@ -368,16 +363,25 @@ namespace GameExtensions
             {
                 line.gameObject.SetActive(false);
             }
-            if (mozog && mPos != Vector2.zero)
+            var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
+            tf.rotation = Quaternion.Slerp(tf.rotation, Quaternion.Euler(0, angle, 0),
+             TurnMultiplier * Time.fixedDeltaTime);
+            var lookForward = vCamTf.forward.normalized;
+            lookForward.y = 0;
+            var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
+            lookRight.y = 0;
+            var direction = lookForward * mPos.y * ForwardMoveMultiplier + lookRight * mPos.x;
+            direction.y = cc.velocity.y - 0.98f;
+            if (jumping)
             {
-                var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
-                tf.rotation = Quaternion.Slerp(tf.rotation,Quaternion.Euler(0,angle,0), TurnMultiplier * Time.fixedDeltaTime);
-                var fak = vCamTf.forward.normalized;
-                fak.y = 0;
-                var fakRight = vCamTf.right.normalized * RightMoveMultiplier;
-                fakRight.y = 0;
-                Move(fak * mPos.y * ForwardMoveMultiplier + fakRight * mPos.x * Time.fixedDeltaTime, running);
+                direction.y += jumpHeight;
+                jumpHeight = 0;
+                if (cc.isGrounded)
+                {
+                    jumping = false;
+                }
             }
+            Move(direction * Time.fixedDeltaTime, running);
         }
 
         //Start() runs once when the object is enabled, lots of early game setup goes here

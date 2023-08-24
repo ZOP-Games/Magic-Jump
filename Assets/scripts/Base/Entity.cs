@@ -109,14 +109,14 @@ namespace GameExtensions
         {
             anim.SetBool(MovingPmHash, true);
             if (maxSpeed > 5) anim.SetBool(RunningPmHash, true);
-                cc.Move(new Vector3(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier));
+                cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier));
   
         }
 
         protected void Move(Vector3 direction,bool isRunning){
             anim.SetBool(MovingPmHash, true);
             anim.SetBool(RunningPmHash, isRunning);
-            cc.Move(new Vector3(direction.x * MoveForceMultiplier, 0, direction.z * MoveForceMultiplier));
+            cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier));
         }
 
         public virtual void Stun()
