@@ -85,6 +85,7 @@ namespace GameExtensions
         private const float RightMoveMultiplier = 0.5f;
         private const float ForwardMoveMultiplier = 0.5f;
         private const int TurnMultiplier = 5;
+        private const float GravityForce = 0.98f;
         [SerializeField][HideInInspector] private Vector3 playerPos;
         [SerializeField][HideInInspector] private Vector3 playerAngles;
 
@@ -371,7 +372,7 @@ namespace GameExtensions
             var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
             lookRight.y = 0;
             var direction = lookForward * mPos.y * ForwardMoveMultiplier + lookRight * mPos.x;
-            direction.y = cc.velocity.y - 0.98f;
+            direction.y = cc.velocity.y - GravityForce;
             if (jumping)
             {
                 direction.y += jumpHeight;
