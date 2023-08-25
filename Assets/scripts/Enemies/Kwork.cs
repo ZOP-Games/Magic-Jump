@@ -35,6 +35,7 @@ namespace GameExtensions.Enemies
             AtkPower = 1;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
+            cc = GetComponent<CharacterController>();
             hpText = GetComponentInChildren<TextMeshPro>();
             if (hpText is null)
             {
@@ -59,9 +60,11 @@ namespace GameExtensions.Enemies
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("Player")) return;
+            DebugConsole.Log("trigger's name: " + other.transform.parent.name);
+            //if (!other.CompareTag("Player")) return;
+            DebugConsole.Log("I see you");
             LookAtMe(transform);
-            InvokeRepeating(nameof(Aim), 0, TrackInterval);
+            InvokeRepeating(nameof(Aim), 0, TrackInterval); 
         }
 
         //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix

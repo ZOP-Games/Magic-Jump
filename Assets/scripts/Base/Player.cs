@@ -268,7 +268,6 @@ namespace GameExtensions
             if (!context.performed || !(Mathf.Abs(cc.velocity.x) < 1)) return;
             var power = DebugManager.IsSuperDodging ? SuperDodgePower : DodgePower;
             cc.Move(new Vector3(power, 0, 0)); //pushing player to the side (idk if we still need this tbh) hell yeah brother
-
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using Cinemachine;
+using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace GameExtensions.Enemies
             Difficulty.DifficultyLevelChanged += ApplyDifficulty;
         }
 
-        //death logic, just destroys itself
+        //death logic, rewards the player with xp, removes focus and returns to the pool
         public override void Die()
         {
             Player.Instance.AddXp(XpReward);
@@ -50,20 +51,25 @@ namespace GameExtensions.Enemies
 
         protected virtual void Aim()
         {
-            var transform1 = transform;
+            DebugConsole.Log("aim");
+            var tf = transform;
             var pos = PlayerTransform.position;
-            transform1.LookAt(new Vector3(pos.x, transform1.position.y, pos.z));
-            if (Mathf.Abs(Vector3.Distance(transform1.position, pos)) > AtkRange)
+            tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
+            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkRange)
             {
                 CancelInvoke(nameof(Attack));
                 isAttacking = false;
-                Move(transform1.InverseTransformDirection(transform1.forward));
+                var fw = tf.forward.normalized * 0.005f;
+                fw.y = 0;
+                Move(fw);
+                DebugConsole.Log("aiming, going to " + fw.ToString());
             }
             else if (!isAttacking)
             {
                 InvokeRepeating(nameof(Attack), 0, AtkRepeatRate);
                 isAttacking = true;
             }
+            
         }
 
         protected void StopAiming()

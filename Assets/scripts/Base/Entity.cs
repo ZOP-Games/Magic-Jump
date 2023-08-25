@@ -109,8 +109,8 @@ namespace GameExtensions
         {
             anim.SetBool(MovingPmHash, true);
             if (maxSpeed > 5) anim.SetBool(RunningPmHash, true);
-                cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier));
-  
+                cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier)
+                );  
         }
 
         protected void Move(Vector3 direction,bool isRunning){

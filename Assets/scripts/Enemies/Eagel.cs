@@ -60,15 +60,15 @@ namespace GameExtensions.Enemies
 
         protected override void Aim()
         {
-            var transform1 = transform;
+            var tf = transform;
             var pos = PlayerTransform.position;
-            transform1.LookAt(pos);
-            if (Mathf.Abs(Vector3.Distance(transform1.position, pos)) > AtkRange)
+            tf.LookAt(pos);
+            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkRange)
             {
                 CancelInvoke(nameof(Attack));
                 isAttacking = false;
                 anim.SetBool(MovingPmHash, true);
-                Move(transform1.InverseTransformDirection(transform1.forward));
+                Move(tf.InverseTransformDirection(tf.forward.normalized*0.005f));
             }
             else if (!isAttacking)
             {
