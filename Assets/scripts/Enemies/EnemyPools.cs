@@ -14,7 +14,8 @@ namespace GameExtensions.Enemies
         {
             if (pools.Count - 1 < typeId)
             {
-                DebugConsole.Log("Spawning cancelled: There is no EnemyPool with the given id.", DebugConsole.WarningColor);
+                DebugConsole.Log("Spawning cancelled: There is no EnemyPool with the given id.",
+                 DebugConsole.WarningColor);
                 return null;
             }
             var queue = pools[typeId];

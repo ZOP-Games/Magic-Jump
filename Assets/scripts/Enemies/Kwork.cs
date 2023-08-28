@@ -23,9 +23,8 @@ namespace GameExtensions.Enemies
         protected override Transform PlayerTransform { get; set; }
         protected override float Height => 3;
         protected override byte XpReward => 12;
-        protected override float AtkRepeatRate => 0.5f;
+        protected override float AtkRepeatRate => 2f;
         protected override CinemachineTargetGroup Ctg { get; set; }
-
 
         protected new void Start()
         {
@@ -50,7 +49,7 @@ namespace GameExtensions.Enemies
             Ctg = FindObjectOfType<CinemachineTargetGroup>();
             if (GetComponentsInChildren<Collider>()
                 .All(c => !c.isTrigger))
-                DebugConsole.LogError("The attack trigger on " + name + " missing u idoit");
+                DebugConsole.LogError("The attack trigger on " + name + " is missing u idoit");
             void GetPlayerTransform(){
                 PlayerTransform = Player.Instance.transform;
             }
@@ -58,16 +57,19 @@ namespace GameExtensions.Enemies
             else Invoke(nameof(GetPlayerTransform),1);
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            DebugConsole.Log("trigger's name: " + other.transform.parent.name);
-            //if (!other.CompareTag("Player")) return;
-            DebugConsole.Log("I see you");
+        private void OnTriggerEnter(Collider other) {
+            if(!other.CompareTag("Player")) return;
+            UnityEngine.Debug.Log("I see trigger",other);
             LookAtMe(transform);
             InvokeRepeating(nameof(Aim), 0, TrackInterval); 
         }
+        
+        private void OnControllerColliderHit(ControllerColliderHit hit) {
+            if(!hit.collider.CompareTag("Player")) return;
+            DebugConsole.Log("I feel player");
+        }
 
-        //if the player leaves the aim trigger, it stops the Check coroutine and applies the stop aiming fix
+        //if the player leaves the aim trigger, it stops the Check coroutine
         private void OnTriggerExit(Collider other)
         {
             if (!other.CompareTag("Player")) return;

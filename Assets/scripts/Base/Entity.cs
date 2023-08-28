@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -63,6 +64,7 @@ namespace GameExtensions
             anim.SetTrigger(DamagePmHash);
             Hp -= Mathf.Clamp(amount - Defense / 100, 0, amount);
             HealthChanged?.Invoke();
+            DebugConsole.Log("That was " + amount + " damage!");
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
         }
@@ -75,6 +77,7 @@ namespace GameExtensions
             var collidersList = GetNearbyEntities();
             collidersList.ForEach(c =>
             {
+                DebugConsole.Log("dealt damage to " + c.name);
                 c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
             });
         }
@@ -83,11 +86,19 @@ namespace GameExtensions
         {
             atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
             var colliders = new Collider[16]; //an array of colliders we store hit objects in
-            Physics.OverlapSphereNonAlloc(atkPos, AtkSphereRadius,
-                colliders); //creating the hitbox sphere and colllecting colliders inside
+            Physics.OverlapSphereNonAlloc(transform.position + atkPos, AtkSphereRadius,
+                colliders,0,QueryTriggerInteraction.Collide); //creating the hitbox sphere and colllecting colliders inside
+            DebugConsole.Log("found " + colliders.Count() + " things");
+            var listMsg = "We've got: ";
+            listMsg += colliders.Select(c => {
+                if(c is not null) return c.name;
+                else return "";
+            }).Aggregate((c,n) => c + ", " + n);
+            DebugConsole.Log(listMsg);
             var entities = colliders.Where(c => c is not null).Select(c => c.GetComponent<Entity>())
-                .Where(c => c is not null && c != this && !c.CompareTag(tag))
+                //.Where(c => c is not null && c != this)
                 .ToList(); //removing nulls and the attacking Entity itself and Entities of the same type
+            DebugConsole.Log("out of those " + entities.Count + " was good enough");
             return entities;
         }
 

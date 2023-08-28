@@ -42,6 +42,7 @@ namespace GameExtensions.Enemies
         {
             Player.Instance.AddXp(XpReward);
             DontLookAtMe(transform);
+            StopAiming();
             Destroy(GetComponentInChildren<EnemyLocation>().gameObject);
         }
 
@@ -55,14 +56,14 @@ namespace GameExtensions.Enemies
             var tf = transform;
             var pos = PlayerTransform.position;
             tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
-            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkRange)
+            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkSphereRadius)
             {
                 CancelInvoke(nameof(Attack));
                 isAttacking = false;
                 var fw = tf.forward.normalized * 0.005f;
                 fw.y = 0;
                 Move(fw);
-                DebugConsole.Log("aiming, going to " + fw.ToString());
+                
             }
             else if (!isAttacking)
             {
@@ -78,7 +79,6 @@ namespace GameExtensions.Enemies
             anim.SetBool(MovingPmHash, false);
             anim.SetBool(RunningPmHash, false);
             CancelInvoke(nameof(Aim));
-            rb.Sleep();
         }
 
         protected void LookAtMe(Transform target)
@@ -96,6 +96,10 @@ namespace GameExtensions.Enemies
             Hp = Mathf.RoundToInt(Hp * DifficultyMultiplier);
             AtkPower = Mathf.RoundToInt(AtkPower * DifficultyMultiplier);
             Defense = Mathf.RoundToInt(Defense * DifficultyMultiplier);
+        }
+
+        private void OnDisable() {
+            StopAiming();
         }
     }
 }

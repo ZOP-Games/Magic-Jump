@@ -11,13 +11,13 @@ namespace GameExtensions.Enemies
         private Vector3 position;
         private EnemyPools pools;
         private GameObject obj;
-
         private Color gizmoColor;
 
         private void OnTriggerEnter(Collider other)
         {
             if (obj is not null || !other.CompareTag("Player")) return;
             obj = pools.GetInstance(typeId, position);
+            if(obj is null) return;
             transform.parent = obj.transform;
             obj.GetComponent<EnemyBase>().Reset();
             DebugConsole.Log("entered");
@@ -46,7 +46,7 @@ namespace GameExtensions.Enemies
 
         private void OnDrawGizmos()
         {
-            if (gizmoColor.b is 0)
+            if (gizmoColor.a is 0)
             {
                 switch (type)
                 {
