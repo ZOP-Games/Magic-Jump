@@ -150,7 +150,7 @@ namespace GameExtensions
         protected override int RunningPmHash => Animator.StringToHash("running");
         protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => new(0, 1.5f, 0.5f);
-        protected override int AtkSphereRadius => 1;
+        protected override int AtkRange => 15;
 
         /// <summary>
         ///     The amount of XP the player needs to level up.
@@ -162,8 +162,8 @@ namespace GameExtensions
 
         public void OnBeforeSerialize()
         {
-            playerAngles = tf is not null ? tf.eulerAngles : Vector3.zero;
-            playerPos = tf is not null ? tf.position : Vector3.zero;
+            playerAngles = tf != null ? tf.eulerAngles : Vector3.zero;
+            playerPos = tf != null ? tf.position : Vector3.zero;
         }
 
         public void OnAfterDeserialize()
@@ -227,13 +227,8 @@ namespace GameExtensions
         protected override void Attack()
         {
             //docs here
-            anim.SetTrigger(AttackingPmHash);
-            var collidersList = GetNearbyEntities();
-            collidersList.ForEach(c =>
-            {
-                c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
-                Rumble.RumbleFor(Rumble.RumbleStrength.Medium, Rumble.RumbleStrength.Medium, 0.1f);
-            });
+            base.Attack();
+            Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Medium,0.1f);
         }
 
         public override void TakeDamage(int amount)
@@ -363,14 +358,18 @@ namespace GameExtensions
             {
                 line.gameObject.SetActive(false);
             }
-            var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
-            tf.rotation = Quaternion.Slerp(tf.rotation, Quaternion.Euler(0, angle, 0),
-             TurnMultiplier * Time.fixedDeltaTime);
-            var lookForward = vCamTf.forward.normalized;
-            lookForward.y = 0;
-            var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
-            lookRight.y = 0;
-            var direction = lookForward * mPos.y * ForwardMoveMultiplier + lookRight * mPos.x;
+            var direction = Vector3.zero;
+            if (mozog)
+            {
+                var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
+                tf.rotation = Quaternion.Slerp(tf.rotation, Quaternion.Euler(0, angle, 0),
+                 TurnMultiplier * Time.fixedDeltaTime);
+                var lookForward = vCamTf.forward.normalized;
+                lookForward.y = 0;
+                var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
+                lookRight.y = 0;
+                direction = lookForward * mPos.y * ForwardMoveMultiplier + lookRight * mPos.x;
+            }
             direction.y = cc.velocity.y - GravityForce;
             if (jumping)
             {

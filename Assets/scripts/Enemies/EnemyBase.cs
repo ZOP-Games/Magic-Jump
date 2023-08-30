@@ -15,13 +15,6 @@ namespace GameExtensions.Enemies
         private const float LookAtWeight = 0.1f;
         private const float LookAtRadius = 1;
         protected TextMeshPro hpText;
-
-        protected bool isAttacking;
-        //Base class for enemies, for things all enemies do
-
-        /*The enemy will only attack when the player is within this range (should be in meters,
-        but because of scaling it's quite inconsistent, try to experiment with values)*/
-        protected int AtkRange { get; set; }
         protected abstract float Height { get; }
         protected abstract byte XpReward { get; }
         protected abstract Transform PlayerTransform { get; set; }
@@ -31,7 +24,6 @@ namespace GameExtensions.Enemies
         protected new void Start()
         {
             base.Start();
-            //putting tag on enemy, helps w/ identification
             tag = "Enemy";
             ApplyDifficulty();
             Difficulty.DifficultyLevelChanged += ApplyDifficulty;
@@ -46,31 +38,37 @@ namespace GameExtensions.Enemies
             Destroy(GetComponentInChildren<EnemyLocation>().gameObject);
         }
 
-        public void Reset(){
+        public void Reset()
+        {
             Hp = 100;
         }
 
         protected virtual void Aim()
         {
-            DebugConsole.Log("aim");
             var tf = transform;
             var pos = PlayerTransform.position;
-            tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
-            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkSphereRadius)
+
+            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkRange)
             {
+                tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
                 CancelInvoke(nameof(Attack));
-                isAttacking = false;
-                var fw = tf.forward.normalized * 0.005f;
+                var fw = tf.forward.normalized * TrackInterval;
                 fw.y = 0;
                 Move(fw);
-                
             }
-            else if (!isAttacking)
+            else if (!IsInvoking(nameof(Attack)))
             {
-                InvokeRepeating(nameof(Attack), 0, AtkRepeatRate);
-                isAttacking = true;
+               InvokeRepeating(nameof(Attack),0.5f,AtkRepeatRate);
+               //isAttacking = true;
             }
-            
+
+        }
+
+        protected override void Attack()
+        {
+            anim.SetTrigger(AttackingPmHash);
+            Player.Instance.TakeDamage(AtkPower);
+            //isAttacking = false;
         }
 
         protected void StopAiming()
@@ -98,7 +96,8 @@ namespace GameExtensions.Enemies
             Defense = Mathf.RoundToInt(Defense * DifficultyMultiplier);
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             StopAiming();
         }
     }

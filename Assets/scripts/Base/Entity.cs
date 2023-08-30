@@ -38,7 +38,7 @@ namespace GameExtensions
         protected abstract int RunningPmHash { get; }
         protected abstract int DamagePmHash { get; }
         protected abstract Vector3 AtkSpherePos { get; } //position of the Enitity's hitbox
-        protected abstract int AtkSphereRadius { get; } //the radius of the hitbox sphere
+        protected abstract int AtkRange { get; } //the radius of the hitbox sphere
         protected float DifficultyMultiplier { get; set; }
 
         private string OwnName => name; //name of the Entity
@@ -52,7 +52,7 @@ namespace GameExtensions
         //draws the hitbox sphere in scene view
         private void OnDrawGizmosSelected()
         {
-            Gizmos.DrawWireSphere(transform.position + AtkSpherePos, AtkSphereRadius);
+            Gizmos.DrawWireSphere(transform.position + AtkSpherePos, AtkRange);
         }
 
         // this tells any entity we might have (the player, enemies, etc.) what they all can do
@@ -74,42 +74,26 @@ namespace GameExtensions
         {
             //docs here
             anim.SetTrigger(AttackingPmHash);
-            var collidersList = GetNearbyEntities();
-            collidersList.ForEach(c =>
+            var entities = FindObjectsByType<Entity>(FindObjectsSortMode.None).Where(e => e.isActiveAndEnabled
+             && Mathf.Abs(Vector3.Distance(e.transform.position, transform.position)) < AtkRange
+             && Vector3.Dot(e.transform.forward,transform.forward) < 0
+             && e != this
+            )
+            .ToList();
+            foreach (var entity in entities)
             {
-                DebugConsole.Log("dealt damage to " + c.name);
-                c.GetComponent<Entity>().TakeDamage(AtkPower); //take damage
-            });
-        }
-
-        protected List<Entity> GetNearbyEntities()
-        {
-            atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
-            var colliders = new Collider[16]; //an array of colliders we store hit objects in
-            Physics.OverlapSphereNonAlloc(transform.position + atkPos, AtkSphereRadius,
-                colliders,0,QueryTriggerInteraction.Collide); //creating the hitbox sphere and colllecting colliders inside
-            DebugConsole.Log("found " + colliders.Count() + " things");
-            var listMsg = "We've got: ";
-            listMsg += colliders.Select(c => {
-                if(c is not null) return c.name;
-                else return "";
-            }).Aggregate((c,n) => c + ", " + n);
-            DebugConsole.Log(listMsg);
-            var entities = colliders.Where(c => c is not null).Select(c => c.GetComponent<Entity>())
-                //.Where(c => c is not null && c != this)
-                .ToList(); //removing nulls and the attacking Entity itself and Entities of the same type
-            DebugConsole.Log("out of those " + entities.Count + " was good enough");
-            return entities;
+                entity.TakeDamage(AtkPower);
+            }
+            DebugConsole.Log("attacked " + entities.Count() + " entities");
         }
 
         public IEnumerable<T> GetNearby<T>() where T : Component
         {
-            atkPos = transform.localPosition + AtkSpherePos; //position of the hitbox
-            var colliders = new Collider[16]; //an array of colliders we store hit objects in
-            Physics.OverlapSphereNonAlloc(atkPos, AtkSphereRadius,
-                colliders); //creating the hitbox sphere and colllecting colliders inside
-            var hits = colliders.Where(c => c is not null).Select(c => c.GetComponent<T>()).ToList();
-            hits.RemoveAll(c => c is null); //removing nulls
+            anim.SetTrigger(AttackingPmHash);
+            var hits = FindObjectsByType<T>(FindObjectsSortMode.None)
+            .Where(e =>
+                Mathf.Abs(Vector3.Distance(e.transform.position, transform.position)) < AtkRange && e != this)
+            .ToList();
             return hits;
         }
 
@@ -120,11 +104,12 @@ namespace GameExtensions
         {
             anim.SetBool(MovingPmHash, true);
             if (maxSpeed > 5) anim.SetBool(RunningPmHash, true);
-                cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier)
-                );  
+            cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier)
+            );
         }
 
-        protected void Move(Vector3 direction,bool isRunning){
+        protected void Move(Vector3 direction, bool isRunning)
+        {
             anim.SetBool(MovingPmHash, true);
             anim.SetBool(RunningPmHash, isRunning);
             cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier));

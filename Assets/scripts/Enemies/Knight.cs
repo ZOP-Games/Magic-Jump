@@ -20,7 +20,7 @@ namespace GameExtensions.Enemies
         protected override int RunningPmHash => Animator.StringToHash("running");
         protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.forward;
-        protected override int AtkSphereRadius => 2;
+        protected override int AtkRange => 5;
         protected override float Height => height;
         protected override byte XpReward => 20;
         protected override Transform PlayerTransform { get; set; }
@@ -31,7 +31,6 @@ namespace GameExtensions.Enemies
         {
             base.Start();
             height = transform.position.y * 2;
-            AtkRange = 4;
             AtkPower = 1;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();

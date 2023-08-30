@@ -19,26 +19,25 @@ namespace GameExtensions.Enemies
         protected override int RunningPmHash => Animator.StringToHash("running");
         protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.zero;
-        protected override int AtkSphereRadius => 3;
+        protected override int AtkRange => 3;
         protected override Transform PlayerTransform { get; set; }
         protected override float Height => 3;
         protected override byte XpReward => 12;
-        protected override float AtkRepeatRate => 2f;
+        protected override float AtkRepeatRate => 2.11f;
         protected override CinemachineTargetGroup Ctg { get; set; }
 
         protected new void Start()
         {
             //setting the attack stat for the enemy and getting some components from the gameobject
             base.Start();
-            AtkRange = 4;
             AtkPower = 1;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             cc = GetComponent<CharacterController>();
             hpText = GetComponentInChildren<TextMeshPro>();
-            if (hpText is null)
+            if (hpText == null)
             {
-                DebugConsole.Log("Where yo HP text at for " + name + "???",DebugConsole.WarningColor);
+                DebugConsole.Log("Where yo HP text at for " + name + "???", DebugConsole.WarningColor);
             }
             else
             {
@@ -50,23 +49,19 @@ namespace GameExtensions.Enemies
             if (GetComponentsInChildren<Collider>()
                 .All(c => !c.isTrigger))
                 DebugConsole.LogError("The attack trigger on " + name + " is missing u idoit");
-            void GetPlayerTransform(){
+            void GetPlayerTransform()
+            {
                 PlayerTransform = Player.Instance.transform;
             }
-            if(Player.Instance is not null) GetPlayerTransform();
-            else Invoke(nameof(GetPlayerTransform),1);
+            if (Player.Instance != null) GetPlayerTransform();
+            else Invoke(nameof(GetPlayerTransform), 1);
         }
 
-        private void OnTriggerEnter(Collider other) {
-            if(!other.CompareTag("Player")) return;
-            UnityEngine.Debug.Log("I see trigger",other);
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
             LookAtMe(transform);
-            InvokeRepeating(nameof(Aim), 0, TrackInterval); 
-        }
-        
-        private void OnControllerColliderHit(ControllerColliderHit hit) {
-            if(!hit.collider.CompareTag("Player")) return;
-            DebugConsole.Log("I feel player");
+            InvokeRepeating(nameof(Aim), 0, TrackInterval);
         }
 
         //if the player leaves the aim trigger, it stops the Check coroutine

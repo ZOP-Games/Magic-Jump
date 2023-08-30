@@ -17,17 +17,18 @@ namespace GameExtensions.Enemies
         protected override int RunningPmHash => Animator.StringToHash("running");
         protected override int DamagePmHash => Animator.StringToHash("damage");
         protected override Vector3 AtkSpherePos => Vector3.zero;
-        protected override int AtkSphereRadius => 6;
+        protected override int AtkRange => 3;
         protected override float Height => 1.5f;
         protected override byte XpReward => 12;
         protected override Transform PlayerTransform { get; set; }
         protected override float AtkRepeatRate => 1.5f;
         protected override CinemachineTargetGroup Ctg { get; set; }
 
+        private bool isAttacking;
+
         protected new void Start()
         {
             //setting the attack stat for the enemy and getting some components from the gameobject
-            AtkRange = 10;
             AtkPower = 1;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
