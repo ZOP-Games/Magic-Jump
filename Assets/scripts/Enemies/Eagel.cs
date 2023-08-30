@@ -34,7 +34,7 @@ namespace GameExtensions.Enemies
             anim = GetComponent<Animator>();
             hpText = GetComponentInChildren<TextMeshPro>();
             hpText.SetText("HP: 100");
-            Ctg = FindObjectOfType<CinemachineTargetGroup>();
+            Ctg = FindAnyObjectByType<CinemachineTargetGroup>();
             void GetPlayerTransform(){
                 PlayerTransform = Player.Instance.transform;
             }

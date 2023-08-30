@@ -413,7 +413,7 @@ namespace GameExtensions
             anim = GetComponent<Animator>();
             tf = transform;
             Instance = this;
-            vCamTf = FindObjectOfType<CinemachineBrain>().transform;
+            vCamTf = FindAnyObjectByType<CinemachineBrain>().transform;
             XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
             Difficulty.DifficultyLevelChanged += () =>
             {

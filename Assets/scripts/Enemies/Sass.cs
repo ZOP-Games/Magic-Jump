@@ -1,4 +1,5 @@
-﻿using GameExtensions.Debug;
+using GameExtensions.Debug;
+using System.Linq;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
@@ -6,40 +7,37 @@ using UnityEngine;
 namespace GameExtensions.Enemies
 {
     /// <summary>
-    ///     A Knight (lovag) enemy.
+    ///     A Kwork enemy.
     /// </summary>
-    public class Knight : EnemyBase
+    public class Sass : EnemyBase
     {
-        private float height;
-        private bool attackToggle;
+        private readonly WaitForSeconds wfs = new(0.5f);
 
-        //todo: research: is this necesarry??
+        //class for the Kwork enemy, it's a basic implementation of EnemyBase
         protected override int AttackingPmHash => Animator.StringToHash("attack");
-        protected int Attacking2PmHash => Animator.StringToHash("attack2");
         protected override int MovingPmHash => Animator.StringToHash("moving");
         protected override int RunningPmHash => Animator.StringToHash("running");
         protected override int DamagePmHash => Animator.StringToHash("damage");
-        protected override Vector3 AtkSpherePos => Vector3.forward;
-        protected override int AtkRange => 3;
-        protected override float Height => height;
-        protected override byte XpReward => 20;
+        protected override Vector3 AtkSpherePos => Vector3.zero;
+        protected override int AtkRange => 6;
         protected override Transform PlayerTransform { get; set; }
-        protected override float AtkRepeatRate => 4.08f;
+        protected override float Height => 3;
+        protected override byte XpReward => 12;
+        protected override float AtkRepeatRate => 1.07f;
         protected override CinemachineTargetGroup Ctg { get; set; }
 
-        private new void Start()
+        protected new void Start()
         {
+            //setting the attack stat for the enemy and getting some components from the gameobject
             base.Start();
-            height = transform.position.y * 2;
             AtkPower = 1;
-            AttackDelay = 3f;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             cc = GetComponent<CharacterController>();
             hpText = GetComponentInChildren<TextMeshPro>();
-            if (hpText is null)
+            if (hpText == null)
             {
-                DebugConsole.Log("Where yo HP text at for " + name + "??", DebugConsole.WarningColor);
+                DebugConsole.Log("Where yo HP text at for " + name + "???", DebugConsole.WarningColor);
             }
             else
             {
@@ -47,32 +45,16 @@ namespace GameExtensions.Enemies
                 HealthChanged += () => hpText.SetText("HP: " + Hp);
             }
 
-            Ctg = FindAnyObjectByType<CinemachineTargetGroup>();
-            if (GetComponentInChildren<Collider>() is null)
-                DebugConsole.LogError("The attack trigger on " + name + " missing u idoit");
+            Ctg = FindObjectOfType<CinemachineTargetGroup>();
+            if (GetComponentsInChildren<Collider>()
+                .All(c => !c.isTrigger))
+                DebugConsole.LogError("The attack trigger on " + name + " is missing u idoit");
             void GetPlayerTransform()
             {
                 PlayerTransform = Player.Instance.transform;
-                if (PlayerTransform is null) DebugConsole.LogError("Can't find PlayerTrandform anywhere!");
             }
-            if (Player.Instance is not null) GetPlayerTransform();
+            if (Player.Instance != null) GetPlayerTransform();
             else Invoke(nameof(GetPlayerTransform), 1);
-
-        }
-
-        protected override void Attack()
-        {
-            if (attackToggle)
-            {
-                anim.SetTrigger(AttackingPmHash);
-                attackToggle = false;
-            }
-            else
-            {
-                anim.SetTrigger(Attacking2PmHash);
-                attackToggle = true;
-            }
-            Player.Instance.TakeDamage(AtkPower);
         }
 
         private void OnTriggerEnter(Collider other)

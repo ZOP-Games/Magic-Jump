@@ -15,6 +15,7 @@ namespace GameExtensions.Enemies
         private const float LookAtWeight = 0.1f;
         private const float LookAtRadius = 1;
         protected TextMeshPro hpText;
+        protected float AttackDelay { get; set; } = 0.5f;
         protected abstract float Height { get; }
         protected abstract byte XpReward { get; }
         protected abstract Transform PlayerTransform { get; set; }
@@ -58,8 +59,7 @@ namespace GameExtensions.Enemies
             }
             else if (!IsInvoking(nameof(Attack)))
             {
-               InvokeRepeating(nameof(Attack),0.5f,AtkRepeatRate);
-               //isAttacking = true;
+                InvokeRepeating(nameof(Attack), AttackDelay, AtkRepeatRate);
             }
 
         }
@@ -68,7 +68,6 @@ namespace GameExtensions.Enemies
         {
             anim.SetTrigger(AttackingPmHash);
             Player.Instance.TakeDamage(AtkPower);
-            //isAttacking = false;
         }
 
         protected void StopAiming()
