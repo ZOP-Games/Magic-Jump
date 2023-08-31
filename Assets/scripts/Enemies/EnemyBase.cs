@@ -71,7 +71,7 @@ namespace GameExtensions.Enemies
 
         protected void StopAiming()
         {
-            if(anim is null) return;
+            if (anim is null) return;
             CancelInvoke(nameof(Attack));
             anim.SetBool(MovingPmHash, false);
             anim.SetBool(RunningPmHash, false);

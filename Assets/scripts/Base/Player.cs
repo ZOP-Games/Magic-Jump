@@ -228,7 +228,7 @@ namespace GameExtensions
         {
             //docs here
             base.Attack();
-            Rumble.RumbleFor(Rumble.RumbleStrength.Medium,Rumble.RumbleStrength.Medium,0.1f);
+            Rumble.RumbleFor(Rumble.RumbleStrength.Medium, Rumble.RumbleStrength.Medium, 0.1f);
         }
 
         public override void TakeDamage(int amount)
@@ -368,7 +368,7 @@ namespace GameExtensions
                 lookForward.y = 0;
                 var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
                 lookRight.y = 0;
-                direction = lookForward * mPos.y * ForwardMoveMultiplier + lookRight * mPos.x;
+                direction = ForwardMoveMultiplier * mPos.y * lookForward + lookRight * mPos.x;
             }
             direction.y = cc.velocity.y - GravityForce;
             if (jumping)
@@ -380,7 +380,9 @@ namespace GameExtensions
                     jumping = false;
                 }
             }
-            Move(direction * Time.fixedDeltaTime, running);
+
+            var speed = running ? WalkSpeed : RunSpeed;
+            Move(direction * Time.fixedDeltaTime, running, speed);
         }
 
         //Start() runs once when the object is enabled, lots of early game setup goes here

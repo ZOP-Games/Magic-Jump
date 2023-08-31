@@ -37,13 +37,14 @@ namespace GameExtensions.Enemies
             hpText.SetText("HP: 100");
             Ctg = FindAnyObjectByType<CinemachineTargetGroup>();
             cc = GetComponent<CharacterController>();
-            void GetPlayerTransform(){
+            void GetPlayerTransform()
+            {
                 PlayerTransform = Player.Instance.transform;
             }
-            if(Player.Instance is not null) GetPlayerTransform();
-            else Invoke(nameof(GetPlayerTransform),1);
+            if (Player.Instance is not null) GetPlayerTransform();
+            else Invoke(nameof(GetPlayerTransform), 1);
             HealthChanged += () => hpText.SetText("HP: " + Hp);
-            
+
         }
 
         private void OnTriggerEnter(Collider other)
@@ -71,10 +72,10 @@ namespace GameExtensions.Enemies
                 anim.SetBool(MovingPmHash, true);
                 tf.LookAt(pos);
                 var dir = tf.forward;
-                var rnd = Random.Range(0,1f);
-                if(rnd > 0.7f) dir.y += FlightFactor * TrackInterval;
-                else if(rnd < 0.3f && !cc.isGrounded) dir.y -= FlightFactor * TrackInterval;
-                Move(dir*TrackInterval);
+                var rnd = Random.Range(0, 1f);
+                if (rnd > 0.7f) dir.y += FlightFactor * TrackInterval;
+                else if (rnd < 0.3f && !cc.isGrounded) dir.y -= FlightFactor * TrackInterval;
+                Move(dir * TrackInterval);
             }
             else if (!IsInvoking(nameof(Attack)))
             {

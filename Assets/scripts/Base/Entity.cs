@@ -76,7 +76,7 @@ namespace GameExtensions
             anim.SetTrigger(AttackingPmHash);
             var entities = FindObjectsByType<Entity>(FindObjectsSortMode.None).Where(e => e.isActiveAndEnabled
              && Mathf.Abs(Vector3.Distance(e.transform.position, transform.position)) < AtkRange
-             && Vector3.Dot(e.transform.forward,transform.forward) < 0
+             && Vector3.Dot(e.transform.forward, transform.forward) < 0
              && e != this
             )
             .ToList();
@@ -108,11 +108,11 @@ namespace GameExtensions
             );
         }
 
-        protected void Move(Vector3 direction, bool isRunning)
+        protected void Move(Vector3 direction, bool isRunning, int maxSpeed = 5)
         {
             anim.SetBool(MovingPmHash, true);
             anim.SetBool(RunningPmHash, isRunning);
-            cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier));
+            cc.Move(new Vector3(direction.x * maxSpeed * MoveForceMultiplier, direction.y, direction.z * maxSpeed * MoveForceMultiplier));
         }
 
         public virtual void Stun()
