@@ -7,7 +7,7 @@ using UnityEngine;
 namespace GameExtensions.Enemies
 {
     /// <summary>
-    ///     A Kwork enemy.
+    ///     A Sas enemy.
     /// </summary>
     public class Sass : EnemyBase
     {

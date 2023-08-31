@@ -31,7 +31,7 @@ namespace GameExtensions.Enemies
         {
             base.Start();
             height = transform.position.y * 2;
-            AtkPower = 1;
+            AtkPower = 10;
             AttackDelay = 3f;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();

@@ -48,12 +48,11 @@ namespace GameExtensions.Enemies
         {
             var tf = transform;
             var pos = PlayerTransform.position;
-
             if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkRange)
             {
                 tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
                 CancelInvoke(nameof(Attack));
-                var fw = tf.forward.normalized * TrackInterval;
+                var fw = tf.forward * TrackInterval;
                 fw.y = 0;
                 Move(fw);
             }

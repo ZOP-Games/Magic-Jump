@@ -1,18 +1,19 @@
 using Cinemachine;
+using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
 {
     /// <summary>
-    ///     <inheritdoc cref="Kwork" />
+    ///     An Gost (szellem) enemy.
     /// </summary>
-    public class Eagel : EnemyBase
+    public class Gost : EnemyBase
     {
-        //we'll put navigation, animations + other things that are unique to this kind of enemy (the bird)
+        private const float FlightFactor = 15f;
 
         //setting Entity properties, for more info -> see Entity
-        protected override int AttackingPmHash => Animator.StringToHash("attacking");
+        protected override int AttackingPmHash => Animator.StringToHash("attack");
         protected override int MovingPmHash => Animator.StringToHash("moving");
         protected override int RunningPmHash => Animator.StringToHash("running");
         protected override int DamagePmHash => Animator.StringToHash("damage");
@@ -21,27 +22,28 @@ namespace GameExtensions.Enemies
         protected override float Height => 1.5f;
         protected override byte XpReward => 12;
         protected override Transform PlayerTransform { get; set; }
-        protected override float AtkRepeatRate => 1.5f;
+        protected override float AtkRepeatRate => 2.11f;
         protected override CinemachineTargetGroup Ctg { get; set; }
-
-        private bool isAttacking;
 
         protected new void Start()
         {
+            base.Start();
             //setting the attack stat for the enemy and getting some components from the gameobject
             AtkPower = 1;
+            //AttackDelay = 0.5f;
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             hpText = GetComponentInChildren<TextMeshPro>();
             hpText.SetText("HP: 100");
             Ctg = FindAnyObjectByType<CinemachineTargetGroup>();
+            cc = GetComponent<CharacterController>();
             void GetPlayerTransform(){
                 PlayerTransform = Player.Instance.transform;
             }
             if(Player.Instance is not null) GetPlayerTransform();
             else Invoke(nameof(GetPlayerTransform),1);
             HealthChanged += () => hpText.SetText("HP: " + Hp);
-            base.Start();
+            
         }
 
         private void OnTriggerEnter(Collider other)
@@ -63,18 +65,20 @@ namespace GameExtensions.Enemies
         {
             var tf = transform;
             var pos = PlayerTransform.position;
-            tf.LookAt(pos);
             if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > AtkRange)
             {
                 CancelInvoke(nameof(Attack));
-                isAttacking = false;
                 anim.SetBool(MovingPmHash, true);
-                Move(tf.InverseTransformDirection(tf.forward.normalized*0.005f));
+                tf.LookAt(pos);
+                var dir = tf.forward;
+                var rnd = Random.Range(0,1f);
+                if(rnd > 0.7f) dir.y += FlightFactor * TrackInterval;
+                else if(rnd < 0.3f && !cc.isGrounded) dir.y -= FlightFactor * TrackInterval;
+                Move(dir*TrackInterval);
             }
-            else if (!isAttacking)
+            else if (!IsInvoking(nameof(Attack)))
             {
-                InvokeRepeating(nameof(Attack), 0, AtkRepeatRate);
-                isAttacking = true;
+                InvokeRepeating(nameof(Attack), AttackDelay, AtkRepeatRate);
             }
         }
     }

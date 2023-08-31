@@ -11,7 +11,6 @@ namespace GameExtensions.Enemies
     /// </summary>
     public class Kwork : EnemyBase
     {
-        private readonly WaitForSeconds wfs = new(0.5f);
 
         //class for the Kwork enemy, it's a basic implementation of EnemyBase
         protected override int AttackingPmHash => Animator.StringToHash("attack");
@@ -45,7 +44,7 @@ namespace GameExtensions.Enemies
                 HealthChanged += () => hpText.SetText("HP: " + Hp);
             }
 
-            Ctg = FindObjectOfType<CinemachineTargetGroup>();
+            Ctg = FindAnyObjectByType<CinemachineTargetGroup>();
             if (GetComponentsInChildren<Collider>()
                 .All(c => !c.isTrigger))
                 DebugConsole.LogError("The attack trigger on " + name + " is missing u idoit");
