@@ -83,7 +83,7 @@ namespace GameExtensions
         private const float MediumRumble = 0.2f;
         private const float LongRumble = 0.3f;
         private const float RightMoveMultiplier = 0.5f;
-        private const float ForwardMoveMultiplier = 0.5f;
+        private const float ForwardMoveMultiplier = 0.1f;
         private const int TurnMultiplier = 5;
         private const float GravityForce = 0.98f;
         [SerializeField][HideInInspector] private Vector3 playerPos;
@@ -118,7 +118,7 @@ namespace GameExtensions
         ///     Used for checking if the player is running or not
         /// </summary>
         private bool running;
-        private Vector3 turnDirection;
+
         private LineRenderer line;
         private Transform vCamTf;
         /// <summary>
@@ -422,7 +422,6 @@ namespace GameExtensions
                 if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
             };
             if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
-            turnDirection = Vector3.zero;
             DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP", () =>
             {
                 AddXp(1000);

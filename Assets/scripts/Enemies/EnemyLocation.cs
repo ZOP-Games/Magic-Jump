@@ -12,13 +12,14 @@ namespace GameExtensions.Enemies
         private EnemyPools pools;
         private GameObject obj;
         private Color gizmoColor;
+        private Transform tf;
 
         private void OnTriggerEnter(Collider other)
         {
             if (obj is not null || !other.CompareTag("Player")) return;
             obj = pools.GetInstance(typeId, position);
             if(obj is null) return;
-            transform.parent = obj.transform;
+            tf.parent = obj.transform;
             obj.GetComponent<EnemyBase>().Reset();
             DebugConsole.Log("entered");
         }
@@ -28,12 +29,13 @@ namespace GameExtensions.Enemies
             if(obj is null || !other.CompareTag("Player")) return;
             pools.ReturnInstance(obj, typeId);
             obj = null;
-            transform.parent = transform.root;
+            tf.parent = tf.root;
         }
 
         private void Start()
         {
-            position = transform.position;
+            tf = transform;
+            position = tf.position;
             pools = FindObjectOfType<EnemyPools>();
             typeId = (int)type;
         }
@@ -64,7 +66,7 @@ namespace GameExtensions.Enemies
                         break;
                 }
             }
-            else Gizmos.DrawIcon(transform.position,"gizmo.png", true, gizmoColor);
+            else Gizmos.DrawIcon(tf.position,"gizmo.png", true, gizmoColor);
         }
 
         private enum EnemyType

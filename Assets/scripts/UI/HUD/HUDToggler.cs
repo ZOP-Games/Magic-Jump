@@ -41,7 +41,8 @@ namespace GameExtensions.UI.HUD
 
         private void Start()
         {
-            DebugInputHandler.Instance?.AddInputCallback("[Debug] Toggle HUD",() => AskSetHUD(!IsHUDVisible));
+            if(DebugInputHandler.Instance is null) return;
+            DebugInputHandler.Instance.AddInputCallback("[Debug] Toggle HUD",() => AskSetHUD(!IsHUDVisible));
         }
     }
 }
