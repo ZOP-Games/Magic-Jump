@@ -33,8 +33,6 @@ namespace GameExtensions.Story
         private bool isUsingWebm;
 #pragma warning restore IDE0044
 #pragma warning restore CS0649
-
-        //todo:implement story progression
         private VideoPlayer videoPlayer;
 
         private new void Start()

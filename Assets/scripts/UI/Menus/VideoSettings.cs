@@ -96,7 +96,7 @@ namespace GameExtensions.UI.Menus
             (2, 0) //ultra
         };
 
-        private List<string> refreshRates => Screen.resolutions.Select(r => r.refreshRate.ToString()).ToList();
+        private List<string> RefreshRates => Screen.resolutions.Select(r => r.refreshRate.ToString()).ToList();
 
         private readonly WorldQuality[] worldQualities =
         {
@@ -125,7 +125,7 @@ namespace GameExtensions.UI.Menus
             else Instance = this;
             firstObj = screenDropdown.gameObject;
             OnEnable();
-            refreshRates.Add("500");
+            RefreshRates.Add("500");
             resolutions = Screen.resolutions.GroupBy(r => (r.width, r.height)).Select(r => r.Key).ToList();
             resolutionDropdown.AddOptions(resolutions.Select(r => r.width + " x " + r.height).ToList());
             refreshDropdown.AddOptions(Screen.resolutions.Select(r => r.refreshRate.ToString()).Distinct().ToList());
@@ -133,7 +133,7 @@ namespace GameExtensions.UI.Menus
             screenDropdown.value = ScreenMode == FullScreenMode.Windowed ? 2 : (int)ScreenMode;
             resolutionDropdown.value = resolutions.IndexOf((CurrentResolution.width, CurrentResolution.height));
             scaleSlider.value = RenderScale;
-            refreshDropdown.value = refreshRates.IndexOf(CurrentRefreshRate.ToString());
+            refreshDropdown.value = RefreshRates.IndexOf(CurrentRefreshRate.ToString());
             ssaoToggle.SetIsOnWithoutNotify(IsSsaoEnabled);
             vSyncToggle.SetIsOnWithoutNotify(IsVSyncEnabled);
             aaDropdown.value = (int)AntiAliasing;
@@ -213,7 +213,7 @@ namespace GameExtensions.UI.Menus
             var res = CurrentResolution;
             res.height = currentHeight;
             res.width = currentWidth;
-            res.refreshRate = CurrentRefreshRate != 500 ? CurrentRefreshRate : int.Parse(refreshRates.First());
+            res.refreshRate = CurrentRefreshRate != 500 ? CurrentRefreshRate : int.Parse(RefreshRates.First());
             CurrentResolution = res;
         }
 
@@ -254,7 +254,7 @@ namespace GameExtensions.UI.Menus
 
         public void ChangeRefreshRate(int rateNumber)
         {
-            var newRate = int.Parse(refreshRates[rateNumber]);
+            var newRate = int.Parse(RefreshRates[rateNumber]);
             if (CurrentRefreshRate == newRate) return;
             CurrentRefreshRate = newRate;
             Application.targetFrameRate = CurrentRefreshRate;

@@ -14,6 +14,7 @@ namespace GameExtensions.Enemies
         protected const float TrackInterval = .02f;
         private const float LookAtWeight = 0.1f;
         private const float LookAtRadius = 1;
+        private const float MoveMultiplier = 0.04f;
         protected TextMeshPro hpText;
         protected float AttackDelay { get; set; } = 0.5f;
         protected abstract float Height { get; }
@@ -52,7 +53,7 @@ namespace GameExtensions.Enemies
             {
                 tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
                 CancelInvoke(nameof(Attack));
-                var fw = tf.forward * TrackInterval;
+                var fw = MoveMultiplier * TrackInterval * tf.forward;
                 fw.y = 0;
                 Move(fw);
             }

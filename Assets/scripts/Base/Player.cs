@@ -82,7 +82,7 @@ namespace GameExtensions
         private const float ShortRumble = 0.1f;
         private const float MediumRumble = 0.2f;
         private const float LongRumble = 0.3f;
-        private const float RightMoveMultiplier = 0.5f;
+        private const float RightMoveMultiplier = 0.05f;
         private const float ForwardMoveMultiplier = 0.1f;
         private const int TurnMultiplier = 5;
         private const float GravityForce = 0.98f;
