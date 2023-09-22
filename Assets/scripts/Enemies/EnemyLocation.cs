@@ -20,7 +20,7 @@ namespace GameExtensions.Enemies
             obj = pools.GetInstance(typeId, position);
             if(obj is null) return;
             tf.parent = obj.transform;
-            obj.GetComponent<EnemyBase>().Reset();
+            obj.GetComponent<EnemyStateManager>().Reset();
             DebugConsole.Log("entered");
         }
 
@@ -46,27 +46,20 @@ namespace GameExtensions.Enemies
             pools.ReturnInstance(obj, typeId);
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (gizmoColor.a is 0)
             {
-                switch (type)
+                gizmoColor = type switch
                 {
-                    case EnemyType.Kwork:
-                        gizmoColor = Color.blue;
-                        break;
-                    case EnemyType.Szellem:
-                        gizmoColor = Color.cyan;
-                        break;
-                    case EnemyType.Sas:
-                        gizmoColor = Color.magenta;
-                        break;
-                    case EnemyType.Lovag:
-                        gizmoColor = Color.green;
-                        break;
-                }
+                    EnemyType.Kwork => Color.blue,
+                    EnemyType.Szellem => Color.cyan,
+                    EnemyType.Sas => Color.magenta,
+                    EnemyType.Lovag => Color.green,
+                    _ => gizmoColor
+                };
             }
-            else Gizmos.DrawIcon(tf.position,"gizmo.png", true, gizmoColor);
+            else Gizmos.DrawIcon(transform.position,"gizmo.png", true, gizmoColor);
         }
 
         private enum EnemyType

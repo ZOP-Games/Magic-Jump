@@ -31,7 +31,7 @@ namespace GameExtensions.Enemies
             //setting the attack stat for the enemy and getting some components from the gameobject
             base.Start();
             AtkPower = 1;
-            rb = GetComponent<Rigidbody>();
+            GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             cc = GetComponent<CharacterController>();
             hpText = GetComponentInChildren<TextMeshPro>();
@@ -49,12 +49,14 @@ namespace GameExtensions.Enemies
             if (GetComponentsInChildren<Collider>()
                 .All(c => !c.isTrigger))
                 DebugConsole.LogError("The attack trigger on " + name + " is missing u idoit");
+            if (Player.Instance != null) GetPlayerTransform();
+            else Invoke(nameof(GetPlayerTransform), 1);
+            return;
+
             void GetPlayerTransform()
             {
                 PlayerTransform = Player.Instance.transform;
             }
-            if (Player.Instance != null) GetPlayerTransform();
-            else Invoke(nameof(GetPlayerTransform), 1);
         }
 
         private void OnTriggerEnter(Collider other)

@@ -54,7 +54,7 @@ namespace GameExtensions
         {
             DebugConsole.Log("Loading " + Savebles.Count + " objects");
             foreach (var saveable in Savebles) saveable.Load(ReadFromFile(saveable.Id));
-            if (Player.Instance is not null && !Player.Instance.isActiveAndEnabled) Player.Instance.Refill();
+            if (Player.Instance is not null && !Player.Instance.isActiveAndEnabled) Player.Instance.Revive();
             DebugConsole.Log("save has loaded");
         }
     }

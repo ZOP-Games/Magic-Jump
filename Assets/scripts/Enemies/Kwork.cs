@@ -30,7 +30,7 @@ namespace GameExtensions.Enemies
             //setting the attack stat for the enemy and getting some components from the gameobject
             base.Start();
             AtkPower = 1;
-            rb = GetComponent<Rigidbody>();
+            GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             cc = GetComponent<CharacterController>();
             hpText = GetComponentInChildren<TextMeshPro>();

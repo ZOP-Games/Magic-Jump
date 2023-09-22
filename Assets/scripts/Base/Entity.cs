@@ -29,7 +29,6 @@ namespace GameExtensions
         private Vector3 atkPos; //position of the attack sphere
 
         //some components
-        protected Rigidbody rb;
         protected CharacterController cc;
 
         //hashes of animator state names, use these for state checks

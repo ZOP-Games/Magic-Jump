@@ -471,11 +471,10 @@ namespace GameExtensions
 
         #endregion
 
-        public void Refill()
+        public void Revive()
         {
             enabled = true;
-            var ins = Instance;
-            ins.Hp = 100;
+            Instance.Hp = 100;
         }
     }
 }

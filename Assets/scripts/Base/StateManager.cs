@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace GameExtensions
 {
@@ -7,10 +6,16 @@ namespace GameExtensions
     {
         public State CurrentState { get; private set; }
         public byte atkRange;
+        [field: SerializeField] public int Hp { get; set; } = 100;
+
+        [field: SerializeField] public int AtkPower { get; set; } = 10;
+
+        [field: SerializeField] public int Defense { get; set; } = 10;
+        protected Animator anim;
 
         public void SetState(State newState)
         {
-            CurrentState.Exit();
+            CurrentState?.ExitState();
             CurrentState = newState;
             CurrentState.Start();
         }
@@ -34,7 +39,7 @@ namespace GameExtensions
 
         private void OnDestroy()
         {
-            CurrentState.Destroy();
+            CurrentState?.OnDestroy();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -54,7 +59,7 @@ namespace GameExtensions
 
         private void OnDrawGizmos()
         {
-            CurrentState.OnDrawGizmos();
+            CurrentState?.OnDrawGizmos();
         }
 
         private void OnTriggerEnter(Collider other)

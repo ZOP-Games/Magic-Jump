@@ -33,7 +33,7 @@ namespace GameExtensions.Enemies
             height = transform.position.y * 2;
             AtkPower = 10;
             AttackDelay = 3f;
-            rb = GetComponent<Rigidbody>();
+            GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             cc = GetComponent<CharacterController>();
             hpText = GetComponentInChildren<TextMeshPro>();

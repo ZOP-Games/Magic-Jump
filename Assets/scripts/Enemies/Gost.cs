@@ -31,7 +31,7 @@ namespace GameExtensions.Enemies
             //setting the attack stat for the enemy and getting some components from the gameobject
             AtkPower = 1;
             //AttackDelay = 0.5f;
-            rb = GetComponent<Rigidbody>();
+            GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             hpText = GetComponentInChildren<TextMeshPro>();
             hpText.SetText("HP: 100");

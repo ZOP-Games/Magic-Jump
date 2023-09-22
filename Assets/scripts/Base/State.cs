@@ -4,7 +4,7 @@ namespace GameExtensions
 {
     public abstract class State
     {
-        protected StateManager context;
+        protected readonly StateManager context;
 
         protected abstract void CheckForTransition();
 
@@ -65,12 +65,12 @@ namespace GameExtensions
 
         }
 
-        public virtual void Destroy()
+        public virtual void OnDestroy()
         {
 
         }
 
-        public virtual void Exit()
+        public virtual void ExitState()
         {
 
         }

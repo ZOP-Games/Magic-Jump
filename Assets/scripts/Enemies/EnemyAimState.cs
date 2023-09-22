@@ -3,11 +3,9 @@ using UnityEngine;
 
 namespace GameExtensions.Enemies
 {
-    public class AimState : State
+    public class EnemyAimState : State
     {
         private const float TrackInterval = .02f;
-        private const float LookAtWeight = 0.1f;
-        private const float LookAtRadius = 1;
         private const float MoveMultiplier = 0.04f;
 
         private Transform playerTransform;
@@ -46,7 +44,7 @@ namespace GameExtensions.Enemies
 
         
 
-        public AimState(StateManager context) : base(context)
+        public EnemyAimState(StateManager context) : base(context)
         {
 
         }
