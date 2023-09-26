@@ -98,16 +98,7 @@ namespace GameExtensions
 
         public abstract void Die();
 
-        //common move method for all Entities
-        protected void Move(Vector3 direction, int maxSpeed = 5)
-        {
-            anim.SetBool(MovingPmHash, true);
-            if (maxSpeed > 5) anim.SetBool(RunningPmHash, true);
-            cc.Move(new Vector3(direction.x * MoveForceMultiplier, direction.y, direction.z * MoveForceMultiplier)
-            );
-        }
-
-        protected void Move(Vector3 direction, bool isRunning, int maxSpeed = 5)
+        protected void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
         {
             anim.SetBool(MovingPmHash, true);
             anim.SetBool(RunningPmHash, isRunning);

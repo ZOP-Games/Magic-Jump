@@ -5,14 +5,15 @@ namespace GameExtensions.Enemies
 {
     public class EnemyAttackState : EnemyState
     {
-        private WaitForSeconds wait;
-        private WaitForSeconds repeat;
+        private readonly WaitForSeconds wait;
+        private readonly WaitForSeconds repeat;
         private int atkPower;
         private bool canAttack = true;
         private Transform tf;
         private Transform playerTf;
+        private Animator anim;
 
-        public EnemyAttackState(EnemyStateManager enemy,int waitInterval,int repeatInterval) : base(enemy)
+        public EnemyAttackState(EnemyStateManager enemy, float waitInterval, float repeatInterval) : base(enemy)
         {
             wait = new WaitForSeconds(waitInterval);
             repeat = new WaitForSeconds(repeatInterval);
@@ -20,15 +21,18 @@ namespace GameExtensions.Enemies
 
         protected override void CheckForTransition()
         {
-            if (!canAttack) context.SetState(EnemyStateManager.AimState);
+            if (!canAttack) context.SetState(EnemyStateManager.IdleState);
         }
 
         public override void Start()
         {
-            atkPower = context.AtkPower;
-            context.StartCoroutine(nameof(Coroutine));
+            anim = enemy.GetComponent<Animator>();
+            atkPower = enemy.AtkPower;
             tf = context.transform;
             playerTf = Player.Instance.transform;
+            var attackHash = Animator.StringToHash("attack");
+            anim.SetTrigger(attackHash);
+            context.StartCoroutine(Coroutine());
         }
 
         public override void ExitState()
@@ -42,7 +46,7 @@ namespace GameExtensions.Enemies
             {
                 yield return wait;
                 Player.Instance.TakeDamage(atkPower);
-                if (Mathf.Abs(Vector3.Distance(tf.position, playerTf.position)) > context.atkRange)
+                if (Mathf.Abs(Vector3.Distance(tf.position, playerTf.position)) > enemy.atkRange)
                 {
                     canAttack = false;
                     break;

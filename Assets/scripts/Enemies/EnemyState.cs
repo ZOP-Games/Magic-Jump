@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cinemachine;
 using GameExtensions.Debug;
 using UnityEngine;
 
@@ -8,21 +9,27 @@ namespace GameExtensions.Enemies
     {
         private const float LookAtWeight = 0.1f;
         private const float LookAtRadius = 1;
-        private readonly EnemyStateManager enemy;
+        protected readonly EnemyStateManager enemy;
+        protected CinemachineTargetGroup ctg;
 
         protected EnemyState(EnemyStateManager enemy) : base(enemy)
         {
             this.enemy = enemy;
         }
 
+        public override void Start()
+        {
+            ctg = Object.FindAnyObjectByType<CinemachineTargetGroup>();
+        }
+
         protected void LookAtMe(Transform target)
         {
-            enemy.Ctg.AddMember(target, LookAtWeight, LookAtRadius);
+            ctg.AddMember(target, LookAtWeight, LookAtRadius);
         }
 
         protected void DontLookAtMe(Transform target)
         {
-            enemy.Ctg.RemoveMember(target);
+            ctg.RemoveMember(target);
         }
     }
 }

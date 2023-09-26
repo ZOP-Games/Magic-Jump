@@ -8389,10 +8389,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917c881687aed6f48828e72038cc8ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atkRange: 0
+  atkRange: 2
   <Hp>k__BackingField: 100
   <AtkPower>k__BackingField: 10
   <Defense>k__BackingField: 10
+  attackWait: 0.45833334
+  attackRepeat: 1.9583334
 --- !u!1 &7629247890931751079
 GameObject:
   m_ObjectHideFlags: 0
