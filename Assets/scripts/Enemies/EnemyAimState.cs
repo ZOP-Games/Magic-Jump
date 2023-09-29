@@ -9,6 +9,7 @@ namespace GameExtensions.Enemies
         private const float TrackInterval = .02f;
         private const float MoveMultiplier = 0.04f;
         private const int MoveForceMultiplier = 25;
+        private const float GravityForce = 0.98f;
 
         protected readonly int movingPmHash = Animator.StringToHash("moving");
         protected readonly int runningPmHash = Animator.StringToHash("running");
@@ -21,8 +22,8 @@ namespace GameExtensions.Enemies
 
         protected override void CheckForTransition()
         {
-            if (inRange) context.SetState(EnemyStateManager.AttackIdle);
-            else if(isPassive) context.SetState(EnemyStateManager.IdleState);
+            if (inRange) context.SetState(EnemyStateManager.AttackState);
+            else if (isPassive) context.SetState(EnemyStateManager.IdleState);
             //todo:fix transitions
         }
 
@@ -43,7 +44,7 @@ namespace GameExtensions.Enemies
                 inRange = false;
                 tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
 
-                var fw = MoveMultiplier * TrackInterval * tf.forward;
+                var fw = Time.deltaTime * TrackInterval * tf.forward;
                 fw.y = 0;
                 Move(fw);
                 DebugConsole.Log("Moving in direction: " + fw);
@@ -57,17 +58,26 @@ namespace GameExtensions.Enemies
 
         public override void OnTriggerExit(Collider collider)
         {
-            if(!collider.CompareTag("Player")) return;
+            if (!collider.CompareTag("Player")) return;
             DontLookAtMe(context.transform);
             isPassive = false;
+        }
+
+        public override void ExitState()
+        {
+            anim.SetBool(movingPmHash, false);
         }
 
         public void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
         {
             anim.SetBool(movingPmHash, true);
             anim.SetBool(runningPmHash, isRunning);
-            cc.Move(new Vector3(direction.x * maxSpeed * MoveForceMultiplier, direction.y,
-                direction.z * maxSpeed * MoveForceMultiplier));
+
+            var moveDirection = new Vector3(
+                direction.x * maxSpeed * MoveForceMultiplier,
+                cc.velocity.y - GravityForce * Time.deltaTime,
+                direction.z * maxSpeed * MoveForceMultiplier);
+            cc.Move(moveDirection);
         }
 
         public EnemyAimState(EnemyStateManager enemy) : base(enemy)

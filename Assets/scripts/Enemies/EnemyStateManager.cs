@@ -1,5 +1,4 @@
-﻿using System;
-using Cinemachine;
+﻿using Cinemachine;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
@@ -8,11 +7,12 @@ namespace GameExtensions.Enemies
     {
         public static EnemyAimState AimState { get; private set; }
         public static EnemyIdleState IdleState { get; private set; }
-        public static EnemyAttackState AttackIdle { get; private set; }
+        public static EnemyAttackState AttackState { get; private set; }
 
         private float DifficultyMultiplier { get; } = Difficulty.DifficultyMultiplier;
         [SerializeField] private float attackWait;
         [SerializeField] private float attackRepeat;
+        [SerializeField] private int xpReward;
 
         private void Start()
         {
@@ -20,7 +20,8 @@ namespace GameExtensions.Enemies
 
             AimState ??= new EnemyAimState(this);
             IdleState ??= new EnemyIdleState(this);
-            AttackIdle ??= new EnemyAttackState(this, attackWait, attackRepeat);
+            AttackState ??= new EnemyAttackState(this, attackWait, attackRepeat);
+            DeathState ??= new EnemyDeathState(this, xpReward);
 
             #endregion
 
@@ -28,6 +29,12 @@ namespace GameExtensions.Enemies
             ApplyDifficulty();
             Difficulty.DifficultyLevelChanged += ApplyDifficulty;
             SetState(IdleState);
+        }
+
+        protected new void OnDisable()
+        {
+            base.OnDisable();
+            FindAnyObjectByType<CinemachineTargetGroup>().RemoveMember(transform);
         }
 
         private void ApplyDifficulty()
@@ -40,6 +47,7 @@ namespace GameExtensions.Enemies
         public void Reset()
         {
             Hp = 100;
+            SetState(IdleState);
         }
     }
 }

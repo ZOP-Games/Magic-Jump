@@ -19,6 +19,7 @@ namespace GameExtensions.Enemies
         public override void OnTriggerEnter(Collider collider)
         {
             if (!collider.CompareTag("Player")) return;
+            DebugConsole.Log("I see you");
             LookAtMe(context.transform);
             canAim = true;
             CheckForTransition();

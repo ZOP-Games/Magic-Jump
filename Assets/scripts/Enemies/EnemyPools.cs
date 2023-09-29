@@ -1,6 +1,7 @@
 using GameExtensions.Debug;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
@@ -10,6 +11,7 @@ namespace GameExtensions.Enemies
         [SerializeField] private List<EnemyPoolPreset> presets;
         private List<Queue<GameObject>> pools;
 
+        [CanBeNull]
         public GameObject GetInstance(int typeId, Vector3 position)
         {
             if (pools.Count - 1 < typeId)
@@ -40,7 +42,7 @@ namespace GameExtensions.Enemies
 
         private void Start()
         {
-            pools = new();
+            pools = new List<Queue<GameObject>>();
             presets.ForEach(p =>
             {
                 var pool = new Queue<GameObject>(p.Size);

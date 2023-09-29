@@ -65,7 +65,7 @@ namespace GameExtensions
 
         }
 
-        public virtual void OnDestroy()
+        public virtual void OnDisable()
         {
 
         }

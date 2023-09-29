@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameExtensions.Debug;
+using UnityEngine;
 
 namespace GameExtensions
 {
@@ -10,62 +11,63 @@ namespace GameExtensions
         {
             CurrentState?.ExitState();
             CurrentState = newState;
+            DebugConsole.Log("New state: " + CurrentState);
             CurrentState.Start();
         }
 
         #region EventFunctions
 
-        private void Update()
+        protected void Update()
         {
             CurrentState.Update();
         }
 
-        private void FixedUpdate()
+        protected void FixedUpdate()
         {
             CurrentState.FixedUpdate();
         }
 
-        private void LateUpdate()
+        protected void LateUpdate()
         {
             CurrentState.LateUpdate();
         }
 
-        private void OnDestroy()
+        protected void OnDisable()
         {
-            CurrentState?.OnDestroy();
+            CurrentState.OnDisable();
         }
 
-        private void OnCollisionEnter(Collision other)
+        protected void OnCollisionEnter(Collision other)
         {
             CurrentState.OnCollisionEnter(other);
         }
 
-        private void OnCollisionExit(Collision other)
+        protected void OnCollisionExit(Collision other)
         {
             CurrentState.OnCollisionExit(other);
         }
 
-        private void OnCollisionStay(Collision other)
+        protected void OnCollisionStay(Collision other)
         {
             CurrentState.OnCollisionStay(other);
         }
 
-        private void OnDrawGizmos()
+        protected void OnDrawGizmos()
         {
             CurrentState?.OnDrawGizmos();
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected void OnTriggerEnter(Collider other)
         {
             CurrentState.OnTriggerEnter(other);
         }
 
-        private void OnTriggerExit(Collider other)
+        protected void OnTriggerExit(Collider other)
         {
             CurrentState.OnTriggerExit(other);
         }
 
-        private void OnTriggerStay(Collider other)
+        protected void OnTriggerStay(Collider other)
         {
             CurrentState.OnTriggerStay(other);
             _ = other;

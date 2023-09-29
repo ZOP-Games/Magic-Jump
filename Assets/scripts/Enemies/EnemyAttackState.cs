@@ -12,6 +12,7 @@ namespace GameExtensions.Enemies
         private Transform tf;
         private Transform playerTf;
         private Animator anim;
+        private int attackHash;
 
         public EnemyAttackState(EnemyStateManager enemy, float waitInterval, float repeatInterval) : base(enemy)
         {
@@ -30,8 +31,7 @@ namespace GameExtensions.Enemies
             atkPower = enemy.AtkPower;
             tf = context.transform;
             playerTf = Player.Instance.transform;
-            var attackHash = Animator.StringToHash("attack");
-            anim.SetTrigger(attackHash);
+            attackHash = Animator.StringToHash("attack");
             context.StartCoroutine(Coroutine());
         }
 
@@ -44,6 +44,7 @@ namespace GameExtensions.Enemies
         {
             while (true)
             {
+                anim.SetTrigger(attackHash);
                 yield return wait;
                 Player.Instance.TakeDamage(atkPower);
                 if (Mathf.Abs(Vector3.Distance(tf.position, playerTf.position)) > enemy.atkRange)
