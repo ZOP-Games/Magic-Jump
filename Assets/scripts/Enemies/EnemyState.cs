@@ -22,14 +22,14 @@ namespace GameExtensions.Enemies
             ctg = Object.FindAnyObjectByType<CinemachineTargetGroup>();
         }
 
-        protected void LookAtMe(Transform target)
+        protected void LookAtMe()
         {
-            ctg.AddMember(target, LookAtWeight, LookAtRadius);
+            ctg.AddMember(context.transform, LookAtWeight, LookAtRadius);
         }
 
-        protected void DontLookAtMe(Transform target)
+        protected void DontLookAtMe()
         {
-            ctg.RemoveMember(target);
+            ctg.RemoveMember(context.transform);
         }
     }
 }

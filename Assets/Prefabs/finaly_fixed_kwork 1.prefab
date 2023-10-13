@@ -3346,6 +3346,7 @@ GameObject:
   - component: {fileID: 914626356183724660}
   - component: {fileID: 1862644657180207269}
   - component: {fileID: 7604632849286026206}
+  - component: {fileID: 1380199170875845402}
   m_Layer: 0
   m_Name: HP
   m_TagString: Untagged
@@ -3507,6 +3508,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1862644657180207269}
   m_maskType: 0
+--- !u!114 &1380199170875845402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2824049085815029081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d2cef31037df14eb4dc8675b042d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpText: {fileID: 7604632849286026206}
 --- !u!1 &2855288718345914732
 GameObject:
   m_ObjectHideFlags: 0
@@ -8389,12 +8403,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917c881687aed6f48828e72038cc8ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atkRange: 2
-  <Hp>k__BackingField: 100
+  atkRange: 2.2
+  hp: 100
   <AtkPower>k__BackingField: 10
   <Defense>k__BackingField: 10
   attackWait: 0.45833334
   attackRepeat: 1.9583334
+  xpReward: 0
 --- !u!1 &7629247890931751079
 GameObject:
   m_ObjectHideFlags: 0

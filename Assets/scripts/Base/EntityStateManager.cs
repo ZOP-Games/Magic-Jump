@@ -1,16 +1,28 @@
-﻿using System;
-using GameExtensions.Debug;
+﻿using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace GameExtensions
 {
-    public abstract class EntityStateManager : StateManager
+    public abstract class EntityStateManager : StateManager, IMediator
     {
         public static State DeathState { get; protected set; }
+        public static State IdleState { get; protected set; }
         public static State DamageState { get; private set; }
-        public byte atkRange;
-        [field: SerializeField] public int Hp { get; set; } = 100;
+        public float atkRange;
+        [SerializeField] private int hp = 100;
+        public event UnityAction HealthChanged;
+
+        
+        public int Hp
+        {
+            get => hp;
+            set
+            {
+                hp = value;
+                HealthChanged?.Invoke();
+            }
+        }
 
         [field: SerializeField] public int AtkPower { get; set; } = 10;
 
@@ -21,10 +33,15 @@ namespace GameExtensions
         protected const int MoveForceMultiplier = 25;
         protected const int StunTime = 3;
 
-        private void Start()
+        public void Mediate<T>(NotifyableState<T> state, T value)
+        {
+            state.Notify(value);
+            SetState(state);
+        }
+
+        protected void Start()
         {
             #region StateConstruction
-
 
             DamageState = new DamageState(this);
 

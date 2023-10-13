@@ -73,17 +73,16 @@ namespace GameExtensions
         {
             //docs here
             anim.SetTrigger(AttackingPmHash);
-            var entities = FindObjectsByType<Entity>(FindObjectsSortMode.None).Where(e => e.isActiveAndEnabled
+            var entities = FindObjectsByType<EntityStateManager>(FindObjectsSortMode.None).Where(e => e.isActiveAndEnabled
              && Mathf.Abs(Vector3.Distance(e.transform.position, transform.position)) < AtkRange
              && Vector3.Dot(e.transform.forward, transform.forward) < 0
-             && e != this
             )
             .ToList();
             foreach (var entity in entities)
             {
-                entity.TakeDamage(AtkPower);
+                entity.Mediate(EntityStateManager.DamageState as DamageState,AtkPower);
             }
-            DebugConsole.Log("attacked " + entities.Count() + " entities");
+            DebugConsole.Log("attacked " + entities.Count + " entities");
         }
 
         public IEnumerable<T> GetNearby<T>() where T : Component

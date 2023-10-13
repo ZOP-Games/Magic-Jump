@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
@@ -8,7 +9,7 @@ namespace GameExtensions.Enemies
         private readonly WaitForSeconds wait;
         private readonly WaitForSeconds repeat;
         private int atkPower;
-        private bool canAttack = true;
+        private bool canAttack;
         private Transform tf;
         private Transform playerTf;
         private Animator anim;
@@ -22,11 +23,13 @@ namespace GameExtensions.Enemies
 
         protected override void CheckForTransition()
         {
-            if (!canAttack) context.SetState(EnemyStateManager.IdleState);
+            if (!canAttack) context.SetState(EntityStateManager.IdleState);
         }
 
         public override void Start()
         {
+            base.Start();
+            canAttack = true;
             anim = enemy.GetComponent<Animator>();
             atkPower = enemy.AtkPower;
             tf = context.transform;
@@ -46,15 +49,26 @@ namespace GameExtensions.Enemies
             {
                 anim.SetTrigger(attackHash);
                 yield return wait;
+                //todo:make player damage use states
                 Player.Instance.TakeDamage(atkPower);
-                if (Mathf.Abs(Vector3.Distance(tf.position, playerTf.position)) > enemy.atkRange)
-                {
-                    canAttack = false;
-                    break;
-                }
-                CheckForTransition();
+                if(!canAttack) break;
                 yield return repeat;
             }
+        }
+
+        public override void LateUpdate()
+        {
+            if (!(Vector3.Distance(tf.position, playerTf.position) > enemy.atkRange)) return;
+            canAttack = false;
+            CheckForTransition();
+        }
+
+        public override void OnTriggerExit(Collider collider)
+        {
+            if (!collider.CompareTag("Player")) return;
+            DontLookAtMe();
+            canAttack = false;
+            CheckForTransition();
         }
     }
 }

@@ -61,7 +61,12 @@ namespace GameExtensions.Debug
 
         public static void LogError(string text)
         {
-            if (!IsWriterAvailable) text = text.Insert(0, "ERROR: ");
+            if (!IsWriterAvailable)
+            {
+                text = text.Insert(0, "ERROR: ");
+                Log(text, ErrorColor, ErrorFontSize);
+                return;
+            }
             Writer.ClearText();
             Log(text, ErrorColor, ErrorFontSize);
             Writer.AddStyle(DebugMessageWriter.TextStyle.Bold);

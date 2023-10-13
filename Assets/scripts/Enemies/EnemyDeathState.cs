@@ -18,7 +18,7 @@
         {
             base.Start();
             Player.Instance.AddXp(rewardXp);
-            DontLookAtMe(enemy.transform);
+            DontLookAtMe();
             UnityEngine.Object.Destroy(enemy.GetComponentInChildren<EnemyLocation>().gameObject);
         }
     }

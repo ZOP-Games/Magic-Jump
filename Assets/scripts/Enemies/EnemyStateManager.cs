@@ -6,16 +6,17 @@ namespace GameExtensions.Enemies
     public class EnemyStateManager : EntityStateManager
     {
         public static EnemyAimState AimState { get; private set; }
-        public static EnemyIdleState IdleState { get; private set; }
         public static EnemyAttackState AttackState { get; private set; }
 
         private float DifficultyMultiplier { get; } = Difficulty.DifficultyMultiplier;
         [SerializeField] private float attackWait;
         [SerializeField] private float attackRepeat;
         [SerializeField] private int xpReward;
+        private Transform tf;
 
-        private void Start()
+        private new void Start()
         {
+            base.Start();
             #region StateConstruction
 
             AimState ??= new EnemyAimState(this);
@@ -26,6 +27,7 @@ namespace GameExtensions.Enemies
             #endregion
 
             tag = "Enemy";
+            tf = transform;
             ApplyDifficulty();
             Difficulty.DifficultyLevelChanged += ApplyDifficulty;
             SetState(IdleState);
@@ -33,8 +35,9 @@ namespace GameExtensions.Enemies
 
         protected new void OnDisable()
         {
+            if(CurrentState is null) return;
+            FindAnyObjectByType<CinemachineTargetGroup>().RemoveMember(tf);
             base.OnDisable();
-            FindAnyObjectByType<CinemachineTargetGroup>().RemoveMember(transform);
         }
 
         private void ApplyDifficulty()

@@ -7,7 +7,6 @@ namespace GameExtensions.Enemies
     public class EnemyAimState : EnemyState
     {
         private const float TrackInterval = .02f;
-        private const float MoveMultiplier = 0.04f;
         private const int MoveForceMultiplier = 25;
         private const float GravityForce = 0.98f;
 
@@ -23,12 +22,13 @@ namespace GameExtensions.Enemies
         protected override void CheckForTransition()
         {
             if (inRange) context.SetState(EnemyStateManager.AttackState);
-            else if (isPassive) context.SetState(EnemyStateManager.IdleState);
+            else if (isPassive) context.SetState(EntityStateManager.IdleState);
             //todo:fix transitions
         }
 
         public override void Start()
         {
+            base.Start();
             playerTransform = Player.Instance.transform;
             anim = enemy.GetComponent<Animator>();
             cc = enemy.GetComponent<CharacterController>();
@@ -39,7 +39,7 @@ namespace GameExtensions.Enemies
         {
             var tf = context.transform;
             var pos = playerTransform.position;
-            if (Mathf.Abs(Vector3.Distance(tf.position, pos)) > enemy.atkRange)
+            if (Vector3.Distance(tf.position, pos) > enemy.atkRange)
             {
                 inRange = false;
                 tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
@@ -59,7 +59,7 @@ namespace GameExtensions.Enemies
         public override void OnTriggerExit(Collider collider)
         {
             if (!collider.CompareTag("Player")) return;
-            DontLookAtMe(context.transform);
+            DontLookAtMe();
             isPassive = false;
         }
 

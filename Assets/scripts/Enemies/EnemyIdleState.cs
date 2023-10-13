@@ -16,11 +16,11 @@ namespace GameExtensions.Enemies
             if(canAim) context.SetState(EnemyStateManager.AimState);
         }
 
-        public override void OnTriggerEnter(Collider collider)
+        public override void OnTriggerStay(Collider collider)
         {
             if (!collider.CompareTag("Player")) return;
             DebugConsole.Log("I see you");
-            LookAtMe(context.transform);
+            LookAtMe();
             canAim = true;
             CheckForTransition();
         }

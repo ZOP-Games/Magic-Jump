@@ -4,18 +4,22 @@ using UnityEngine.Events;
 
 namespace GameExtensions
 {
-    public class DamageState : State
+    public class DamageState : NotifyableState<int>
     {
         private readonly int damagePmHash = Animator.StringToHash("damage");
 
+        private int damageAmount = 0;
         private Animator anim;
         private readonly EntityStateManager entity;
-        
-        public event UnityAction HealthChanged;
 
         public DamageState(EntityStateManager context) : base(context)
         {
             entity = context;
+        }
+
+        public override void Notify(int data)
+        {
+            damageAmount = data;
         }
 
         protected override void CheckForTransition()
@@ -25,16 +29,23 @@ namespace GameExtensions
         public override void Start()
         {
             anim = entity.GetComponent<Animator>();
+            TakeDamage(damageAmount);
         }
 
         //damage logic, the dealt damage is substracted from Enitity's HP
-        public void TakeDamage(int amount)
+        private void TakeDamage(int amount)
         {
+            if (damageAmount == 0) DebugConsole.Log(
+                     "TakeDamage has been called without notifying DamageState first." +
+                     " Please use EntityStateManager.Mediate to take damage correctly.", DebugConsole.WarningColor);
             anim.SetTrigger(damagePmHash);
             entity.Hp -= Mathf.Clamp(amount - entity.Defense / 100, 0, amount);
-            HealthChanged?.Invoke();
-            DebugConsole.Log("That was " + amount + " damage!");
-            if (entity.Hp > 0) return; //if the Entity has 0 HP, it dies
+            DebugConsole.Log(context.name + " took " + amount + " damage!");
+            if (entity.Hp > 0)
+            {
+                context.SetState(EntityStateManager.IdleState);
+                return; //if the Entity has 0 HP, it dies
+            }
             context.SetState(EntityStateManager.DeathState);
         }
     }

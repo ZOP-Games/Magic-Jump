@@ -1,4 +1,5 @@
 ﻿using GameExtensions.Debug;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GameExtensions
@@ -9,6 +10,11 @@ namespace GameExtensions
         
         public void SetState(State newState)
         {
+            if (newState is null)
+            {
+                DebugConsole.LogError("Trying to set null state!");
+                return;
+            }
             CurrentState?.ExitState();
             CurrentState = newState;
             DebugConsole.Log("New state: " + CurrentState);
