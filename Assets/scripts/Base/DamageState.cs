@@ -1,6 +1,5 @@
 ﻿using GameExtensions.Debug;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace GameExtensions
 {
@@ -8,7 +7,7 @@ namespace GameExtensions
     {
         private readonly int damagePmHash = Animator.StringToHash("damage");
 
-        private int damageAmount = 0;
+        private int damageAmount;
         private Animator anim;
         private readonly EntityStateManager entity;
 

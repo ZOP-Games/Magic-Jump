@@ -23,7 +23,6 @@ namespace GameExtensions.Enemies
         {
             if (inRange) context.SetState(EnemyStateManager.AttackState);
             else if (isPassive) context.SetState(EntityStateManager.IdleState);
-            //todo:fix transitions
         }
 
         public override void Start()
@@ -35,7 +34,7 @@ namespace GameExtensions.Enemies
             ctg = Object.FindAnyObjectByType<CinemachineTargetGroup>();
         }
 
-        public override void Update()
+        public override void FixedUpdate()
         {
             var tf = context.transform;
             var pos = playerTransform.position;

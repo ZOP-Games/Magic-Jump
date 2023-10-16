@@ -49,7 +49,6 @@ namespace GameExtensions.Enemies
             {
                 anim.SetTrigger(attackHash);
                 yield return wait;
-                //todo:make player damage use states
                 Player.Instance.TakeDamage(atkPower);
                 if(!canAttack) break;
                 yield return repeat;
