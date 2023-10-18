@@ -18,6 +18,7 @@ namespace GameExtensions.Enemies
         private bool isPassive;
         private Animator anim;
         private CharacterController cc;
+        private Transform tf;
 
         protected override void CheckForTransition()
         {
@@ -28,15 +29,18 @@ namespace GameExtensions.Enemies
         public override void Start()
         {
             base.Start();
+            DebugConsole.Log("Here I am");
+            isPassive = false;
+            inRange = false;
             playerTransform = Player.Instance.transform;
             anim = enemy.GetComponent<Animator>();
             cc = enemy.GetComponent<CharacterController>();
             ctg = Object.FindAnyObjectByType<CinemachineTargetGroup>();
+            tf = context.transform;
         }
 
         public override void FixedUpdate()
         {
-            var tf = context.transform;
             var pos = playerTransform.position;
             if (Vector3.Distance(tf.position, pos) > enemy.atkRange)
             {
@@ -59,12 +63,13 @@ namespace GameExtensions.Enemies
         {
             if (!collider.CompareTag("Player")) return;
             DontLookAtMe();
-            isPassive = false;
+            isPassive = true;
         }
 
         public override void ExitState()
         {
             anim.SetBool(movingPmHash, false);
+            DebugConsole.Log("Here I leave");
         }
 
         public void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)

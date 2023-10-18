@@ -20,6 +20,7 @@ namespace GameExtensions.UI.HUD
             {
                 player = Player.Instance;
                 player.HealthChanged += UpdateHealthBar;
+                UpdateHealthBar();
             };
             anim = bar.GetComponent<Animator>();
         }

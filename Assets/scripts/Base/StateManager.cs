@@ -1,5 +1,4 @@
 ﻿using GameExtensions.Debug;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GameExtensions
@@ -30,6 +29,7 @@ namespace GameExtensions
 
         protected void FixedUpdate()
         {
+            //DebugConsole.Log("state: " + CurrentState);
             CurrentState.FixedUpdate();
         }
 

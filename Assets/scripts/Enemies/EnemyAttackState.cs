@@ -45,19 +45,18 @@ namespace GameExtensions.Enemies
 
         private IEnumerator Coroutine()
         {
-            while (true)
+            while (canAttack)
             {
                 anim.SetTrigger(attackHash);
                 yield return wait;
                 Player.Instance.TakeDamage(atkPower);
-                if(!canAttack) break;
                 yield return repeat;
             }
         }
 
         public override void LateUpdate()
         {
-            if (!(Vector3.Distance(tf.position, playerTf.position) > enemy.atkRange)) return;
+            if (Vector3.Distance(tf.position, playerTf.position) < enemy.atkRange) return;
             canAttack = false;
             CheckForTransition();
         }

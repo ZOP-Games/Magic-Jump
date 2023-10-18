@@ -63,7 +63,7 @@ namespace GameExtensions
             anim.SetTrigger(DamagePmHash);
             Hp -= Mathf.Clamp(amount - Defense / 100, 0, amount);
             HealthChanged?.Invoke();
-            DebugConsole.Log("That was " + amount + " damage!");
+            DebugConsole.Log("That was " + amount + " damage!, it cost me " + (amount-Defense/100) + " HP");
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
         }
