@@ -1,9 +1,8 @@
+using Cinemachine;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using GameExtensions.Debug;
-using Cinemachine;
 
 namespace GameExtensions.UI.Menus
 {
@@ -111,7 +110,7 @@ namespace GameExtensions.UI.Menus
                 {
                     break;
                 }
-                
+
             }
         }
 

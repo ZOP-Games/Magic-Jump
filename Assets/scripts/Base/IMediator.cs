@@ -1,7 +1,4 @@
-﻿using System.Xml.Serialization;
-using UnityEngine.Events;
-
-namespace GameExtensions
+﻿namespace GameExtensions
 {
     public interface IMediator
     {

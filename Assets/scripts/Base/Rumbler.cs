@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using GameExtensions.Debug;
+﻿using GameExtensions.Debug;
 using JetBrains.Annotations;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;

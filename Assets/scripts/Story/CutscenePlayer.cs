@@ -1,9 +1,9 @@
 ﻿using GameExtensions.Debug;
 using GameExtensions.UI.HUD;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.Video;
-using UnityEngine.AddressableAssets;
 
 namespace GameExtensions.Story
 {
@@ -113,7 +113,8 @@ namespace GameExtensions.Story
             };
             isUsingWebm = true;
 #else
-            video.LoadAssetAsync().Completed += op => {
+            video.LoadAssetAsync().Completed += op =>
+            {
                 videoPlayer.clip = op.Result;
                 PlayVideo();
             };

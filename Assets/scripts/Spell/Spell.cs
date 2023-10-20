@@ -1,7 +1,7 @@
+using GameExtensions.Enemies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameExtensions.Enemies;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

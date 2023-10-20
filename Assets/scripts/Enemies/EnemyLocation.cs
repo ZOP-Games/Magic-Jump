@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameExtensions.Debug;
 using UnityEngine;
 
@@ -7,37 +8,19 @@ namespace GameExtensions.Enemies
     public class EnemyLocation : MonoBehaviour
     {
         [SerializeField] private EnemyType type;
-        private int typeId;
-        private Vector3 position;
-        private EnemyPools pools;
-        private GameObject obj;
         private Color gizmoColor;
+        private GameObject obj;
+        private EnemyPools pools;
+        private Vector3 position;
         private Transform tf;
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (obj is not null || !other.CompareTag("Player")) return;
-            obj = pools.GetInstance(typeId, position);
-            if(obj is null) return;
-            tf.parent = obj.transform;
-            obj.GetComponent<EnemyStateManager>().Reset();
-            DebugConsole.Log("entered");
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if(obj is null || !other.CompareTag("Player")) return;
-            pools.ReturnInstance(obj, typeId);
-            obj = null;
-            tf.parent = tf.root;
-        }
+        private int typeId;
 
         private void Start()
         {
             tf = transform;
             position = tf.position;
             pools = FindObjectOfType<EnemyPools>();
-            typeId = (int)type;
+            typeId = (int) type;
         }
 
         private void OnDestroy()
@@ -49,7 +32,6 @@ namespace GameExtensions.Enemies
         private void OnDrawGizmosSelected()
         {
             if (gizmoColor.a is 0)
-            {
                 gizmoColor = type switch
                 {
                     EnemyType.Kwork => Color.blue,
@@ -58,8 +40,25 @@ namespace GameExtensions.Enemies
                     EnemyType.Lovag => Color.green,
                     _ => gizmoColor
                 };
-            }
-            else Gizmos.DrawIcon(transform.position,"gizmo.png", true, gizmoColor);
+            else Gizmos.DrawIcon(transform.position, "gizmo.png", true, gizmoColor);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (obj is not null || !other.CompareTag("Player")) return;
+            obj = pools.GetInstance(typeId, position);
+            if (obj is null) return;
+            tf.parent = obj.transform;
+            obj.GetComponent<EnemyStateManager>().Reset();
+            DebugConsole.Log("entered");
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (obj is null || !other.CompareTag("Player")) return;
+            pools.ReturnInstance(obj, typeId);
+            obj = null;
+            tf.parent = tf.root;
         }
 
         private enum EnemyType

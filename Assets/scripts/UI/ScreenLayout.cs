@@ -1,7 +1,5 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.UI;
 
 namespace GameExtensions.UI
 {

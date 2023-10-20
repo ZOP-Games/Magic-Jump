@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GameExtensions.Debug;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions

@@ -1,5 +1,4 @@
 ﻿using GameExtensions.Debug;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameExtensions.Story

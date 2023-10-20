@@ -1,11 +1,14 @@
-﻿namespace GameExtensions.Enemies
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace GameExtensions.Enemies
 {
     public class EnemyDeathState : EnemyState
     {
         private readonly int rewardXp;
 
 
-        public EnemyDeathState(EnemyStateManager enemy,int reward) : base(enemy)
+        public EnemyDeathState(EnemyStateManager enemy, int reward) : base(enemy)
         {
             rewardXp = reward;
         }
@@ -19,7 +22,7 @@
             base.Start();
             Player.Instance.AddXp(rewardXp);
             DontLookAtMe();
-            UnityEngine.Object.Destroy(enemy.GetComponentInChildren<EnemyLocation>().gameObject);
+            Object.Destroy(enemy.GetComponentInChildren<EnemyLocation>().gameObject);
         }
     }
 }

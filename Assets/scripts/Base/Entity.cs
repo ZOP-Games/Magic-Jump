@@ -1,6 +1,6 @@
+using GameExtensions.Debug;
 using System.Collections.Generic;
 using System.Linq;
-using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -63,7 +63,7 @@ namespace GameExtensions
             anim.SetTrigger(DamagePmHash);
             Hp -= Mathf.Clamp(amount - Defense / 100, 0, amount);
             HealthChanged?.Invoke();
-            DebugConsole.Log("That was " + amount + " damage!, it cost me " + (amount-Defense/100) + " HP");
+            DebugConsole.Log("That was " + amount + " damage!, it cost me " + (amount - Defense / 100) + " HP");
             if (Hp > 0) return; //if the Entity has 0 HP, it dies
             Die();
         }
@@ -80,7 +80,7 @@ namespace GameExtensions
             .ToList();
             foreach (var entity in entities)
             {
-                entity.Mediate(EntityStateManager.DamageState as DamageState,AtkPower);
+                entity.Mediate(entity.DamageState as DamageState, AtkPower);
             }
             DebugConsole.Log("attacked " + entities.Count + " entities");
         }

@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using GameExtensions.UI;
+﻿using GameExtensions.UI;
 using JetBrains.Annotations;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

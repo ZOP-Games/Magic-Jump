@@ -1,4 +1,5 @@
-﻿using GameExtensions.Debug;
+﻿using System.Collections.Generic;
+using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
@@ -11,21 +12,20 @@ namespace GameExtensions.Enemies
         {
         }
 
-        public new void Start()
+        public override void Start()
         {
-            DebugConsole.Log("Here I am (again?)");
             base.Start();
             canAim = false;
         }
 
         protected override void CheckForTransition()
         {
-            if(canAim) context.SetState(EnemyStateManager.AimState);
+            if (canAim) context.SetState(enemy.AimState);
         }
 
         public override void OnTriggerEnter(Collider collider)
         {
-            if (!collider.CompareTag("Player")) return;
+            if (!collider.CompareTag("Player") || canAim) return;
             DebugConsole.Log("I see you");
             LookAtMe();
             canAim = true;

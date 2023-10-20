@@ -45,13 +45,13 @@ namespace GameExtensions.UI.HUD
 
         private void OnDisable()
         {
-            if(marker is null) return;
+            if (marker is null) return;
             marker.SetActive(false);
         }
 
         private void OnEnable()
         {
-            if(marker is null) return;
+            if (marker is null) return;
             marker.SetActive(true);
         }
 

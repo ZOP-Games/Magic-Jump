@@ -1,5 +1,5 @@
-using System.Linq;
 using GameExtensions.UI;
+using System.Linq;
 using UnityEngine;
 
 namespace GameExtensions.Nonplayer

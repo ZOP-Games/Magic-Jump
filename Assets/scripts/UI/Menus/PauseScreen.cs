@@ -28,7 +28,7 @@ namespace GameExtensions.UI.Menus
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
             PInput!.SwitchCurrentActionMap("UI");
             InputSystem.ResetHaptics();
-            if(Time.timeScale > 0) Time.timeScale = 0;
+            if (Time.timeScale > 0) Time.timeScale = 0;
             var xpInfo = MenuController.Controller.XpInfo;
             xpText.SetText("Level: {0}\nXP: {1}\nXP needed to level up: {2}", xpInfo.Item3, xpInfo.Item1,
                 xpInfo.Item2 - xpInfo.Item1);

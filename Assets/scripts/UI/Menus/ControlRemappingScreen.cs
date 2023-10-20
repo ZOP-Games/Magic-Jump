@@ -1,11 +1,11 @@
+using GameExtensions.Debug;
 using System.Collections;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using TMPro;
-using GameExtensions.Debug;
 
 namespace GameExtensions.UI.Menus
 {

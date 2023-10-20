@@ -1,4 +1,5 @@
-﻿using Cinemachine;
+﻿using System.Collections.Generic;
+using Cinemachine;
 using GameExtensions.Debug;
 using UnityEngine;
 
@@ -12,24 +13,27 @@ namespace GameExtensions.Enemies
 
         protected readonly int movingPmHash = Animator.StringToHash("moving");
         protected readonly int runningPmHash = Animator.StringToHash("running");
-
-        private Transform playerTransform;
-        private bool inRange;
-        private bool isPassive;
         private Animator anim;
         private CharacterController cc;
+        private bool inRange;
+        private bool isPassive;
+
+        private Transform playerTransform;
         private Transform tf;
+
+        public EnemyAimState(EnemyStateManager enemy) : base(enemy)
+        {
+        }
 
         protected override void CheckForTransition()
         {
-            if (inRange) context.SetState(EnemyStateManager.AttackState);
-            else if (isPassive) context.SetState(EntityStateManager.IdleState);
+            if (inRange) context.SetState(enemy.AttackState);
+            else if (isPassive) context.SetState(enemy.IdleState);
         }
 
         public override void Start()
         {
             base.Start();
-            DebugConsole.Log("Here I am");
             isPassive = false;
             inRange = false;
             playerTransform = Player.Instance.transform;
@@ -56,6 +60,7 @@ namespace GameExtensions.Enemies
             {
                 inRange = true;
             }
+
             CheckForTransition();
         }
 
@@ -69,7 +74,6 @@ namespace GameExtensions.Enemies
         public override void ExitState()
         {
             anim.SetBool(movingPmHash, false);
-            DebugConsole.Log("Here I leave");
         }
 
         public void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
@@ -82,11 +86,6 @@ namespace GameExtensions.Enemies
                 cc.velocity.y - GravityForce * Time.deltaTime,
                 direction.z * maxSpeed * MoveForceMultiplier);
             cc.Move(moveDirection);
-        }
-
-        public EnemyAimState(EnemyStateManager enemy) : base(enemy)
-        {
-
         }
     }
 }

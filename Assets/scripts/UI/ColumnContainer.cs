@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using GameExtensions.Debug;
+﻿using GameExtensions.Debug;
+using System.Linq;
 using UnityEngine;
 
 namespace GameExtensions.UI

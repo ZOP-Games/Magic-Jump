@@ -1,19 +1,19 @@
 ﻿using System.Collections;
-using GameExtensions.Debug;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
 {
     public class EnemyAttackState : EnemyState
     {
-        private readonly WaitForSeconds wait;
         private readonly WaitForSeconds repeat;
-        private int atkPower;
-        private bool canAttack;
-        private Transform tf;
-        private Transform playerTf;
+        private readonly WaitForSeconds wait;
         private Animator anim;
+        private int atkPower;
         private int attackHash;
+        private bool canAttack;
+        private Transform playerTf;
+        private Transform tf;
 
         public EnemyAttackState(EnemyStateManager enemy, float waitInterval, float repeatInterval) : base(enemy)
         {
@@ -23,7 +23,7 @@ namespace GameExtensions.Enemies
 
         protected override void CheckForTransition()
         {
-            if (!canAttack) context.SetState(EntityStateManager.IdleState);
+            if (!canAttack) context.SetState(enemy.IdleState);
         }
 
         public override void Start()

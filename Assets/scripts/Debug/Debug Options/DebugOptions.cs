@@ -1,6 +1,5 @@
-using UnityEngine;
 using GameExtensions.UI;
-using UnityEngine.Serialization;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameExtensions.Debug.DebugMenu

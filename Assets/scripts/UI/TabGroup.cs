@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using GameExtensions.Debug;
+﻿using GameExtensions.Debug;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 

@@ -1,5 +1,5 @@
-﻿using GameExtensions.Debug;
-using Cinemachine;
+﻿using Cinemachine;
+using GameExtensions.Debug;
 using TMPro;
 using UnityEngine;
 

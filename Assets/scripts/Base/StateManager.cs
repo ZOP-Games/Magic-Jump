@@ -1,4 +1,5 @@
-﻿using GameExtensions.Debug;
+﻿using System.Collections.Generic;
+using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions
@@ -6,7 +7,7 @@ namespace GameExtensions
     public class StateManager : MonoBehaviour
     {
         public State CurrentState { get; private set; }
-        
+
         public void SetState(State newState)
         {
             if (newState is null)
@@ -14,6 +15,7 @@ namespace GameExtensions
                 DebugConsole.LogError("Trying to set null state!");
                 return;
             }
+
             CurrentState?.ExitState();
             CurrentState = newState;
             DebugConsole.Log("New state: " + CurrentState);
@@ -29,7 +31,6 @@ namespace GameExtensions
 
         protected void FixedUpdate()
         {
-            //DebugConsole.Log("state: " + CurrentState);
             CurrentState.FixedUpdate();
         }
 
@@ -76,7 +77,6 @@ namespace GameExtensions
         protected void OnTriggerStay(Collider other)
         {
             CurrentState.OnTriggerStay(other);
-            _ = other;
         }
 
         #endregion

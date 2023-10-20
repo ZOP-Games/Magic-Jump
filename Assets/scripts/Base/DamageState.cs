@@ -1,4 +1,5 @@
-﻿using GameExtensions.Debug;
+﻿using System.Collections.Generic;
+using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions
@@ -6,10 +7,10 @@ namespace GameExtensions
     public class DamageState : NotifyableState<int>
     {
         private readonly int damagePmHash = Animator.StringToHash("damage");
+        private readonly EntityStateManager entity;
+        private Animator anim;
 
         private int damageAmount;
-        private Animator anim;
-        private readonly EntityStateManager entity;
 
         public DamageState(EntityStateManager context) : base(context)
         {
@@ -34,18 +35,20 @@ namespace GameExtensions
         //damage logic, the dealt damage is substracted from Enitity's HP
         private void TakeDamage(int amount)
         {
-            if (damageAmount == 0) DebugConsole.Log(
-                     "TakeDamage has been called without notifying DamageState first." +
-                     " Please use EntityStateManager.Mediate to take damage correctly.", DebugConsole.WarningColor);
+            if (damageAmount == 0)
+                DebugConsole.Log(
+                    "TakeDamage has been called without notifying DamageState first." +
+                    " Please use EntityStateManager.Mediate to take damage correctly.", DebugConsole.WarningColor);
             anim.SetTrigger(damagePmHash);
             entity.Hp -= Mathf.Clamp(amount - entity.Defense / 100, 0, amount);
             DebugConsole.Log(context.name + " took " + amount + " damage!");
             if (entity.Hp > 0)
             {
-                context.SetState(EntityStateManager.IdleState);
+                context.SetState(entity.IdleState);
                 return; //if the Entity has 0 HP, it dies
             }
-            context.SetState(EntityStateManager.DeathState);
+
+            context.SetState(entity.DeathState);
         }
     }
 }

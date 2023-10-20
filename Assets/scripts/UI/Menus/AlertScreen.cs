@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.InputSystem;
 using GameExtensions.Debug;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GameExtensions.UI.Menus
 {
@@ -15,9 +12,9 @@ namespace GameExtensions.UI.Menus
         public string BodyText => Body.text;
         public string ButtonText => Button.text;
 
-        public TextMeshProUGUI Header { get; private set;}
-        public TextMeshProUGUI Body { get; private set;}
-        public TextMeshProUGUI Button { get; private set;}
+        public TextMeshProUGUI Header { get; private set; }
+        public TextMeshProUGUI Body { get; private set; }
+        public TextMeshProUGUI Button { get; private set; }
 
         public static void CreateAlert(string headerText = "header text", string bodyText = "body text",
             string buttonText = "OK")
@@ -46,7 +43,7 @@ namespace GameExtensions.UI.Menus
             if (PInput is null) DebugConsole.LogError("There is no PlayerInput provided to AlertScreen.");
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
             PInput!.SwitchCurrentActionMap("UI");
-            if(Time.timeScale > 0) Time.timeScale = 0;
+            if (Time.timeScale > 0) Time.timeScale = 0;
             base.Open();
         }
     }

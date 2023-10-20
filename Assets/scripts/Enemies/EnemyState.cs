@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Cinemachine;
-using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions.Enemies

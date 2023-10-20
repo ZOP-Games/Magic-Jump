@@ -1,10 +1,10 @@
-using Cinemachine;
 using System;
+using System.Collections.Generic;
+using Cinemachine;
 using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using TMPro;
 
 // ReSharper disable MergeConditionalExpression
 
@@ -29,6 +29,7 @@ namespace GameExtensions
         ///     distance.
         /// </summary>
         private const int DodgePower = 230;
+
         private const int SuperDodgePower = 2300;
 
         /// <summary>
@@ -58,14 +59,18 @@ namespace GameExtensions
         /// <summary>
         ///     Angular drag of the <see cref="Rigidbody" /> comonent.
         /// </summary>
-        /// <remarks><inheritdoc cref="Drag"/></remarks>
+        /// <remarks>
+        ///     <inheritdoc cref="Drag" />
+        /// </remarks>
         private const float AngularDrag = 1;
 
         /// <summary>
         ///     Constraint sum of the <see cref="Rigidbody" /> component. See
         ///     <see href="https://docs.unity3d.com/ScriptReference/Rigidbody-constraints.html" /> for details.
         /// </summary>
-        /// <remarks><inheritdoc cref="Drag"/></remarks>
+        /// <remarks>
+        ///     <inheritdoc cref="Drag" />
+        /// </remarks>
         private const int Constraints = 80;
 
         /// <summary>
@@ -86,8 +91,8 @@ namespace GameExtensions
         private const float ForwardMoveMultiplier = 0.1f;
         private const int TurnMultiplier = 5;
         private const float GravityForce = 0.98f;
-        [SerializeField][HideInInspector] private Vector3 playerPos;
-        [SerializeField][HideInInspector] private Vector3 playerAngles;
+        [SerializeField] [HideInInspector] private Vector3 playerPos;
+        [SerializeField] [HideInInspector] private Vector3 playerAngles;
 
         /// <summary>
         ///     The player's XP.
@@ -101,9 +106,12 @@ namespace GameExtensions
         [field: SerializeField]
         public byte Lvl { get; private set; }
 
+        private float jumpHeight;
+
         private bool jumping;
 
-        private float jumpHeight;
+        private LineRenderer line;
+
         /// <summary>
         ///     Used for checking if the player is moving or not
         /// </summary>
@@ -119,12 +127,12 @@ namespace GameExtensions
         /// </summary>
         private bool running;
 
-        private LineRenderer line;
-        private Transform vCamTf;
         /// <summary>
         ///     the player's <see cref="Transform" />.
         /// </summary>
         [NonSerialized] private Transform tf;
+
+        private Transform vCamTf;
 
         // this is for things unique to the player (controls, spells, etc.)
         /// <summary>
@@ -136,13 +144,6 @@ namespace GameExtensions
         ///     id of the moveSpeed parameter, for controlling animation speed from script
         /// </summary>
         private static int MoveSpeedId => Animator.StringToHash("moveSpeed");
-
-        //public references to some objects in the scene
-        /// <summary>
-        ///     The player's <see cref="PlayerInput" /> component.
-        /// </summary>
-        [field: NonSerialized]
-        public PlayerInput PInput { get; private set; }
 
         //setting Entity properties, for more info -> see Entity
         protected override int AttackingPmHash => Animator.StringToHash("attacking");
@@ -156,6 +157,137 @@ namespace GameExtensions
         ///     The amount of XP the player needs to level up.
         /// </summary>
         public int XpThreshold { get; private set; } = 10;
+
+        //Start() runs once when the object is enabled, lots of early game setup goes here
+        private new void Start()
+        {
+            base.Start();
+            if (Instance is not null) Destroy(this);
+            PInput = GetComponent<PlayerInput>(); //setting PlayerInput
+            //PlayerInput setup inside
+
+            #region PiSetup
+
+            //setting up PlayerInput so I don't have to do it all the time
+            PInput.actions["Move"].performed += Move;
+            PInput.actions["Move"].canceled += Move;
+            PInput.actions["Jump"].performed += Jump;
+            PInput.actions["Attack"].performed += LightAttack;
+            PInput.actions["Heavy Attack"].performed += HeavyAttack;
+            PInput.actions["Dodge"].performed += Dodge;
+            PInput.actions["Run"].performed += Run;
+            PInput.actions["Run"].canceled += Run;
+            PInput.actions["Save"].canceled += SaveGame;
+            PInput.actions["Load"].canceled += LoadGame;
+            PInput.SwitchCurrentActionMap("Player");
+
+            #endregion
+
+            tag = "Player"; //setting a player tag, helps w/ identification
+            cc = GetComponent<CharacterController>(); //getting Rigidbody and Animator and Transform and Instance and XP and difficulty
+            anim = GetComponent<Animator>();
+            tf = transform;
+            Instance = this;
+            vCamTf = FindAnyObjectByType<CinemachineBrain>().transform;
+            XpThreshold = (int) (DefaultThreshold * ThresholdMultiplier * Lvl);
+            Difficulty.DifficultyLevelChanged += () =>
+            {
+                if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
+            };
+            if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
+            DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP", () =>
+            {
+                AddXp(1000);
+                DebugConsole.Log("Added 1000 XP!", DebugConsole.TestColor);
+            });
+            line = GetComponentInChildren<LineRenderer>();
+            (this as ISaveable).AddToList();
+            PlayerReady?.Invoke();
+        }
+
+        //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
+        private void FixedUpdate()
+        {
+            if (DebugManager.DrawForceLine)
+            {
+                line.gameObject.SetActive(true);
+                line.SetPosition(1, cc.velocity);
+            }
+            else if (line.gameObject.activeSelf)
+            {
+                line.gameObject.SetActive(false);
+            }
+
+            var direction = Vector3.zero;
+            if (mozog)
+            {
+                var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
+                tf.rotation = Quaternion.Slerp(tf.rotation, Quaternion.Euler(0, angle, 0),
+                    TurnMultiplier * Time.fixedDeltaTime);
+                var lookForward = vCamTf.forward.normalized;
+                lookForward.y = 0;
+                var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
+                lookRight.y = 0;
+                direction = ForwardMoveMultiplier * mPos.y * lookForward + lookRight * mPos.x;
+            }
+
+            direction.y = cc.velocity.y - GravityForce;
+            if (jumping)
+            {
+                direction.y += jumpHeight;
+                jumpHeight = 0;
+                if (cc.isGrounded) jumping = false;
+            }
+
+            var speed = running ? WalkSpeed : RunSpeed;
+            Move(direction * Time.fixedDeltaTime, running, speed);
+        }
+
+        //public references to some objects in the scene
+        /// <summary>
+        ///     The player's <see cref="PlayerInput" /> component.
+        /// </summary>
+        [field: NonSerialized]
+        public PlayerInput PInput { get; private set; }
+
+        #region InputActionAdder
+
+        /// <summary>
+        ///     Adds an <see cref="UnityAction" /> to the input action list.
+        /// </summary>
+        /// <param name="actionName">The name of the <see cref="InputAction" />.</param>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="type">When you want to listen to the event.</param>
+        public void AddInputAction(string actionName, UnityAction action,
+            IInputHandler.ActionType type = IInputHandler.ActionType.Performed)
+        {
+            switch (type)
+            {
+                case IInputHandler.ActionType.Started:
+                    PInput.actions[actionName].started += context =>
+                    {
+                        if (context.started) action.Invoke();
+                    };
+                    break;
+                case IInputHandler.ActionType.Performed:
+                    PInput.actions[actionName].performed += context =>
+                    {
+                        if (context.performed) action.Invoke();
+                    };
+                    break;
+                case IInputHandler.ActionType.Canceled:
+                    PInput.actions[actionName].canceled += context =>
+                    {
+                        if (context.canceled) action.Invoke();
+                    };
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type,
+                        "The specified ActionType does not exist");
+            }
+        }
+
+        #endregion
 
         byte ISaveable.Id { get; set; }
 
@@ -262,7 +394,8 @@ namespace GameExtensions
         {
             if (!context.performed || !(Mathf.Abs(cc.velocity.x) < 1)) return;
             var power = DebugManager.IsSuperDodging ? SuperDodgePower : DodgePower;
-            cc.Move(new Vector3(power, 0, 0)); //pushing player to the side (idk if we still need this tbh) hell yeah brother
+            cc.Move(new Vector3(power, 0,
+                0)); //pushing player to the side (idk if we still need this tbh) hell yeah brother
         }
 
         /// <summary>
@@ -273,7 +406,6 @@ namespace GameExtensions
         /// </param>
         public void Run(InputAction.CallbackContext context)
         {
-
             if (context.performed)
             {
                 //tell the code in FixedUpdate() we're running
@@ -345,131 +477,6 @@ namespace GameExtensions
             XpThreshold = Xp + Mathf.RoundToInt(XpThreshold * ThresholdMultiplier);
             DebugConsole.Log("leveled up! Level" + Lvl, DebugConsole.SuccessColor);
         }
-
-        //FixedUpdate() updates a fixed amount per second (50-ish), useful for physics or control
-        private void FixedUpdate()
-        {
-            if (DebugManager.DrawForceLine)
-            {
-                line.gameObject.SetActive(true);
-                line.SetPosition(1, cc.velocity);
-            }
-            else if (line.gameObject.activeSelf)
-            {
-                line.gameObject.SetActive(false);
-            }
-            var direction = Vector3.zero;
-            if (mozog)
-            {
-                var angle = vCamTf.eulerAngles.y + Mathf.Atan2(mPos.x, mPos.y) * Mathf.Rad2Deg;
-                tf.rotation = Quaternion.Slerp(tf.rotation, Quaternion.Euler(0, angle, 0),
-                 TurnMultiplier * Time.fixedDeltaTime);
-                var lookForward = vCamTf.forward.normalized;
-                lookForward.y = 0;
-                var lookRight = vCamTf.right.normalized * RightMoveMultiplier;
-                lookRight.y = 0;
-                direction = ForwardMoveMultiplier * mPos.y * lookForward + lookRight * mPos.x;
-            }
-            direction.y = cc.velocity.y - GravityForce;
-            if (jumping)
-            {
-                direction.y += jumpHeight;
-                jumpHeight = 0;
-                if (cc.isGrounded)
-                {
-                    jumping = false;
-                }
-            }
-
-            var speed = running ? WalkSpeed : RunSpeed;
-            Move(direction * Time.fixedDeltaTime, running, speed);
-        }
-
-        //Start() runs once when the object is enabled, lots of early game setup goes here
-        private new void Start()
-        {
-            base.Start();
-            if (Instance is not null) Destroy(this);
-            PInput = GetComponent<PlayerInput>(); //setting PlayerInput
-            //PlayerInput setup inside
-
-            #region PiSetup
-
-            //setting up PlayerInput so I don't have to do it all the time
-            PInput.actions["Move"].performed += Move;
-            PInput.actions["Move"].canceled += Move;
-            PInput.actions["Jump"].performed += Jump;
-            PInput.actions["Attack"].performed += LightAttack;
-            PInput.actions["Heavy Attack"].performed += HeavyAttack;
-            PInput.actions["Dodge"].performed += Dodge;
-            PInput.actions["Run"].performed += Run;
-            PInput.actions["Run"].canceled += Run;
-            PInput.actions["Save"].canceled += SaveGame;
-            PInput.actions["Load"].canceled += LoadGame;
-            PInput.SwitchCurrentActionMap("Player");
-
-            #endregion
-
-            tag = "Player"; //setting a player tag, helps w/ identification
-            cc = GetComponent<CharacterController>(); //getting Rigidbody and Animator and Transform and Instance and XP and difficulty
-            anim = GetComponent<Animator>();
-            tf = transform;
-            Instance = this;
-            vCamTf = FindAnyObjectByType<CinemachineBrain>().transform;
-            XpThreshold = (int)(DefaultThreshold * ThresholdMultiplier * Lvl);
-            Difficulty.DifficultyLevelChanged += () =>
-            {
-                if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
-            };
-            if (DifficultyMultiplier > 1.5f) Hp = Mathf.RoundToInt(Hp / DifficultyMultiplier);
-            DebugInputHandler.Instance.AddInputCallback("[Debug] Add XP", () =>
-            {
-                AddXp(1000);
-                DebugConsole.Log("Added 1000 XP!", DebugConsole.TestColor);
-            });
-            line = GetComponentInChildren<LineRenderer>();
-            (this as ISaveable).AddToList();
-            PlayerReady?.Invoke();
-        }
-
-        #region InputActionAdder
-
-        /// <summary>
-        ///     Adds an <see cref="UnityAction" /> to the input action list.
-        /// </summary>
-        /// <param name="actionName">The name of the <see cref="InputAction" />.</param>
-        /// <param name="action">The action to be invoked.</param>
-        /// <param name="type">When you want to listen to the event.</param>
-        public void AddInputAction(string actionName, UnityAction action,
-            IInputHandler.ActionType type = IInputHandler.ActionType.Performed)
-        {
-            switch (type)
-            {
-                case IInputHandler.ActionType.Started:
-                    PInput.actions[actionName].started += context =>
-                    {
-                        if (context.started) action.Invoke();
-                    };
-                    break;
-                case IInputHandler.ActionType.Performed:
-                    PInput.actions[actionName].performed += context =>
-                    {
-                        if (context.performed) action.Invoke();
-                    };
-                    break;
-                case IInputHandler.ActionType.Canceled:
-                    PInput.actions[actionName].canceled += context =>
-                    {
-                        if (context.canceled) action.Invoke();
-                    };
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type,
-                        "The specified ActionType does not exist");
-            }
-        }
-
-        #endregion
 
         public void Revive()
         {

@@ -27,7 +27,7 @@ namespace GameExtensions.UI.HUD
 
         private void UpdateHealthBar()
         {
-            anim.SetInteger(helfPmHash,Mathf.CeilToInt(player.Hp/20f));
+            anim.SetInteger(helfPmHash, Mathf.CeilToInt(player.Hp / 20f));
             hpNumber.SetText(player.Hp + "/100");
         }
     }

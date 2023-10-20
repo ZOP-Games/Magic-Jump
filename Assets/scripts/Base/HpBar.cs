@@ -5,7 +5,7 @@ namespace GameExtensions
 {
     public class HpBar : MonoBehaviour
     {
-        [SerializeField]private TextMeshPro hpText;
+        [SerializeField] private TextMeshPro hpText;
         private EntityStateManager entity;
         private const string HeadText = "HP: ";
 

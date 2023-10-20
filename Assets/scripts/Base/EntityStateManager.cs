@@ -1,4 +1,4 @@
-﻿using GameExtensions.Debug;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,14 +6,21 @@ namespace GameExtensions
 {
     public abstract class EntityStateManager : StateManager, IMediator
     {
-        public static State DeathState { get; protected set; }
-        public static State IdleState { get; protected set; }
-        public static State DamageState { get; private set; }
+        protected const int WalkSpeed = 5;
+        protected const int RunSpeed = 15;
+        protected const int MoveForceMultiplier = 25;
+        protected const int StunTime = 3;
         public float atkRange;
         [SerializeField] private int hp = 100;
-        public event UnityAction HealthChanged;
 
-        
+        [field: SerializeField] public int AtkPower { get; set; } = 10;
+
+        [field: SerializeField] public int Defense { get; set; } = 10;
+        public State DeathState { get; protected set; }
+        public State IdleState { get; protected set; }
+        public State DamageState { get; private set; }
+
+
         public int Hp
         {
             get => hp;
@@ -24,21 +31,6 @@ namespace GameExtensions
             }
         }
 
-        [field: SerializeField] public int AtkPower { get; set; } = 10;
-
-        [field: SerializeField] public int Defense { get; set; } = 10;
-
-        protected const int WalkSpeed = 5;
-        protected const int RunSpeed = 15;
-        protected const int MoveForceMultiplier = 25;
-        protected const int StunTime = 3;
-
-        public void Mediate<T>(NotifyableState<T> state, T value)
-        {
-            state.Notify(value);
-            SetState(state);
-        }
-
         protected void Start()
         {
             #region StateConstruction
@@ -47,5 +39,13 @@ namespace GameExtensions
 
             #endregion
         }
+
+        public void Mediate<T>(NotifyableState<T> state, T value)
+        {
+            state.Notify(value);
+            SetState(state);
+        }
+
+        public event UnityAction HealthChanged;
     }
 }

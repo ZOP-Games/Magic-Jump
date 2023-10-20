@@ -1,6 +1,6 @@
+using Cinemachine;
 using GameExtensions.Debug;
 using System.Linq;
-using Cinemachine;
 using TMPro;
 using UnityEngine;
 

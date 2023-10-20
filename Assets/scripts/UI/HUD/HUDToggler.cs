@@ -27,7 +27,7 @@ namespace GameExtensions.UI.HUD
 
             if (instance is not null)
             {
-                
+
                 instance.gameObject.SetActive(state);
                 SceneManager.activeSceneChanged -= Check;
                 isChecking = false;
@@ -41,8 +41,8 @@ namespace GameExtensions.UI.HUD
 
         private void Start()
         {
-            if(DebugInputHandler.Instance is null) return;
-            DebugInputHandler.Instance.AddInputCallback("[Debug] Toggle HUD",() => AskSetHUD(!IsHUDVisible));
+            if (DebugInputHandler.Instance is null) return;
+            DebugInputHandler.Instance.AddInputCallback("[Debug] Toggle HUD", () => AskSetHUD(!IsHUDVisible));
         }
     }
 }

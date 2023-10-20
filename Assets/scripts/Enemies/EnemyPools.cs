@@ -1,7 +1,6 @@
 using GameExtensions.Debug;
-using System.Collections;
-using System.Collections.Generic;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
@@ -29,7 +28,8 @@ namespace GameExtensions.Enemies
             var obj = queue.Dequeue();
             obj.transform.position = position;
             obj.SetActive(true);
-            DebugConsole.Log("placed object (" + obj.name + ") from pool, we have " + queue.Count + " left");
+            DebugConsole.Log("placed object (" + obj.name + ") from pool, we have " + queue.Count + " left",
+                DebugConsole.HintColor);
             return obj;
         }
 

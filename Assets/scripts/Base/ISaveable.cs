@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GameExtensions.Debug;
+using System;
 using System.Linq;
-using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions
