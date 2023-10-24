@@ -13,7 +13,6 @@ namespace GameExtensions.Enemies
         private float height;
         private bool attackToggle;
 
-        //todo: research: is this necesarry??
         protected override int AttackingPmHash => Animator.StringToHash("attack");
         protected int Attacking2PmHash => Animator.StringToHash("attack2");
         protected override int MovingPmHash => Animator.StringToHash("moving");
@@ -50,14 +49,15 @@ namespace GameExtensions.Enemies
             Ctg = FindAnyObjectByType<CinemachineTargetGroup>();
             if (GetComponentInChildren<Collider>() is null)
                 DebugConsole.LogError("The attack trigger on " + name + " missing u idoit");
+            if (Player.Instance is not null) GetPlayerTransform();
+            else Invoke(nameof(GetPlayerTransform), 1);
+            return;
+
             void GetPlayerTransform()
             {
                 PlayerTransform = Player.Instance.transform;
                 if (PlayerTransform is null) DebugConsole.LogError("Can't find PlayerTrandform anywhere!");
             }
-            if (Player.Instance is not null) GetPlayerTransform();
-            else Invoke(nameof(GetPlayerTransform), 1);
-
         }
 
         protected override void Attack()

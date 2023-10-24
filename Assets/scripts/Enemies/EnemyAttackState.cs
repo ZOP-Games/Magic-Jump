@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GameExtensions.Debug;
 using UnityEngine;
 
 namespace GameExtensions.Enemies
 {
     public class EnemyAttackState : EnemyState
     {
-        private readonly WaitForSeconds repeat;
-        private readonly WaitForSeconds wait;
-        private Animator anim;
-        private int atkPower;
-        private int attackHash;
-        private bool canAttack;
+        protected readonly WaitForSeconds repeat;
+        protected readonly WaitForSeconds wait;
+        protected Animator anim;
+        protected int atkPower;
+        protected int attackHash;
+        protected bool canAttack;
         private Transform playerTf;
         private Transform tf;
 
@@ -35,7 +36,7 @@ namespace GameExtensions.Enemies
             tf = context.transform;
             playerTf = Player.Instance.transform;
             attackHash = Animator.StringToHash("attack");
-            context.StartCoroutine(Coroutine());
+            context.StartCoroutine(nameof(Coroutine));
         }
 
         public override void ExitState()

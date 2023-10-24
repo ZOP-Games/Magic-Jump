@@ -72,8 +72,15 @@ namespace GameExtensions.Enemies
                 tf.LookAt(pos);
                 var dir = tf.forward;
                 var rnd = Random.Range(0, 1f);
-                if (rnd > 0.7f) dir.y += FlightFactor * TrackInterval;
-                else if (rnd < 0.3f && !cc.isGrounded) dir.y -= FlightFactor * TrackInterval;
+                switch (rnd)
+                {
+                    case > 0.7f:
+                        dir.y += FlightFactor * TrackInterval;
+                        break;
+                    case < 0.3f when !cc.isGrounded:
+                        dir.y -= FlightFactor * TrackInterval;
+                        break;
+                }
                 Move(dir * TrackInterval);
             }
             else if (!IsInvoking(nameof(Attack)))

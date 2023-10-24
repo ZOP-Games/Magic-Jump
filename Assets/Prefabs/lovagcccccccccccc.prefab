@@ -5476,10 +5476,10 @@ GameObject:
   - component: {fileID: 55389898097904837}
   - component: {fileID: 6207336897173821119}
   - component: {fileID: 6186849616700470684}
-  - component: {fileID: 3515766334604897012}
   - component: {fileID: 7351128656970105693}
   - component: {fileID: 6078318368012654793}
   - component: {fileID: 6810778304363821595}
+  - component: {fileID: 7290923080374337135}
   m_Layer: 0
   m_Name: lovagcccccccccccc
   m_TagString: Untagged
@@ -5496,7 +5496,7 @@ Transform:
   m_GameObject: {fileID: 832911382225950335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
+  m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3554469855544513561}
@@ -5570,21 +5570,6 @@ LODGroup:
     - renderer: {fileID: 3740114858006309733}
     - renderer: {fileID: 3386784588504774163}
   m_Enabled: 1
---- !u!114 &3515766334604897012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832911382225950335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eac201ae59f0a57459a452c03c280150, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Hp>k__BackingField: 120
-  <AtkPower>k__BackingField: 15
-  <Defense>k__BackingField: 20
 --- !u!114 &7351128656970105693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5633,6 +5618,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7290923080374337135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832911382225950335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de03b6ae1aa7214d8f3851a2cff7d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atkRange: 2.6
+  hp: 150
+  <AtkPower>k__BackingField: 4
+  <Defense>k__BackingField: 4
+  attackWait: 2.2
+  attackRepeat: 1.625
+  xpReward: 0
+  attackWait2: 0.8333333
+  attackRepeat2: 0.9583333
 --- !u!1 &833253191767227086
 GameObject:
   m_ObjectHideFlags: 0
@@ -29733,6 +29739,7 @@ GameObject:
   - component: {fileID: 4622556641719694713}
   - component: {fileID: 4415562411367882444}
   - component: {fileID: 2378509732959009700}
+  - component: {fileID: 1260934777681202249}
   m_Layer: 0
   m_Name: HP
   m_TagString: Untagged
@@ -29888,12 +29895,25 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 4415562411367882444}
-  m_maskType: 0
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 4415562411367882444}
+  m_maskType: 0
+--- !u!114 &1260934777681202249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4045999424174422528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d2cef31037df14eb4dc8675b042d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpText: {fileID: 2378509732959009700}
 --- !u!1 &4057835506813822560
 GameObject:
   m_ObjectHideFlags: 0

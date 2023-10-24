@@ -10,7 +10,7 @@ namespace GameExtensions
         protected const int RunSpeed = 15;
         protected const int MoveForceMultiplier = 25;
         protected const int StunTime = 3;
-        public float atkRange;
+        public float atkRange = 1;
         [SerializeField] private int hp = 100;
 
         [field: SerializeField] public int AtkPower { get; set; } = 10;
