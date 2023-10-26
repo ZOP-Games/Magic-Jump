@@ -567,6 +567,7 @@ GameObject:
   - component: {fileID: 300949121894881789}
   - component: {fileID: 300949121894881791}
   - component: {fileID: 300949121894881790}
+  - component: {fileID: 3254689015248944431}
   m_Layer: 0
   m_Name: HP Text
   m_TagString: Untagged
@@ -728,6 +729,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 300949121894881791}
   m_maskType: 0
+--- !u!114 &3254689015248944431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300949121894881788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d2cef31037df14eb4dc8675b042d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpText: {fileID: 300949121894881790}
 --- !u!1 &305590651593382522
 GameObject:
   m_ObjectHideFlags: 0
@@ -13659,6 +13673,7 @@ GameObject:
   - component: {fileID: 7510775654443329146}
   - component: {fileID: 6167960333181892866}
   - component: {fileID: 757831236630326408}
+  - component: {fileID: 4001214652852263202}
   m_Layer: 0
   m_Name: finaly_fixed_szellem 1
   m_TagString: Untagged
@@ -13783,6 +13798,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4001214652852263202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7510775654443329145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8270e56c8c551f945b3d28409352c6dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atkRange: 2.1
+  hp: 100
+  <AtkPower>k__BackingField: 1
+  <Defense>k__BackingField: 1
+  attackWait: 0.75
+  attackRepeat: 1.75
+  xpReward: 0
 --- !u!1 &7523519185234185612
 GameObject:
   m_ObjectHideFlags: 0

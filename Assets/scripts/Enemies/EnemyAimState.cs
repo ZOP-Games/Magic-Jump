@@ -7,16 +7,15 @@ namespace GameExtensions.Enemies
 {
     public class EnemyAimState : EnemyState
     {
-        private const float TrackInterval = .02f;
-        private const int MoveForceMultiplier = 25;
-        private const float GravityForce = 0.98f;
+        private const float MoveForceMultiplier = .5f;
+        private const float GravityForce = 0;//0.98f;
 
         protected readonly int movingPmHash = Animator.StringToHash("moving");
         protected readonly int runningPmHash = Animator.StringToHash("running");
-        private Animator anim;
-        private CharacterController cc;
-        private bool inRange;
-        private bool isPassive;
+        protected Animator anim;
+        protected CharacterController cc;
+        protected bool inRange;
+        protected bool isPassive;
 
         private Transform playerTransform;
         private Transform tf;
@@ -51,7 +50,7 @@ namespace GameExtensions.Enemies
                 inRange = false;
                 tf.LookAt(new Vector3(pos.x, tf.position.y, pos.z));
 
-                var fw = Time.deltaTime * TrackInterval * tf.forward;
+                var fw = tf.forward * Time.fixedDeltaTime;
                 fw.y = 0;
                 Move(fw);
                 DebugConsole.Log("Moving in direction: " + fw);
@@ -76,14 +75,14 @@ namespace GameExtensions.Enemies
             anim.SetBool(movingPmHash, false);
         }
 
-        public void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
+        protected void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
         {
             anim.SetBool(movingPmHash, true);
             anim.SetBool(runningPmHash, isRunning);
 
             var moveDirection = new Vector3(
                 direction.x * maxSpeed * MoveForceMultiplier,
-                cc.velocity.y - GravityForce * Time.deltaTime,
+                (direction.y - GravityForce) * MoveForceMultiplier,
                 direction.z * maxSpeed * MoveForceMultiplier);
             cc.Move(moveDirection);
         }

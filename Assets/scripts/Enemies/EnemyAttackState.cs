@@ -36,15 +36,15 @@ namespace GameExtensions.Enemies
             tf = context.transform;
             playerTf = Player.Instance.transform;
             attackHash = Animator.StringToHash("attack");
-            context.StartCoroutine(nameof(Coroutine));
+            context.StartCoroutine(AttackCoroutine());
         }
 
         public override void ExitState()
         {
-            context.StopCoroutine(nameof(Coroutine));
+            context.StopCoroutine(nameof(AttackCoroutine));
         }
 
-        private IEnumerator Coroutine()
+        private IEnumerator AttackCoroutine()
         {
             while (canAttack)
             {

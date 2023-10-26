@@ -1450,7 +1450,7 @@ MonoBehaviour:
   presets:
   - prefab: {fileID: 7610150527675424673, guid: cc4d68463ed4bbb4b8984c110bd2da2b, type: 3}
     size: 5
-  - prefab: {fileID: 7510775654443329145, guid: 0feecd2b2926bf349989c9256b40e990, type: 3}
+  - prefab: {fileID: 7510775654443329145, guid: f8a7c6f080e747f43afaafe7a54da2a6, type: 3}
     size: 5
   - prefab: {fileID: 710514639056631703, guid: 7e7de6fa6e7c49a4ab42d6e92052ba33, type: 3}
     size: 5
@@ -4720,7 +4720,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2022128891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.7, y: 2, z: 21.1}
+  m_LocalPosition: {x: 202.5, y: 11.3, z: 226.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4739,7 +4739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55083a84cb46e7ff8defdec4e185a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 1
 --- !u!135 &2022128894
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5050,7 +5050,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 21
   m_IsActive: 1
 --- !u!114 &441752589309204073
 MonoBehaviour:

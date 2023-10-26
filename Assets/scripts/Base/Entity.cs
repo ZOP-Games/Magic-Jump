@@ -68,7 +68,6 @@ namespace GameExtensions
             Die();
         }
 
-        // ReSharper disable once VirtualMemberNeverOverridden.Global
         protected virtual void Attack()
         {
             //docs here
