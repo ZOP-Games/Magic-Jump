@@ -31,11 +31,7 @@ namespace GameExtensions.Enemies
             lookAtPosition.Set(playerPos.x,position.y,playerPos.z);
             if (distance > enemy.atkRange)
             {
-                if(Mathf.Sign(tf.eulerAngles.x) < 30)
-                {
-                    tf.LookAt(lookAtPosition);
-                }
-
+                if(Mathf.Sign(tf.eulerAngles.x) < 30) tf.LookAt(lookAtPosition); 
                 var dir = tf.forward;
                 dir.y -= Mathf.Log10(distance) * HeightMultiplier;
                 dir *= Time.fixedDeltaTime;
@@ -45,6 +41,19 @@ namespace GameExtensions.Enemies
             else inRange = true;
 
             CheckForTransition();
+        }
+
+        protected override void Move(Vector3 direction,bool isRunning = false,int maxSpeed = 5)
+        {
+            
+            anim.SetBool(movingPmHash, true);
+            anim.SetBool(runningPmHash, isRunning);
+
+            var moveDirection = new Vector3(
+                direction.x * maxSpeed * MoveForceMultiplier,
+                direction.y * MoveForceMultiplier,
+                direction.z * maxSpeed * MoveForceMultiplier);
+            cc.Move(moveDirection);
         }
     }
 }

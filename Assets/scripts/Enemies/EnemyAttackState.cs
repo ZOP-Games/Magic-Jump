@@ -41,7 +41,7 @@ namespace GameExtensions.Enemies
 
         public override void ExitState()
         {
-            context.StopCoroutine(nameof(AttackCoroutine));
+            context.StopAllCoroutines();
         }
 
         private IEnumerator AttackCoroutine()

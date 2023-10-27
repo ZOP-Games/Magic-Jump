@@ -23,7 +23,7 @@ namespace GameExtensions.Enemies
             if (canAim) context.SetState(enemy.AimState);
         }
 
-        public override void OnTriggerEnter(Collider collider)
+        public override void OnTriggerStay(Collider collider)
         {
             if (!collider.CompareTag("Player") || canAim) return;
             DebugConsole.Log("I see you");

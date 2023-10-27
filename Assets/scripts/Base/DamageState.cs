@@ -42,13 +42,7 @@ namespace GameExtensions
             anim.SetTrigger(damagePmHash);
             entity.Hp -= Mathf.Clamp(amount - entity.Defense / 100, 0, amount);
             DebugConsole.Log(context.name + " took " + amount + " damage!");
-            if (entity.Hp > 0)
-            {
-                context.SetState(entity.IdleState);
-                return; //if the Entity has 0 HP, it dies
-            }
-
-            context.SetState(entity.DeathState);
+            context.SetState(entity.Hp <= 0 ? entity.DeathState : entity.IdleState);    //if the Entity has 0 HP, it dies
         }
     }
 }

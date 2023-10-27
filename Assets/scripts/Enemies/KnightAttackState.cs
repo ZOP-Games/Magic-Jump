@@ -24,7 +24,7 @@ namespace GameExtensions.Enemies
             base.ExitState();
             attack1Hash = Animator.StringToHash("attack");
             attack2Hash = Animator.StringToHash("attack2");
-            context.StartCoroutine(Coroutine());
+            context.StartCoroutine(AttackCoroutine());
         }
 
         public override void ExitState()
@@ -33,7 +33,7 @@ namespace GameExtensions.Enemies
             context.StopAllCoroutines();
         }
 
-        private IEnumerator Coroutine()
+        private IEnumerator AttackCoroutine()
         {
             while (canAttack)
             {

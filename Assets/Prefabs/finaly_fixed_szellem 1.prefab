@@ -13812,8 +13812,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atkRange: 2.1
   hp: 100
-  <AtkPower>k__BackingField: 1
-  <Defense>k__BackingField: 1
+  <AtkPower>k__BackingField: 2
+  <Defense>k__BackingField: 2
   attackWait: 0.75
   attackRepeat: 1.75
   xpReward: 0

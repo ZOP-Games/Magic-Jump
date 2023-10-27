@@ -7,8 +7,8 @@ namespace GameExtensions.Enemies
 {
     public class EnemyAimState : EnemyState
     {
-        private const float MoveForceMultiplier = .5f;
-        private const float GravityForce = 0;//0.98f;
+        protected const float MoveForceMultiplier = .5f;
+        private const float GravityForce = 0.98f;
 
         protected readonly int movingPmHash = Animator.StringToHash("moving");
         protected readonly int runningPmHash = Animator.StringToHash("running");
@@ -75,7 +75,7 @@ namespace GameExtensions.Enemies
             anim.SetBool(movingPmHash, false);
         }
 
-        protected void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
+        protected virtual void Move(Vector3 direction, bool isRunning = false, int maxSpeed = 5)
         {
             anim.SetBool(movingPmHash, true);
             anim.SetBool(runningPmHash, isRunning);

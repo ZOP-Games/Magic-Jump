@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace GameExtensions
@@ -19,18 +20,21 @@ namespace GameExtensions
         public static void SaveToFile(string data, byte id)
         {
             if (!Directory.Exists(SavePath)) Directory.CreateDirectory(SavePath);
-            var stream = new FileStream(string.Concat(SavePath, SaveName, id, Extension), FileMode.Create);
+            var fullFilePath = new StringBuilder().Append(SavePath).Append(SaveName).Append(id)
+                .Append(Extension).ToString();
+            var stream = new FileStream(fullFilePath, FileMode.Create);
             var writer = new StreamWriter(stream);
             writer.Write(data);
             writer.Flush();
             writer.Close();
             stream.Close();
-            DebugConsole.Log("saved file to: " + string.Concat(SavePath, SaveName, id, Extension), 24);
+            DebugConsole.Log("Saved file to: " + fullFilePath, 24);
         }
 
         private static string ReadFromFile(byte id)
         {
-            var saveFile = string.Concat(SavePath, SaveName, id, Extension);
+            var saveFile = new StringBuilder().Append(SavePath).Append(SaveName).Append(id)
+                .Append(Extension).ToString();
             if (!File.Exists(saveFile))
             {
                 DebugConsole.Log("The specified save file was not found. Make sure the current savePath (" + saveFile +

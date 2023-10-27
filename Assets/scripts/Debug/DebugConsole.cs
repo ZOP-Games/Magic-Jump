@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +21,7 @@ namespace GameExtensions.Debug
         private static DebugMessageWriter Writer => DebugMessageWriter.Instance;
 
         // ReSharper disable Unity.PerformanceAnalysis
+        [Conditional("DEVELOPMENT_BUILD"),Conditional("UNITY_EDITOR")]
         public static void Log(string text, Color color, byte fontSize)
         {
             if (!IsWriterAvailable && !writtenError)
@@ -38,9 +40,7 @@ namespace GameExtensions.Debug
 
             if (color == FontColor) color = SceneManager.GetActiveScene().buildIndex is 0 ? Color.white : FontColor;
             Writer.ClearStyles();
-#if UNITY_EDITOR
             UnityEngine.Debug.Log(text);
-#endif
             Writer.WriteLine(text, color, fontSize);
         }
 

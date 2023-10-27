@@ -43,6 +43,7 @@ namespace GameExtensions
         public void Mediate<T>(NotifyableState<T> state, T value)
         {
             state.Notify(value);
+            CurrentState.ExitState();
             SetState(state);
         }
 

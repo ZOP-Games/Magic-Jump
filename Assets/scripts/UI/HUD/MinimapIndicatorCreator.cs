@@ -1,6 +1,7 @@
 ﻿using GameExtensions.Debug;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Rendering;
 
 namespace GameExtensions.UI.HUD
 {
@@ -31,11 +32,9 @@ namespace GameExtensions.UI.HUD
             rotConstraint.AddSource(sauce);
             rotConstraint.constraintActive = true;
             var meshRenderer = marker.GetComponent<MeshRenderer>();
-            if (!material.shader.name.ToLower().Contains("unlit"))
-                DebugConsole.Log(
-                    "You are not using an unlit shader on the minimap indicator for " + gameObject.name +
-                    ". Please use the pre-made minimap materials or one with an unlit shader for optimal performance.");
             meshRenderer.material = material;
+            meshRenderer.receiveShadows = false;
+            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
         }
 
         private void OnDestroy()

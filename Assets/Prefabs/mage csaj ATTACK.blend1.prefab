@@ -414,7 +414,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6415227510723409186
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -431,7 +431,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3571376159448562439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3178,11 +3179,12 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3780671244086486322, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
   - {fileID: -3522955778539423533, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
   - {fileID: -3522955778539423533, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
-  - {fileID: 3780671244086486322, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
   - {fileID: 880774007180850119, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
+  - {fileID: 880774007180850119, guid: 20a2c02e3c697be4fb5162f674f9b6c3, type: 3}
+  - {fileID: 880774007180850119, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
+  - {fileID: 2100000, guid: 7fba959b6c49cde45b7f077939b49032, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13270,8 +13272,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8964088591131456171, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
-  - {fileID: 3016479151454471876, guid: 1b55d0e0413753d499d2cb5467bbc7bd, type: 3}
+  - {fileID: 2100000, guid: 7fba959b6c49cde45b7f077939b49032, type: 2}
+  - {fileID: 2100000, guid: 7fba959b6c49cde45b7f077939b49032, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

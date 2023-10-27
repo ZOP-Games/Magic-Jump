@@ -38,7 +38,7 @@ ModelImporter:
     second: "lovag_kard_text\xFAr\xE1zva|lovag_kard_text\xFAr\xE1zvaAction"
   externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
